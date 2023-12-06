@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lagn="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>layout</title>
+    <th:block th:replace="~{common/config::config}"></th:block>
+</head>
+<body class="d-flex flex-column h-100">
+	<main class="flex-shrink-0">
+    <div th:replace="~{common/headerbar::headerbar}"></div>
+    <header th:replace="~{common/header::header}"></header>
+    <div layout:fragment="content"></div> <!-- 메인 파일에서 채워질 부분 -->
+    </main>
+    <footer th:replace="~{common/footer::footer}"></footer>
+</body>
+</html>

@@ -1,5 +1,7 @@
 FROM openjdk:17-jdk
-LABEL maintainer="email"
-ARG JAR_FILE=/docker-0.0.1-SNAPSHOT.jar
-ADD ${JAR_FILE} docker-springboot.jar
-ENTRYPOINT ["java","-jar","/docker-springboot.jar"]
+
+WORKDIR /app
+
+COPY build/libs/gongsik-web-0.0.1-SNAPSHOT.jar /app/gongsik-web-0.0.1-SNAPSHOT.jar
+
+CMD ["java", "-jar", "gongsik-web-0.0.1-SNAPSHOT.jar"]
