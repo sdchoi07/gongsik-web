@@ -1,1 +1,43 @@
 @charset "EUC-KR";
+
+     
+/* 화살표 숨기기 */
+.dropdown-toggle::after {
+  display: none;
+}
+
+/* 공식 수정 */
+.svg {
+      width: 70px;
+      height: 40px;
+      background-color: transparent;
+    }
+text {
+  font-size: 1.5em;
+  font-weight: bold;
+  font-style: italic;
+  fill: #000000;
+}
+
+/* 네비게이션  */
+.product a,
+.seed a,
+.chemistry a,
+.growing a,
+.sharing a,
+.admin a {
+    font-family: 'Arial', sans-serif; /* 폰트 변경 */
+    font-weight: bold; /* 글씨체를 볼드로 변경 */
+    font-size: 1.2em;
+    color: #FF0000; /* 회색으로 색상 변경 */
+    margin-right: 10px; /* 우측 여백을 조절할 수 있습니다. */
+    margin-left: 10px; /* 좌측 여백을 조절할 수 있습니다. */
+    }
+
+.search,
+.profile,
+.chat,
+.notice {
+    margin-right: 0; /* 선택한 클래스들에는 여백을 주지 않습니다. */
+    margin-left: 0; /* 선택한 클래스들에는 여백을 주지 않습니다. */
+}

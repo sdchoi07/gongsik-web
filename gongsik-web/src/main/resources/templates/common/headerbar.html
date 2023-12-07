@@ -1,34 +1,35 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<div th:fragment="headerbar">
- <nav class="navbar navbar-expand-lg navbar-dark bg-white">
-                <div class="container px-2 d-flex justify-content-start">
-                    <a class="navbar-brand" href="main"> <img class="logo-img" th:src="@{/vendor/third/img/logo.jpg}" width="80" height="100"></a>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                            <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
-                            <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                            <li class="nav-item"><a class="nav-link" href="pricing.html">Pricing</a></li>
-                            <li class="nav-item"><a class="nav-link" href="faq.html">FAQ</a></li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownBlog" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Blog</a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
-                                    <li><a class="dropdown-item" href="blog-home.html">Blog Home</a></li>
-                                    <li><a class="dropdown-item" href="blog-post.html">Blog Post</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownPortfolio" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Portfolio</a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownPortfolio">
-                                    <li><a class="dropdown-item" href="portfolio-overview.html">Portfolio Overview</a></li>
-                                    <li><a class="dropdown-item" href="portfolio-item.html">Portfolio Item</a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
+<th:block th:fragment="headerbar">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+            <div class="container fluid">
+                <a class="navbar-brand" href="main" >
+                      <svg class="svg">
+					    <text x="5" y="30">공식</text>
+					  </svg>
+                </a>
+                <button class="navbar-toggler ml-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ml-auto mb-2 mb-lg-0 mr-1"> <!-- 중앙 정렬 -->
+                    
+                        <li class="nav-item product"><a class="nav-link" href="index.html">구성품</a></li>
+                        <li class="nav-item seed"><a class="nav-link" href="about.html">씨앗</a></li>
+                        <li class="nav-item chemistry"><a class="nav-link" href="contact.html">약품</a></li>
+                        <li class="nav-item growing"><a class="nav-link" href="pricing.html">기르는 법</a></li>
+                        <li class="nav-item sharing"><a class="nav-link" href="faq.html">공유</a></li>
+                        <li class="nav-item admin"><a class="nav-link" href="faq.html" >운영</a></li>
+                    </ul>
+                    <ul class="navbar-nav ml-auto mb-2 mb-lg-0"> <!-- 오른쪽 정렬 -->
+                     	<li class="nav-item search"><a class="nav-link" href="pricing.html"><img th:src="@{/vendor/third/img/g-search.png}"/></a></li>
+                        <li class="nav-item profile"><a class="nav-link" href="faq.html"><img th:src="@{/vendor/third/img/g-profile.png}"/></a></li>
+                        <li class="nav-item chat"><a class="nav-link" href="faq.html"><img th:src="@{/vendor/third/img/g-chat.png}"/></a></li>
+                        <li class="nav-item notice"><a class="nav-link" href="faq.html"><img th:src="@{/vendor/third/img/g-notice.png}"/></a></li>
+                    </ul>
                 </div>
-            </nav>
             </div>
+        </nav>
+    </th:block>
 </html>
