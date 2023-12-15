@@ -5,6 +5,9 @@ spring:
       user:
        name: user
        password: 1111
+  data:
+   rest:
+    base-path: /api
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
