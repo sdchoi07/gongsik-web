@@ -8,9 +8,6 @@ spring:
   data:
    rest:
     base-path: /api
-  thymeleaf:
-    prefix: classpath:/templates/
-    suffix: .html
 logging:
    level:
      com:

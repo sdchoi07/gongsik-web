@@ -20,12 +20,7 @@ text {
 }
 
 /* 네비게이션  */
-.product a,
-.seed a,
-.chemistry a,
-.growing a,
-.sharing a,
-.admin a {
+.nav-item{
     font-family: 'Arial', sans-serif; /* 폰트 변경 */
     font-weight: bold; /* 글씨체를 볼드로 변경 */
     font-size: 1.2em;
