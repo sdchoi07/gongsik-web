@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+	
 <th:block th:fragment="headerbar">
     <nav class="navbar navbar-expand-lg navbar-light bg-light ">
+		<input type="hidden" id="restServer" th:value="${restServer}" />
             <div class="container fluid">
-                <a class="navbar-brand" href="main" >
+                <a class="navbar-brand" href="/" >
                       <svg class="svg">
 					    <text x="5" y="30">공식</text>
 					  </svg>
@@ -14,13 +15,10 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto mb-2 mb-lg-0 mr-1" id="menuList"> <!-- 중앙 정렬 -->
-                        <li class="nav-item chemistry"><a class="nav-link" href="contact.html">약품</a></li>
-                        <li class="nav-item sharing"><a class="nav-link" href="faq.html">공유</a></li>
-                        <li class="nav-item admin"><a class="nav-link" href="faq.html" >운영</a></li>
                     </ul>
                     <ul class="navbar-nav ml-auto mb-2 mb-lg-0"> <!-- 오른쪽 정렬 -->
                      	<li class="nav-item search"><a class="nav-link" href="pricing.html"><img th:src="@{/vendor/third/img/g-search.png}"/></a></li>
-                        <li class="nav-item profile"><a class="nav-link" href="faq.html"><img th:src="@{/vendor/third/img/g-profile.png}"/></a></li>
+                        <li class="nav-item profile"><a class="nav-link" href="/account/login"><img th:src="@{/vendor/third/img/g-profile.png}"/></a></li>
                         <li class="nav-item chat"><a class="nav-link" href="faq.html"><img th:src="@{/vendor/third/img/g-chat.png}"/></a></li>
                         <li class="nav-item notice"><a class="nav-link" href="faq.html"><img th:src="@{/vendor/third/img/g-notice.png}"/></a></li>
                     </ul>

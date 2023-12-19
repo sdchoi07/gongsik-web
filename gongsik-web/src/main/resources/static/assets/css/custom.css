@@ -36,3 +36,7 @@ text {
     margin-right: 0; /* 선택한 클래스들에는 여백을 주지 않습니다. */
     margin-left: 0; /* 선택한 클래스들에는 여백을 주지 않습니다. */
 }
+
+.menus {
+	visibility: hidden;
+}

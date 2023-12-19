@@ -6,14 +6,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>layout</title>
-    <th:block th:replace="~{common/config::config}"></th:block>
+    <th:block th:replace="~{common/config::config}"></th:block> <!-- js 및 css 파일에서 채워질 부분 -->
 
 </head>
 <body class="d-flex flex-column h-100">
 	<main class="flex-shrink-0">
 			<div class="row">
 				<div class="col-12" style="" >
-					    <header th:replace="~{common/headerbar::headerbar}"></header>
+					    <header th:replace="~{common/headerbar::headerbar}"></header> <!-- 헤더 네비게이션바 파일에서 채워질 부분 -->
 				</div>
 			</div>
 			<div class="row main">
@@ -22,25 +22,7 @@
 				</div>
 			</div>
     </main>
-    <footer th:replace="~{common/footer::footer}"></footer>
-<script type="text/javascript">
-		$.ajax({
-			url : "http://localhost:9090/api/main/menuList",
-			type: "GET",
-			}).done(function(data){
-				 var menuList = $('#menuList'); // 렌더링될 위치
+    <footer th:replace="~{common/footer::footer}"></footer> <!-- 풋터 파일에서 채워질 부분 -->
 
-			    // menus를 타임리프 반복문으로 렌더링
-			    data.forEach(function(data) {
-				console.log(data.menuNm)
-			        var menuItem = '<li class="nav-item dropdown">' +
-			            '<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">' + data.menuNm + '</a>' +
-			            '<div class="dropdown-menu" aria-labelledby="navbarDropdown"></div></li>';
-							
-					 menuList.append(menuItem);
-					})
-			});
-	
-</script>
 </body>
 </html>

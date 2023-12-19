@@ -1,18 +1,23 @@
-package com.gongsik.gsw.common.contoller;
+package com.gongsik.gsw.main.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
 
 @Controller
-public class Common implements ErrorController{
-	
+public class MainController implements ErrorController{
+		
+		@Value("${restServer}")
+		private String restServer ;
+		
 	    @GetMapping("/")
 	    public String sayHello(Model model) {
-	        model.addAttribute("say", "Hello");
+	    	model.addAttribute("restServer", restServer);
 	        return "main";
 	    }
 	    
@@ -31,9 +36,6 @@ public class Common implements ErrorController{
 	    	return "admin";
 	    }
 	    
-	    @GetMapping("/login")
-	    public @ResponseBody String login() {
-	    	return "login";
-	    }
+	  
 	}
 
