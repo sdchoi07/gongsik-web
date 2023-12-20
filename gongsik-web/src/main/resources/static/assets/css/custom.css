@@ -37,6 +37,18 @@ text {
     margin-left: 0; /* 선택한 클래스들에는 여백을 주지 않습니다. */
 }
 
+.navbar {
+        border-bottom: 1px solid #999999; /* 아래쪽 테두리를 회색으로 변경 */
+    }
 .menus {
 	visibility: hidden;
 }
+
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+

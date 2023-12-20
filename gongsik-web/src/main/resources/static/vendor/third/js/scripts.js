@@ -118,6 +118,7 @@
     }
     const a = t=>!!["checkbox", "radio"].find((e=>e === t.type))
       , r = (t,i)=>{
+		  console.log("여기는 :" + t.id + " " + t.name)
         let s, r, c = !0;
         if (a(t) && (r = t.parentElement.parentElement),
         "object" == typeof i) {

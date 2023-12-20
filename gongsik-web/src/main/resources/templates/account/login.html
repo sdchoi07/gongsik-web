@@ -9,55 +9,68 @@
 </head>
 <body>
 <div layout:fragment="content">
-	 <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5">
-        <div class="text-center mb-5">
-            <h1 class="fw-bolder">로그인</h1>
-        </div>
-        <div class="row gx-5 justify-content-center">
-            <div class="col-lg-8 col-xl-6">
-                <!-- * * * * * * * * * * * * * * *-->
-                <!-- * * SB Forms Contact Form * *-->
-                <!-- * * * * * * * * * * * * * * *-->
-                <!-- This form is pre-integrated with SB Forms.-->
-                <!-- To make this form functional, sign up at-->
-                <!-- https://startbootstrap.com/solution/contact-forms-->
-                <!-- to get an API token!-->
-                <form id="contactForm" data-sb-form-api-token="API_TOKEN">
-                    <!-- Name input-->
-                    <div class="form-floating mb-3">
-                        <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
-                        <label for="name">아이디(이메일)</label>
-                        <div class="invalid-feedback" data-sb-feedback="name:required">아아디(이메일)를 입력해주세요.</div>
-                    </div>
-                    <!-- Email address input-->
-                    <div class="form-floating mb-3">
-                        <input class="form-control" id="email" type="text" placeholder="name@example.com" data-sb-validations="required" />
-                        <label for="email">비밀번호</label>
-                        <div class="invalid-feedback" data-sb-feedback="email:required">비밀번호를 입력해주세요.</div>
-                    </div>
-                    <!-- Submit success message-->
-                    <!---->
-                    <!-- This is what your users will see when the form-->
-                    <!-- has successfully submitted-->
-                    <div class="d-none" id="submitSuccessMessage">
-                        <div class="text-center mb-3">
-                            <div class="fw-bolder">Form submission successful!</div>
-                            To activate this form, sign up at
-                            <br />
-                            <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
-                        </div>
-                    </div>
-                    <!-- Submit error message-->
-                    <!---->
-                    <!-- This is what your users will see when there is-->
-                    <!-- an error submitting the form-->
-                    <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
-                    <!-- Submit Button-->
-                    <div class="d-grid"><button class="btn btn-primary btn-lg disabled" id="submitButton" type="submit">Submit</button></div>
-                </form>
-            </div>
-        </div>
+  <div class="container py-5 h-100">
+    <div class="row d-flex align-items-center justify-content-center h-100">
+      <div class="col-md-8 col-lg-7 col-xl-6">
+        <img th:src="@{/vendor/third/img/login_pic.png}"
+          class="img-fluid w-100" alt="Phone image">
+      </div>
+      <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+        <form>
+			
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <!-- 회원가입 -->
+              <label class="form-label fw-bold" for="form1Example3">로그인 </label>
+            <a class= "nav-link" href="/account/join">회원가입</a>
+          </div>
+          <!-- Email input -->
+          <div class="form-outline mb-4">
+            <label class="form-label" for="form1Example13">아이디(이메일)</label>
+            <input type="email" id="form1Example13" class="form-control form-control-lg" />
+          </div>
+
+          <!-- Password input -->
+          <div class="form-outline mb-4">
+            <label class="form-label" for="form1Example23">비밀번호</label>
+            <input type="password" id="form1Example23" class="form-control form-control-lg" />
+          </div>
+
+         <div class="d-flex justify-content-between align-items-center mb-4">
+		    <!-- Checkbox -->
+		    <div class="form-check">
+		        <input class="form-check-input" type="checkbox" value="" id="form1Example3" checked />
+		        <label class="form-check-label" for="form1Example3"> 아이디 저장 </label>
+		    </div>
+		    <div class="d-flex">
+		        <a class="nav-link me-2" href="#!" style="font-size: 12px;">아이디찾기</a>
+		        <span style="font-size: 12px;">|</span>
+		        <a class="nav-link ms-2" href="#!" style="font-size: 12px;">비밀번호찾기</a>
+		    </div>
+		</div>
+
+          <!-- Submit button -->
+          <button type="submit" class="btn btn-primary btn-lg btn-block">로그인</button>
+
+          <div class="divider d-flex align-items-center my-4">
+            <p class="text-center fw-bold mx-3 mb-0 text-muted">또는</p>
+          </div>
+
+        <a class="btn btn-primary btn-lg btn-block border- fw-bold0" style="background-color: #FFEB00; color: #000000;" href="#!" role="button">
+		    <img th:src="@{/vendor/third/img/g-kakao.png}" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 10px;"/>
+		    카카오 로그인
+		</a>
+		<a class="btn btn-primary btn-lg btn-block border-0 fw-bold" style="background-color: #03C75A; color: #ffffff;" href="#!" role="button">
+		    <img th:src="@{/vendor/third/img/g-naver.png}" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 10px;"/>
+		    네이버 로그인
+		</a>
+		<a class="btn btn-lg btn-block btn-google m-b-20 fw-bold" style="background-color: #f0f0f0; color: #757575;" href="#!" role="button">
+		    <img th:src="@{/vendor/third/img/g-google.png}" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 15px;"/>
+		    <span style="margin-left: 10px;">구글 로그인</span>
+		</a>
+        </form>
+      </div>
     </div>
+  </div>
 </div>
 </body>
 </html>

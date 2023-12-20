@@ -18,4 +18,10 @@ public class AccountController {
     	model.addAttribute("restServer", restServer);
 		return "account/login";
 	}
+	
+	@GetMapping("/join")
+	public String join(Model model) {
+    	model.addAttribute("restServer", restServer);
+		return "account/join";
+	}
 }
