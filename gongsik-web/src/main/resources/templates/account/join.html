@@ -1,10 +1,122 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="EUC-KR">
-<title>Insert title here</title>
-</head>
-<body>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
 
+<head>
+	<script th:src="@{/assets/js/account/join.js}"></script>
+	<meta charset="EUC-KR">
+	<title>회원가입</title>
+<style>
+
+	.error_text.item_style {
+    position: relative;
+    letter-spacing: -.4px;
+	}
+	.error_text {
+    margin: 10px 4px 0;
+    font-size: 13px;
+    line-height: 18px;
+    color: #ff3f3f;
+}
+</style>
+</head>
+
+<body>
+	<div layout:fragment="content">
+		<div class="container py-5 h-100">
+			<div class="row d-flex align-items-center justify-content-center h-100">
+				<div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
+					<!--login form-->
+					<form id="joinForm">
+
+						<div class="d-flex justify-content-between align-items-center mb-4">
+							<!-- 회원가입 -->
+							<label class="form-label fw-bold" for="form1Example3"
+								style="font-size: 25px; font-family: 'Noto Sans KR', sans-serif;">회원가입 </label>
+						</div>
+						<!-- 아아디 -->
+						<div class="form-group" id="idForm">
+						    <label class="control-label" for="emailSelect">이메일</label>
+						    <div class="d-flex align-items-center">
+						        <input id="emailSelect" type="text" class="form-control" placeholder="아이디 입력" autocomplete="off"
+						            data-sb-validations="required email">
+						        <span class="mx-2">@</span>
+						        <input class="form-control" id="domainTxt" type="text" placeholder="직접 입력" autocomplete="off"/>
+						        <div class="invalid-feedback" data-sb-feedback="email:required">이메일을 입력해주세요.</div>
+						        <select class="form-select" id="emailDomainSelect">
+						            <option value="">직접 입력</option>
+						            <option value="gmail.com">Gmail.com</option>
+						            <option value="yahoo.com">Yahoo.com</option>
+						            <option value="naver.com">Naver.com</option>
+						            <!-- 기타 옵션들 추가 -->
+						        </select>
+						    </div>
+						</div>
+						<div class="row">
+						    <div class="col-md-3 offset-md-9">
+						        <button type="submit" class="btn btn-primary btn-lg border-0 fw-bold" id="emailChkBtn"
+						                style="background-color: #000000; font-family: 'Noto Sans KR', sans-serif; width: 100%;
+						                height: auto; font-size: 14px; padding-top: 5px; padding-bottom: 5px; display: flex;
+						                justify-content: center; align-items: center;">중복체크</button>
+						    </div>
+						</div>
+						<!-- 비말번호 -->
+						<div class="form-group">
+							<label class="control-label">비밀번호</label>
+							<input id="password" type="password" maxlength="16" class="form-control" placeholder="비밀번호 입력"  autocomplete="new-password">
+							<div class="invalid-feedback" data-sb-feedback="password:required">비밀번호를 입력해주세요.</div>
+						</div>
+						<!-- 비밀번호 확인 -->
+						<div class="form-group">
+							<label class="control-label" >비말번호 확인</label>
+							<input id="passwordConfirm" type="password" maxlength="16" class="form-control"placeholder="비밀번호 확인 입력 " autocomplete="new-password">
+							<div class="invalid-feedback" data-sb-feedback="passwordConfirm:required">비밀번호 확인을 입력해주세요.</div>
+						</div>
+						<!-- 이름 -->
+						<div class="form-group">
+						<label class="control-label" for="signupName">이름</label>
+							<input id="signupName" type="text" maxlength="50" class="form-control">
+							<div class="invalid-feedback" data-sb-feedback="email:required">이메일을 입력해주세요.</div>
+						</div>
+						<!-- 성별 -->
+						<div class="d-flex align-items-center mb-4">
+							<span style="margin-right: 10px;">성별</span>
+							<div class="form-check" style="margin-right: 10px;">
+								<input class="form-check-input" type="checkbox" value="" id="form1Example1" />
+								<label class="form-check-label" for="form1Example1">남 </label>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" value="" id="form1Example2" />
+								<label class="form-check-label" for="form1Example2">여</label>
+							</div>
+						</div>
+						<!-- 생년월일 -->
+						<div class="form-group">
+							<label class="control-label" for="signupName">생년월일</label>
+							<input id="signupName" type="text" maxlength="50" class="form-control">
+							<div class="invalid-feedback" data-sb-feedback="email:required">이메일을 입력해주세요.</div>
+						</div>
+
+						<!-- 휴대전화번호 -->
+						<div class="form-group">
+							<label class="control-label" for="signupName">휴대전화</label>
+							<input id="signupName" type="text" maxlength="50" class="form-control">
+							<input id="signupName" type="text" maxlength="50" class="form-control">
+							<input id="signupName" type="text" maxlength="50" class="form-control">
+							<div class="invalid-feedback" data-sb-feedback="email:required">이메일을 입력해주세요.</div>
+						</div>
+
+
+
+						<!-- Submit button -->
+						<button type="submit" class="btn btn-primary btn-lg btn-block border-0 fw-bold" id="loginBtn"
+							style="background-color: #000000; font-family: 'Noto Sans KR', sans-serif;">회원가입</button>
+					</form>
+
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
+
 </html>

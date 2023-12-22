@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lagn="ko"
+<html lang="ko"
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
@@ -10,18 +10,8 @@
 
 </head>
 <body class="d-flex flex-column h-100">
-	<main class="flex-shrink-0">
-			<div class="row">
-				<div class="col-12" style="" >
-					    <header th:replace="~{common/headerbar::headerbar}"></header> <!-- 헤더 네비게이션바 파일에서 채워질 부분 -->
-				</div>
-			</div>
-			<div class="row main">
-				<div class="col-12" style="" >
+	    <header th:replace="~{common/headerbar::headerbar}"></header> <!-- 헤더 네비게이션바 파일에서 채워질 부분 -->
 		    <div layout:fragment="content"></div> <!-- 메인 파일에서 채워질 부분 -->
-				</div>
-			</div>
-    </main>
     <footer th:replace="~{common/footer::footer}"></footer> <!-- 풋터 파일에서 채워질 부분 -->
 
 </body>
