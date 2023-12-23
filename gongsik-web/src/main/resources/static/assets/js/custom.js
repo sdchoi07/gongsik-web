@@ -42,6 +42,17 @@ var restServer = $("#restServer").val();
 	});
 };
 
+var hearFix = function(){
+		$(window).scroll(function() {
+                var header = $('#header');
+                if ($(this).scrollTop() > 0) {
+                    header.addClass('fixed-header');
+                } else {
+                    header.removeClass('fixed-header');
+                }
+            });
+}
+
 
 
 $(document).ready(function() {

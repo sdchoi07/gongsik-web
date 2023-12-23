@@ -2,7 +2,7 @@ var restServer = $("#restServer").val();
 
 
 var _join = function() {
-
+    //Eamil select 박스
 	$('#emailDomainSelect').change(function() {
 		var selectedDomain = $(this).val();
 		if (selectedDomain === '') {
@@ -13,13 +13,21 @@ var _join = function() {
 			$('#domainTxt').prop('readonly', true);
 		}
 	});
-
+	
+	//아이디 중복체크
 	$('#emailChkBtn').on('click', function(event) {
 		 event.preventDefault();
 		_emailChkBtn();
 	})
-
+	
+	//비밀번호 확인
 	_pwdChk();
+	
+	//성별 체크
+	_sexChkBox();
+	
+	//자동 날짜 포맷 변환
+	_birthFormat();
 }
 
 //이메일 중복 확인 체크
@@ -75,8 +83,45 @@ var _pwdChk = function() {
 		}
 
 	});
+}
 
-
+//성별체크
+var _sexChkBox = function(){
+  $('input[type="checkbox"][name="gender"]').click(function(){
+	  if($(this).prop('checked')){
+	     $('input[type="checkbox"][name="gender"]').prop('checked',false);
+	     $(this).prop('checked',true);
+	    }
+	   });
+  
+   
+}
+//생년월일 변환
+var _birthFormat = function(){
+        $('#birthDate').on('input', function() {
+            var inputValue = $(this).val().replaceAll('.','');
+            if (inputValue.length === 8) {
+                var formattedDate = inputValue.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3');
+               		var year = parseInt(inputValue.substr(0, 4));
+                    var month = parseInt(inputValue.substr(4, 2));
+                    var day = parseInt(inputValue.substr(6, 2));
+                    
+                    var dateObj = new Date(year, month - 1, day);
+                    
+                    // 이전 메시지 삭제
+					$('#birthDateMsg').remove();
+                    if (dateObj.getFullYear() !== year || dateObj.getMonth() + 1 !== month || dateObj.getDate() !== day) {
+						var insertHtml = '<div class="error_text item_style" id="birthDateMsg">! 잘못 입력된 날짜입니다.</div>';
+						console.log("1번");
+						$('#birthDate').addClass('onError').after(insertHtml);
+                        $(this).val('');
+                    } else {
+						console.log("2번");
+                        $(this).val(formattedDate);
+                        $('#birthDate').removeClass('onError')
+                    }
+                } 
+        });
 }
 
 $(document).ready(function() {

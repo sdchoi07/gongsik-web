@@ -7,11 +7,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>layout</title>
     <th:block th:replace="~{common/config::config}"></th:block> <!-- js 및 css 파일에서 채워질 부분 -->
+	<style>
+		header {
+		    position: sticky;
+		    top: 0;
+		    left: 0;
+		    width: 100%;
+			z-index: 100;
+		}
+	
 
+        /* 미디어 쿼리를 사용하여 화면 크기에 따른 스타일 조정 */
+        @media screen and (min-width: 1920px) {
+            header {
+                width: 2000px;
+            }
+        }
+
+       
+		
+	</style>
 </head>
 <body class="d-flex flex-column h-100">
-	    <header th:replace="~{common/headerbar::headerbar}"></header> <!-- 헤더 네비게이션바 파일에서 채워질 부분 -->
+	<main class="flex-shrink-0">
+	    <header class="header-bar" th:replace="~{common/headerbar::headerbar}"></header> <!-- 헤더 네비게이션바 파일에서 채워질 부분 -->
 		    <div layout:fragment="content"></div> <!-- 메인 파일에서 채워질 부분 -->
+    </main>
     <footer th:replace="~{common/footer::footer}"></footer> <!-- 풋터 파일에서 채워질 부분 -->
 
 </body>
