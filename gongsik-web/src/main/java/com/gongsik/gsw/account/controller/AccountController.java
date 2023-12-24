@@ -15,7 +15,7 @@ public class AccountController {
 	
 	@GetMapping("/login")
 	public String login(Model model) {
-    	model.addAttribute("restServer", restServer);
+    	//model.addAttribute("restServer", restServer);
 		return "account/login";
 	}
 	

@@ -1,16 +1,40 @@
  $(".nav-item.admin").hide();
   
-  
+//헤더 스크롤 고정
+/*var hearFix = function(){
+		$(window).scroll(function() {
+                var header = $('#header');
+                if ($(this).scrollTop() > 0) {
+                    header.addClass('fixed-header');
+                } else {
+                    header.removeClass('fixed-header');
+                }
+            });
+}*/
 //메뉴 조회
-var menuList = function(){
+function menuList(){
 	
 var restServer = $("#restServer").val();
+
 	$.ajax({
 	url : restServer+"/api/main/menuList",
 	type: "GET",
 	dataType: 'json'
 	}).done(function(data){
-		 var menuList = $('#menuList'); 
+		 sessionStorage.setItem('cachedData', JSON.stringify(data)); // 데이터를 세션 스토리지에 저장
+		 
+		  
+	});
+};
+// 페이지 이동 시에 데이터를 사용하는 함수
+function useCachedData() {
+  const cachedData = sessionStorage.getItem('cachedData'); // 세션 스토리지에서 데이터 가져오기
+
+  if (cachedData) {
+    // 가져온 데이터를 사용하여 원하는 동작 수행
+    console.log('Data from cache:', JSON.parse(cachedData));
+    var data = JSON.parse(cachedData);
+    var menuList = $('#menuList'); 
 	    // menus를 타임리프 반복문으로 렌더링
 	    var menuItem ="";
     	var boolean = true;
@@ -39,22 +63,13 @@ var restServer = $("#restServer").val();
 				}
 			}
 		 menuList.append(menuItem);
-	});
-};
-
-var hearFix = function(){
-		$(window).scroll(function() {
-                var header = $('#header');
-                if ($(this).scrollTop() > 0) {
-                    header.addClass('fixed-header');
-                } else {
-                    header.removeClass('fixed-header');
-                }
-            });
+  } else {
+    // 캐시된 데이터가 없는 경우 다시 데이터를 가져오고 캐싱
+    menuList();
+  }
 }
 
 
-
 $(document).ready(function() {
-  menuList();
+	useCachedData();
 });

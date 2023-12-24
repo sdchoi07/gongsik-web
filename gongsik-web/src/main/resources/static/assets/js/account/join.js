@@ -1,7 +1,11 @@
-var restServer = $("#restServer").val();
+
 
 
 var _join = function() {
+	
+	$('#selectpicker').selectpicker();
+	
+	var restServer = $("#restServer").val();
     //Eamil select 박스
 	$('#emailDomainSelect').change(function() {
 		var selectedDomain = $(this).val();
@@ -28,6 +32,11 @@ var _join = function() {
 	
 	//자동 날짜 포맷 변환
 	_birthFormat();
+	
+	//국제 번호 조회
+	_countryPhList(restServer);
+	
+	_showOptions();
 }
 
 //이메일 중복 확인 체크
@@ -124,6 +133,37 @@ var _birthFormat = function(){
         });
 }
 
+//국제 번호 조회
+var _countryPhList = function(restServer){
+	$.ajax({
+		url: restServer+"/api/account/join/countryPhList",
+		type: 'GET',
+		dataType: 'json'
+	}).done(function(data){
+		var selectElement = $('#countryPhNo');
+		    selectElement.empty(); // 기존의 option을 제거
+		
+			// "선택하세요" 옵션 추가
+		    selectElement.append($('<option>', {
+		        value: '', // 이 부분은 빈 값을 가지게 됩니다.
+		        text: '선택하세요.' // 원하는 안내 문구를 텍스트로 지정합니다.
+		    }));
+
+		    // 받아온 데이터를 가지고 option 추가
+		    data.forEach(function(item) {
+		        selectElement.append($('<option>', {
+		            value: item.countryPh,
+		            text: item.countryFullNm
+		        }));
+		    });
+	})
+}
+
+
+// 클릭 시 5개의 옵션을 보여주는 함수
+var  _showOptions = function() {
+    }
 $(document).ready(function() {
 	_join();
+	 
 });
