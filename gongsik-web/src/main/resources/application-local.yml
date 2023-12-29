@@ -1,9 +1,19 @@
-server: #서버포트설정
-     port: 8080
+#server: #서버포트설정
+#     port: 8080
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/gsw?serverTimezone=Asia/Seoul
-    username: gongsik-local
-    password: gongsik1204local
-restServer : http://localhost:9090
+    username: root
+    password: gongsik1204 
+  data:
+   redis:
+    host: redis  # Redis 호스트
+    port: 6379
+restServer : http://localhost:9090	
+#sms 문자인증
+coolsms:
+ api:
+  key : NCSTLEJAYL0JPUHM
+  secret : ZD4B8CRRXYL5MO9NKY8YMB8LJZ1YHJJM
+  sender : 01094036242		

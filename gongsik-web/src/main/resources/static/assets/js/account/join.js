@@ -3,7 +3,7 @@
 
 var _join = function() {
 	
-	$('#selectpicker').selectpicker();
+	$('#countryPhNo').select2();
 	
 	var restServer = $("#restServer").val();
     //Eamil select 박스
@@ -36,7 +36,12 @@ var _join = function() {
 	//국제 번호 조회
 	_countryPhList(restServer);
 	
-	_showOptions();
+	//인증번호 요청
+	$('#authReq').on('click',function(event){
+		console.log("인증버튼");
+		event.preventDefault();
+		_authNumReq(restServer);
+	});
 }
 
 //이메일 중복 확인 체크
@@ -121,11 +126,9 @@ var _birthFormat = function(){
 					$('#birthDateMsg').remove();
                     if (dateObj.getFullYear() !== year || dateObj.getMonth() + 1 !== month || dateObj.getDate() !== day) {
 						var insertHtml = '<div class="error_text item_style" id="birthDateMsg">! 잘못 입력된 날짜입니다.</div>';
-						console.log("1번");
 						$('#birthDate').addClass('onError').after(insertHtml);
                         $(this).val('');
                     } else {
-						console.log("2번");
                         $(this).val(formattedDate);
                         $('#birthDate').removeClass('onError')
                     }
@@ -136,7 +139,7 @@ var _birthFormat = function(){
 //국제 번호 조회
 var _countryPhList = function(restServer){
 	$.ajax({
-		url: restServer+"/api/account/join/countryPhList",
+		url: "/api/account/join/countryPhList",
 		type: 'GET',
 		dataType: 'json'
 	}).done(function(data){
@@ -159,10 +162,24 @@ var _countryPhList = function(restServer){
 	})
 }
 
+//인증번호 요청
+var _authNumReq = function(restServer){
+	var joinData = $('#joinForm').serializeObject();
+	$.ajax({
+		url : restServer+"/util/sendSMS",
+	    type: 'POST',
+        data: JSON.stringify(joinData), // form 데이터를 JSON 문자열로 변환하여 전송
+        contentType: 'application/json',
+        dataType: 'json' // 서버에서 받을 데
+	}).done(function(data){
+		alert("인증이 요청 되었습니다.");
+	}).fail(function(){
+		alert("요청이 잘못 되었습니다.")
+	})
+}
 
-// 클릭 시 5개의 옵션을 보여주는 함수
-var  _showOptions = function() {
-    }
+
+
 $(document).ready(function() {
 	_join();
 	 

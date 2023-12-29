@@ -12,17 +12,19 @@
             });
 }*/
 //메뉴 조회
-function menuList(){
+function _menuList(){
 	
 var restServer = $("#restServer").val();
 
 	$.ajax({
-	url : restServer+"/api/main/menuList",
+	url : "/api/main/menuList",
 	type: "GET",
-	dataType: 'json'
+	contentType: 'application/json',
 	}).done(function(data){
 		 sessionStorage.setItem('cachedData', JSON.stringify(data)); // 데이터를 세션 스토리지에 저장
-		 
+		 sessionStorage.setItem('restServer', restServer); // 데이터를 세션 스토리지에 저장
+		 menus(data);
+		
 		  
 	});
 };
@@ -32,13 +34,24 @@ function useCachedData() {
 
   if (cachedData) {
     // 가져온 데이터를 사용하여 원하는 동작 수행
-    console.log('Data from cache:', JSON.parse(cachedData));
-    var data = JSON.parse(cachedData);
-    var menuList = $('#menuList'); 
+   // console.log('Data from cache:', JSON.parse(cachedData));
+    //var data = JSON.parse(cachedData);
+  	 menus(cachedData)
+  } else {
+    // 캐시된 데이터가 없는 경우 다시 데이터를 가져오고 캐싱
+    
+    _menuList();
+  }
+}
+
+//메뉴 렌더링
+function menus(dataMenu){
+	var data = JSON.parse(dataMenu);
+
+	 var menuList = $('#menuList'); 
 	    // menus를 타임리프 반복문으로 렌더링
 	    var menuItem ="";
     	var boolean = true;
-    	var chk = true;
 	   	for(var i = 0 ;i < data.length; i++){
 			if (i == data.length-1 || i== data.length-2){
 				 menuItem += '</ul>';
@@ -63,12 +76,28 @@ function useCachedData() {
 				}
 			}
 		 menuList.append(menuItem);
-  } else {
-    // 캐시된 데이터가 없는 경우 다시 데이터를 가져오고 캐싱
-    menuList();
-  }
 }
 
+//form정보 가져오기
+$.fn.serializeObject = function() {
+  "use strict"
+  var result = {}
+  var extend = function(i, element) {
+    var node = result[element.name]
+    if ("undefined" !== typeof node && node !== null) {
+      if ($.isArray(node)) {
+        node.push(element.value)
+      } else {
+        result[element.name] = [node, element.value]
+      }
+    } else {
+      result[element.name] = element.value
+    }
+  }
+
+  $.each(this.serializeArray(), extend)
+  return result
+}
 
 $(document).ready(function() {
 	useCachedData();

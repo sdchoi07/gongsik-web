@@ -11,17 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class AccountController {
 	
 	@Value("${restServer}")
-	private String restServer ;
+	private String restServer;
 	
 	@GetMapping("/login")
-	public String login(Model model) {
-    	//model.addAttribute("restServer", restServer);
+	public String login() {
 		return "account/login";
 	}
 	
 	@GetMapping("/join")
 	public String join(Model model) {
-    	model.addAttribute("restServer", restServer);
 		return "account/join";
 	}
 }
