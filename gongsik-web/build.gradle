@@ -48,6 +48,10 @@ dependencies {
 	
 	//인증문자 요청
 	implementation 'net.nurigo:sdk:4.3.0'
+	
+	//http
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	
 }
 
 tasks.named('test') {

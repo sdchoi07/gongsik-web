@@ -137,7 +137,7 @@ var _birthFormat = function(){
 }
 
 //국제 번호 조회
-var _countryPhList = function(restServer){
+var _countryPhList = function(){
 	$.ajax({
 		url: "/api/account/join/countryPhList",
 		type: 'GET',
@@ -163,15 +163,15 @@ var _countryPhList = function(restServer){
 }
 
 //인증번호 요청
-var _authNumReq = function(restServer){
+var _authNumReq = function(){
 	var joinData = $('#joinForm').serializeObject();
 	$.ajax({
-		url : restServer+"/util/sendSMS",
+		url : "/util/sendSMS",
 	    type: 'POST',
         data: JSON.stringify(joinData), // form 데이터를 JSON 문자열로 변환하여 전송
         contentType: 'application/json',
-        dataType: 'json' // 서버에서 받을 데
 	}).done(function(data){
+		console.log(data.msg + " "+ data.code);
 		alert("인증이 요청 되었습니다.");
 	}).fail(function(){
 		alert("요청이 잘못 되었습니다.")

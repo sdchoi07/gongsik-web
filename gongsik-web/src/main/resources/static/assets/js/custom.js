@@ -13,17 +13,14 @@
 }*/
 //메뉴 조회
 function _menuList(){
-	
-var restServer = $("#restServer").val();
 
 	$.ajax({
 	url : "/api/main/menuList",
 	type: "GET",
 	contentType: 'application/json',
 	}).done(function(data){
-		 sessionStorage.setItem('cachedData', JSON.stringify(data)); // 데이터를 세션 스토리지에 저장
-		 sessionStorage.setItem('restServer', restServer); // 데이터를 세션 스토리지에 저장
 		 menus(data);
+		 sessionStorage.setItem('cachedData', JSON.stringify(data)); // 데이터를 세션 스토리지에 저장
 		
 		  
 	});
