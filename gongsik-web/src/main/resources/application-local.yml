@@ -6,10 +6,24 @@ spring:
     url: jdbc:mysql://localhost:3306/gsw?serverTimezone=Asia/Seoul
     username: root
     password: gongsik1204 
+    
   data:
    redis:
     host: redis  # Redis 호스트
     port: 6379
+    
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: djop1212@gmail.com
+    password: upzhwbhizwgvpohv
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 restServer : http://localhost:9090	
 #sms 문자인증
 coolsms:

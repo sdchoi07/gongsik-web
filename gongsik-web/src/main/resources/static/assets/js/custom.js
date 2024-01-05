@@ -19,6 +19,7 @@ function _menuList(){
 	type: "GET",
 	contentType: 'application/json',
 	}).done(function(data){
+
 		 menus(data);
 		 sessionStorage.setItem('cachedData', JSON.stringify(data)); // 데이터를 세션 스토리지에 저장
 		
@@ -33,7 +34,8 @@ function useCachedData() {
     // 가져온 데이터를 사용하여 원하는 동작 수행
    // console.log('Data from cache:', JSON.parse(cachedData));
     //var data = JSON.parse(cachedData);
-  	 menus(cachedData)
+  	 var data = JSON.parse(cachedData);
+  	 menus(data)
   } else {
     // 캐시된 데이터가 없는 경우 다시 데이터를 가져오고 캐싱
     
@@ -42,8 +44,8 @@ function useCachedData() {
 }
 
 //메뉴 렌더링
-function menus(dataMenu){
-	var data = JSON.parse(dataMenu);
+function menus(data){
+	//var data = JSON.parse(dataMenu);
 
 	 var menuList = $('#menuList'); 
 	    // menus를 타임리프 반복문으로 렌더링

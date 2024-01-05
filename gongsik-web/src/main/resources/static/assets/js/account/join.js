@@ -48,18 +48,20 @@ var _join = function() {
 var _emailChkBtn = function() {
     //입력한 이메일 값
 	var emailValue = $('#email').val() + '@' + $('#domainTxt').val();
+	console.log(emailValue);
 	$.ajax({
-		url: restServer / api / account / join / emailChkBtn,
+		url: "api/account/join/emailChk",
 		type: 'POST',
 		data: { usrId: emailValue },
 	}).success(function(data) {
-		var insertHtml = '<span>중복체크 완료 하였습니다.</span>'
-		$('#idForm').html(insertHtml);
-
+		if(data.code === 'suceess' ){
+			var insertHtml = '<span>중복체크 완료 하였습니다.</span>'
+		}else{
+			var insertHtml = '<span>이미 가입된 정보 입니다.</span>'
+		}
+			$('#idForm').html(insertHtml);
 	}).fail(function(data) {
-		var insertIdHtml = '<span>이미 가입된 정보 입니다.</span>'
-		$('#idForm').html(insertIdHtml);
-
+	
 	});
 }
 
@@ -171,10 +173,12 @@ var _authNumReq = function(){
         data: JSON.stringify(joinData), // form 데이터를 JSON 문자열로 변환하여 전송
         contentType: 'application/json',
 	}).done(function(data){
-		console.log(data.msg + " "+ data.code);
-		alert("인증이 요청 되었습니다.");
-	}).fail(function(){
-		alert("요청이 잘못 되었습니다.")
+		console.log(data.msg + " " + data.code);
+		if(data.code === 'success'){
+			alert(data.msg);
+		}else{
+			alert(data.msg);
+		}
 	})
 }
 

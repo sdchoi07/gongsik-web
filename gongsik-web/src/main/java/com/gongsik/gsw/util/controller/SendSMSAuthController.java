@@ -51,15 +51,21 @@ public class SendSMSAuthController {
 	@PostMapping("/sendSMS")
 	@ResponseBody
 	public Map<String,Object> sendSMS(@RequestBody Map<String,String> map){
-		System.out.println("map: " +map);
+		
 		Map<String, Object> result = new HashMap<String, Object>();
+		//인증번호 생성
 		Random rand  = new Random();
 	    String numStr = "";
 	    for(int i=0; i<4; i++) {
 	       String ran = Integer.toString(rand.nextInt(4));
 	       numStr+=ran;
-	    }     
+	    }
+	    //인증번호 값 저장(restAPI )
 	    map.put("authNo", numStr);
+
+	    //회원정보 restAPI서버 객체에 저장
+	    result = sendSMSAuthService.restApiCall(map);
+	    
 		//Message message = new Message();
         // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
        // message.setFrom(apiSender);
@@ -69,9 +75,14 @@ public class SendSMSAuthController {
 //        System.out.println(smsResponse);
         
 	    
-	    //회원정보 restAPI서버 객체에 저장
-	    result = sendSMSAuthService.restApiCall(map);
-		System.out.println("result : " + result.get(numStr));
+	    if(!numStr.equals("") || !numStr.equals(null)){
+	    	result.put("msg", "인증 문자 전송 되었습니다.");
+	    	result.put("code", "success");
+	    }else {
+	    	result.put("msg", "인증 문자 전송 실패 하였습니다.");
+	    	result.put("code", "fail");
+	    	
+	    }
 		return result;		 
 	}
 }
