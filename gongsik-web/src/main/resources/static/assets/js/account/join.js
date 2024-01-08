@@ -5,7 +5,6 @@ var _join = function() {
 	
 	$('#countryPhNo').select2();
 	
-	var restServer = $("#restServer").val();
     //Eamil select 박스
 	$('#emailDomainSelect').change(function() {
 		var selectedDomain = $(this).val();
@@ -34,7 +33,7 @@ var _join = function() {
 	_birthFormat();
 	
 	//국제 번호 조회
-	_countryPhList(restServer);
+	_countryPhList();
 	
 	//휴대폰 검증및 포맷 변환
 	_phoneChk();
@@ -42,7 +41,7 @@ var _join = function() {
 	//인증번호 요청
 	$('#authReq').on('click',function(event){
 		event.preventDefault();
-		_authNumReq(restServer);
+		_authNumReq();
 	});
 	
 	//회원가입 버튼
@@ -99,12 +98,12 @@ var _pwdChk = function() {
 		var password = $('#password').val();
 
 		if (typeof password !== "undefined" && password !== null && password !== "") { //비밀번호 입력
-			passwordValue = Number(password.replace(/,/gi, ''));
+			passwordValue = password.replace(/[^\x21-\x7E0-9]/g, '');
 		}
 
 		var passwordConfirm = $('#passwordConfirm').val();
 		if (typeof passwordConfirm !== "undefined" && passwordConfirm !== null && passwordConfirm !== "") { //비밀번호 확인 입력
-			passwordConfirmValue = Number(passwordConfirm.replace(/,/gi, ''));
+			passwordConfirmValue = passwordConfirm.replace(/[^\x21-\x7E0-9]/g, '');
 		}
 
 		// 비밀번호와 비밀번호 확인 값이 정의되어 있는지 확인 후 비교
@@ -180,6 +179,7 @@ var _phoneChk = function(){
 
 //국제 번호 조회
 var _countryPhList = function(){
+	
 	$.ajax({
 		url: "/api/account/join/countryPhList",
 		type: 'GET',
@@ -207,6 +207,7 @@ var _countryPhList = function(){
 //인증번호 요청
 var _authNumReq = function(){
 	var joinData = $('#joinForm').serializeObject();
+	console.log(joinData);
 	var phoneNumber = joinData.phoneNumber;
 	var countryPhNo = joinData.countryPhNo;
 	if(countryPhNo === '' || countryPhNo === 'undefined'){
@@ -244,10 +245,11 @@ var _authNumReq = function(){
 
 //인증번호 요청
 var _joinBtn = function(){
-	var joinData = $('#joinForm').serializeObject();
 	
+	var joinData = $('#joinForm').serializeObject();
+	console.log(joinData);
 	$.ajax({
-		url : "/api/account/join",
+		url : "/api/account/join/signUp",
 	    type: 'POST',
         data: JSON.stringify(joinData), // form 데이터를 JSON 문자열로 변환하여 전송
         contentType: 'application/json',
@@ -258,7 +260,12 @@ var _joinBtn = function(){
 		}else{
 			alert(data.msg);
 		}
-	})
+	}).fail(function(jqXHR, textStatus, errorThrown) {
+        console.error("AJAX request failed: " + textStatus +  " " +errorThrown + " " +jqXHR);
+        console.log(jqXHR.status);
+        console.log(jqXHR.responseText);
+        alert("오류입니다.")
+    });
 }
 
 

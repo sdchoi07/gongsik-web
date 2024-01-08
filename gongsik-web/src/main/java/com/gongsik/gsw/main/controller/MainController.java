@@ -12,12 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class MainController implements ErrorController{
 		
-		@Value("${restServer}")
-		private String restServer ;
-		
 	    @GetMapping("/")
-	    public String sayHello(Model model) {
-	    	model.addAttribute("restServer", restServer);
+	    public String sayHello() {
 	        return "main";
 	    }
 	    

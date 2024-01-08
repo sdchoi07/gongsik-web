@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/account")
 public class AccountController {
 	
-	@Value("${restServer}")
-	private String restServer;
 	
 	@GetMapping("/login")
 	public String login() {

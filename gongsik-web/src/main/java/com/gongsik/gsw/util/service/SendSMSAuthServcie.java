@@ -55,7 +55,6 @@ public class SendSMSAuthServcie {
 						Object value = restResponse.getValue();
 						resultMap.put(jsonKey, value);
 					}
-					System.out.println("resultMap : " + resultMap);
 					//code 값이 fail일 경우 업무자에게 메일 전송
 					if(resultMap.get("code").equals("fail")) {
 						sendFailAuthSave(resultMap);
@@ -64,7 +63,6 @@ public class SendSMSAuthServcie {
 					e.printStackTrace();
 				}
 			});
-			System.out.println("resultMap : " + resultMap);
 		return resultMap;
 	}
 	

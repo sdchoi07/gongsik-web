@@ -13,4 +13,8 @@ logging:
      com:
      gongsik:
      gsw: DEBUG
+jasypt:
+ encryptor:
+   key: ${jasypt-key}
+   password: ${jasypt-password}
 

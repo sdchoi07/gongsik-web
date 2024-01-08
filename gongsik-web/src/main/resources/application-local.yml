@@ -1,11 +1,11 @@
 #server: #서버포트설정
 #     port: 8080
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/gsw?serverTimezone=Asia/Seoul
-    username: root
-    password: gongsik1204 
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/gsw?serverTimezone=Asia/Seoul
+#    username: ${DB_USERANME}
+#    password: ${DB_PASSWORD} 
     
   data:
    redis:
@@ -15,8 +15,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: djop1212@gmail.com
-    password: upzhwbhizwgvpohv
+    username: ENC(Nkv5QFueSxMcZsAeaUAxXKneME/UWkmdFOzyVzfHrF+Z9w0Fb/YbJA==)
+    password: ENC(Eda09Vv5i+4tUhjTB6bwracKFXfzJBxymq7r5QIc+/1jIhdQ59i5VA==)
     properties:
       mail:
         smtp:
@@ -24,10 +24,9 @@ spring:
           starttls:
             enable: true
 
-restServer : http://localhost:9090	
 #sms 문자인증
 coolsms:
  api:
-  key : NCSTLEJAYL0JPUHM
-  secret : ZD4B8CRRXYL5MO9NKY8YMB8LJZ1YHJJM
-  sender : 01094036242		
+  key : ENC(r9lTtdcM3yBke2cxM6NbQHJFKlxxOx8HDHZ86OHPlHOIkyMqNx+P4w==)
+  secret : ENC(ERpQ8ZYgscsUJnAtvsGJpcnisdSg4g3b7lT/cCbSqBY95ryLoglA4G+Hx2wx57nNmDbWyT/BLfU=)
+  sender : ENC(ARsSFNmLSjsYdLisd16y6uUAnvEm1z9do/1j+jl6iGI=)		
