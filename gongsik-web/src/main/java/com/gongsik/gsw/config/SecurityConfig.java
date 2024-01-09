@@ -32,7 +32,6 @@ public class SecurityConfig {
 		)
 		.authorizeHttpRequests((authorizeRequests) ->
 				authorizeRequests
-				.requestMatchers("/api/**").permitAll()
 						.requestMatchers("/user/**").authenticated()
 						.requestMatchers("/admin/**", "/api/v1/admins/**").hasRole("ADMIN")
 						.requestMatchers("/posts/**", "/api/v1/posts/**").hasRole("USER")
@@ -40,7 +39,7 @@ public class SecurityConfig {
 		)
 		.formLogin((formLogin) ->
 				formLogin
-						.loginPage("/login") 
+						.loginPage("/account/login") 
 		)
 		.logout((logoutConfig) ->
 				logoutConfig.logoutSuccessUrl("/") 

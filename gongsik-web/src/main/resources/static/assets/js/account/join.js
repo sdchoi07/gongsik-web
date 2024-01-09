@@ -14,8 +14,12 @@ var _join = function() {
 		} else {
 			$('#domainTxt').css('display', 'inline-block').val(selectedDomain);
 			$('#domainTxt').prop('readonly', true);
+			$('#domainTxt').removeClass('onError');
 		}
 	});
+	
+	//아이디 확인
+	_emailChk();
 	
 	//아이디 중복체크
 	$('#emailChkBtn').on('click', function(event) {
@@ -46,11 +50,31 @@ var _join = function() {
 	
 	//회원가입 버튼
 	$('#joinBtn').on('click', function(event) {
-		 event.preventDefault();
-		_joinBtn();
-	})
-}
+	    event.preventDefault();
+	  
+	   _joinBtn();
+		
+});
 
+
+}
+var _emailChk = function(){
+	$('#usrEmail, #domainTxt' ).on('change', function() {
+	//중복체크 다시
+	$("#doubleChk").val('N');
+    // 이메일 입력 값
+    var usrEmail = $(this).val();
+    if(usrEmail === undefined || usrEmail === null || usrEmail === ''){
+		
+	}else{
+		$('#usrEmail').removeClass('onError');
+		$('#domainTxt').removeClass('onError');
+	}
+	
+    // 여기서부터는 기존의 중복 체크 코드를 넣으면 됩니다.
+    // ... (Ajax를 통한 중복 체크 요청 등)
+});
+}
 //이메일 중복 확인 체크
 var _emailChkBtn = function() {
     //입력한 이메일 값
@@ -72,8 +96,8 @@ var _emailChkBtn = function() {
 				type: 'GET',
 			    contentType: 'application/json',
 			}).done(function(data) {
-					$('#doubleChk').text("")
 				if(data.code === 'success' ){
+					$("#doubleChk").val('Y');
 					alert(data.msg);
 				}else{
 					alert(data.msg);
@@ -97,6 +121,13 @@ var _pwdChk = function() {
 	$('#password , #passwordConfirm').change(function() {
 		var password = $('#password').val();
 
+		if(password.length < 8){
+			var insertPwdHtml = '<div class="error_text item_style" id="pswd1Msg">! 비밀번호 8자 이상 16 자리 이하로 입력해주세요.</div>';
+				$('#password').addClass('onError');
+				$('#passwordConfirm').addClass('onError').after(insertPwdHtml);
+				return;
+		}
+		
 		if (typeof password !== "undefined" && password !== null && password !== "") { //비밀번호 입력
 			passwordValue = password.replace(/[^\x21-\x7E0-9]/g, '');
 		}
@@ -129,6 +160,7 @@ var _sexChkBox = function(){
   $('input[type="checkbox"][name="gender"]').click(function(){
 	  if($(this).prop('checked')){
 	     $('input[type="checkbox"][name="gender"]').prop('checked',false);
+	      $('input[type="checkbox"][name="gender"]').removeClass('onError');
 	     $(this).prop('checked',true);
 	    }
 	   });
@@ -157,6 +189,9 @@ var _birthFormat = function(){
                         $(this).val(formattedDate);
                         $('#birthDate').removeClass('onError')
                     }
+                    if(formattedDate !== undefined && formattedDate !== null && formattedDate !== ''){
+						$('#birthDate').removeClass('onError')
+					}
                 } 
         });
 }
@@ -245,9 +280,19 @@ var _authNumReq = function(){
 
 //인증번호 요청
 var _joinBtn = function(){
-	
+	var chkObj = {chk :true};
+	_beforeChk(chkObj);
+	console.log(chkObj.chk)
+	if(!chkObj.chk){
+		console.log(chk)
+		return;
+	}
 	var joinData = $('#joinForm').serializeObject();
-	console.log(joinData);
+	var usrId = joinData.usrEmail + "@" +joinData.domainTxt;
+	console.log(joinData.birthDate);
+	var birthDate = joinData.birthDate.replaceAll(".","");
+	joinData.usrId = usrId;
+	joinData.birthDate = birthDate;
 	$.ajax({
 		url : "/api/account/join/signUp",
 	    type: 'POST',
@@ -256,20 +301,91 @@ var _joinBtn = function(){
 	}).done(function(data){
 		console.log(data.msg + " " + data.code);
 		if(data.code === 'success'){
-			alert(data.msg);
+			if(confirm(data.msg)){
+				window.location.href = '/account/login';
+			}
 		}else{
 			alert(data.msg);
 		}
-	}).fail(function(jqXHR, textStatus, errorThrown) {
-        console.error("AJAX request failed: " + textStatus +  " " +errorThrown + " " +jqXHR);
-        console.log(jqXHR.status);
-        console.log(jqXHR.responseText);
-        alert("오류입니다.")
+	}).fail(function(xhr, textStatus, errorThrowna) {
+       if (xhr.status === 400) {
+            // HTTP 상태 코드가 400인 경우 처리
+            var errorMessage = xhr.responseJSON.msg; // 혹은 다른 방식으로 오류 메시지 추출
+            alert(errorMessage);
+            // 혹은 원하는 다른 오류 처리
+        } else {
+            // 다른 HTTP 상태 코드에 대한 처리
+        }
     });
 }
 
+var _beforeChk = function(chkObj){
+	 var maleCheckbox = $("#genderM");
+	    var femaleCheckbox = $("#genderF");
+	
+	    // 성별 체크박스 검증
+	    var isMaleChecked = maleCheckbox.is(':checked');
+	    var isFemaleChecked = femaleCheckbox.is(':checked');
+	
+	    if (!isMaleChecked && !isFemaleChecked) {
+	        maleCheckbox.addClass('onError');
+	        femaleCheckbox.addClass('onError');
+	    } else {
+	        maleCheckbox.removeClass('onError');
+	        femaleCheckbox.removeClass('onError');
+	    }
+	
+	    // 나머지 필드들 검증
+	    var inputs = $("#joinForm").find('input[type="text"], input[type="password"]');
+	    inputs.each(function(index, element) {
+	        var inputValue = $(element).val().trim();
+	        if (inputValue === '') {
+	            $(element).addClass('onError');
+	        }
+	    });
+	     //재 체줄시 에러 제거
+	     _etcChk();
 
+	     var email = $("#usrEmail").val();
+	     var domain = $("#domainTxt").val();
+	     //제출시 중복체크 유무 체크
+	     if(email !== undefined && email !== null && email !== ''
+	        && domain !== undefined && domain !== null && domain !== ''){
+			     var doubleChk = $("#doubleChk").val();
+				    console.log(doubleChk);
+				    if(doubleChk === 'N'){
+						alert("중복체크를 다시 해주세요.");
+						chkObj.chk = false;
+        				return chkObj;
+					}
+		}
+		
+		var inputsWithError = $("#joinForm .onError");
 
+    // 에러가 있는지 확인
+    if (inputsWithError.length > 0) {
+        chkObj.chk = false;
+        return chkObj;
+        }
+		
+}
+
+var _etcChk = function(){
+	$('#usrNm, #birthDate, #authNo').on('change', function() {
+		 var usrNm = $("#usrNm").val();
+	     if(usrNm !== undefined && usrNm !== null && usrNm !== ''){
+			 $("#usrNm").removeClass('onError');
+		 }
+		 var birthDate = $("#birthDate").val();
+		 if(birthDate.length !== 10){
+			 $("#birthDate").removeClass('onError');
+		 }
+		var authNo = $("#authNo").val();
+		if(authNo !== undefined && authNo !== null && authNo !== ''){
+			$("#authNo").removeClass('onError');
+		}
+		});
+}
 
 $(document).ready(function() {
 	_join();

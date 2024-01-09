@@ -40,6 +40,7 @@
 						</div>
 						<!-- 아아디 -->
 						<div class="form-group" id="idForm">
+							<input type="hidden" value="N" id="doubleChk" name="dobuleChk">
 						    <label class="control-label" for="emailSelect">이메일</label>
 						    <div class="d-flex align-items-center">
 						        <input id="usrEmail" name="usrEmail" type="text" class="form-control" placeholder="아이디 입력" autocomplete="off"
@@ -86,12 +87,12 @@
 						<div class="d-flex align-items-center mb-4">
 							<span style="margin-right: 10px;">성별</span>
 							<div class="form-check" style="margin-right: 10px;">
-								<input class="form-check-input" id="gender" name ="gender" type="checkbox" th:value="M"  />
-								<label class="form-check-label" for="form1Example1">남 </label>
+								<input class="form-check-input" id="genderM" name ="gender" type="checkbox" th:value="M"   />
+								<label class="form-check-label" for="invalidCheck">남 </label>
 							</div>
 							<div class="form-check">
-								<input class="form-check-input" id="gender" name="gender" type="checkbox" th:value="F" />
-								<label class="form-check-label" for="form1Example2">여</label>
+								<input class="form-check-input" id="genderF" name="gender" type="checkbox" th:value="F"   />
+								<label class="form-check-label" for="invalidCheck">여</label>
 							</div>
 						</div>
 						<!-- 생년월일 -->
@@ -116,14 +117,14 @@
 						            </button>
 						        </div>
 							</div>
-							<input id="signupName" type="text" maxlength="4" class="form-control" placeholder="인증번호 입력" autocomplete="off">
-							<div class="invalid-feedback" data-sb-feedback="email:required">인증번호 입력 해주세요</div>
+							<input id="authNo" name= "authNo" type="text" maxlength="4" class="form-control" placeholder="인증번호 입력" autocomplete="off">
+							<div class="invalid-feedback" data-sb-feedback="authNo:required">인증번호 입력 해주세요</div>
 						</div>
 
 
 
 						<!-- Submit button -->
-						<button type="button" class="btn btn-primary btn-lg btn-block border-0 fw-bold" id="joinBtn"
+						<button type="submit" class="btn btn-primary btn-lg btn-block border-0 fw-bold" id="joinBtn"
 							style="background-color: #000000; font-family: 'Noto Sans KR', sans-serif;">회원가입</button>
 					</form>
 

@@ -1,7 +1,5 @@
 package com.gongsik.gsw;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
@@ -10,19 +8,30 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import reactor.core.publisher.Flux;
 @AutoConfigureMockMvc
 @SpringBootTest
 class GongsikWebApplicationTests {
 
+		@Autowired
+	    private MockMvc mockMvc;
 		
-	 @Autowired
+		@Autowired
 	    private WebTestClient webTestClient;
+	 	
+	 	@Test
+		void contextLoads() throws Exception {
+				//testYourWebClientPostRequest();
 
-	    @Test
-	    public void testYourWebClientPostRequest() {
+	 			joinPost();
+			
+		
+		
+		}
+	    void testYourWebClientPostRequest() {
 	        // 여기에 WebClient로 요청하는 코드가 있어야 합니다.
 	        // 예를 들어, webClient.post() ... 를 호출하여 서버에 요청하는 코드가 있어야 합니다.
 	    	WebClient.Builder webClientBuilder = WebClient.builder().baseUrl("http://localhost:9090");
@@ -34,4 +43,12 @@ class GongsikWebApplicationTests {
 	                .retrieve()
 	                .bodyToFlux(Map.class);
 	    }
+	    
+	    
+	    void joinPost() throws Exception {
+	    	 mockMvc.perform(MockMvcRequestBuilders.post("/api/account/join/singUp")
+	                 .contentType(MediaType.APPLICATION_JSON))
+	                 .andExpect(MockMvcResultMatchers.status().isOk())
+	                 .andExpect(MockMvcResultMatchers.content().string("This is the response data"));
+	     }
 	}

@@ -25,9 +25,25 @@ var _login = function(){
     	if (!isValid) {
             return false; // 폼 제출 방지
         }
+		var usrId = $("#email").val(); // 사용자 이메일 또는 아이디 입력란
+		var usrPwd = $("#password").val(); // 비밀번호 입력란
+		
+		var formData = {
+		    usrId: usrId,
+		    usrPwd: usrPwd
+		};
 
-        // 로그인 성공 시 폼 제출
-        $('#loginForm').submit();
+        $.ajax({
+			url: "/api/account/login",
+			type: 'POST',
+			data: JSON.stringify(formData), // form 데이터를 JSON 문자열로 변환하여 전송
+        	contentType: 'application/json',
+		}).done(function(data){
+			if(data.code === 'success'){
+				window.location.href = '/';
+			}
+		})
+			
 	  });
   }
   
