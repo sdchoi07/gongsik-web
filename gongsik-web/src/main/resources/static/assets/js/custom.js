@@ -1,5 +1,5 @@
  $(".nav-item.admin").hide();
-  
+			    
 //헤더 스크롤 고정
 /*var hearFix = function(){
 		$(window).scroll(function() {

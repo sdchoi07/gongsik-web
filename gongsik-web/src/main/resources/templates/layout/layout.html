@@ -18,17 +18,26 @@
 	
 
         /* 미디어 쿼리를 사용하여 화면 크기에 따른 스타일 조정 */
-        @media screen and (min-width: 1900px) {
+        @media screen and (min-width: 1920px) {
             header {
-                width: 1900px;
+                width: 1920px;
             }
         }
 
        
-		
 	</style>
+
 </head>
 <body class="d-flex flex-column h-100">
+	  <script>
+        // 페이지 로드 후 실행될 함수
+        var username = localStorage.getItem('username');
+        console.log("username : " + username)
+        
+        $(document).ready(function () {
+            $('#username-display').text(username + '님');
+        });
+    </script>
 	<main class="flex-shrink-0">
 	    <header class="header-bar" th:replace="~{common/headerbar::headerbar}"></header> <!-- 헤더 네비게이션바 파일에서 채워질 부분 -->
 		    <div layout:fragment="content"></div> <!-- 메인 파일에서 채워질 부분 -->
