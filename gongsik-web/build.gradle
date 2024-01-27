@@ -57,6 +57,9 @@ dependencies {
 	
 	//암호화yml
 	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
+	
+	//oauth
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 }
 
 tasks.named('test') {

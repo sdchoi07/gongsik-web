@@ -1,4 +1,4 @@
-package com.gongsik.gsw.util.controller;
+package com.gongsik.gsw.util.sms.contoller;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gongsik.gsw.config.WebClients;
-import com.gongsik.gsw.util.service.SendSMSAuthServcie;
+import com.gongsik.gsw.util.sms.service.SendSMSAuthServcie;
 
 import jakarta.annotation.PostConstruct;
 import net.nurigo.sdk.NurigoApp;

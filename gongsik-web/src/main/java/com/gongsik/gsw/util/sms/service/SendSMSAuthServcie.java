@@ -1,4 +1,4 @@
-package com.gongsik.gsw.util.service;
+package com.gongsik.gsw.util.sms.service;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;

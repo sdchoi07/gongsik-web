@@ -9,11 +9,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
+import com.gongsik.gsw.util.hadler.CustomSuccessHandler;
+import com.gongsik.gsw.util.oauth.PrincipalOauth2UserService;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 	private final AuthenticationFailureHandler customFailureHandler = null;
 	//해당 메서드의 리턴되는 오브젝트를 ioC로 등록해줌.
+	
+	@Autowired
+	private PrincipalOauth2UserService principalOauth2UserService;
+	
+	@Autowired
+	private CustomSuccessHandler customSuccessHandler;
 	
 	@Bean
 	public BCryptPasswordEncoder encodePwd() {
@@ -42,6 +51,13 @@ public class SecurityConfig {
 						.loginPage("/account/join") 
 						//.usernameParameter("username2")
 						.failureHandler(new CustomAuthFailureHandler())
+		)
+		.oauth2Login((oauth2Configurer ) ->
+						oauth2Configurer 
+							   .loginPage("/account/join")
+							   .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint
+		                                         .userService(principalOauth2UserService))//1.코드받기(인증)2.엑세스토큰(권한) 3.사용자프로필정보 가져와서 가져온 정보로 회원가입 자동 진행
+							   .successHandler(customSuccessHandler)
 		);
 //		.logout((logoutConfig) ->
 //				logoutConfig.logoutSuccessUrl("/") 
