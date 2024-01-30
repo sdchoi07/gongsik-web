@@ -1,6 +1,5 @@
 package com.gongsik.gsw.util.sms.contoller;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -8,20 +7,17 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gongsik.gsw.config.WebClients;
 import com.gongsik.gsw.util.sms.service.SendSMSAuthServcie;
 
 import jakarta.annotation.PostConstruct;
 import net.nurigo.sdk.NurigoApp;
 import net.nurigo.sdk.message.service.DefaultMessageService;
-import reactor.core.publisher.Mono;
 
 @Controller
 @RequestMapping("/util")
@@ -65,7 +61,7 @@ public class SendSMSAuthController {
 
 	    //회원정보 restAPI서버 객체에 저장
 	    result = sendSMSAuthService.restApiCall(map);
-	    
+	    System.out.println(result);
 		//Message message = new Message();
         // 발신번호 및 수신번호는 반드시 01012345678 형태로 입력되어야 합니다.
        // message.setFrom(apiSender);
@@ -84,5 +80,13 @@ public class SendSMSAuthController {
 	    	
 	    }
 		return result;		 
+	}
+	
+	@PostMapping("/pwdSend")
+	@ResponseBody
+	public Map<String,String> pwdSend(Map<String, String> map){
+	    Map<String, String> result
+		= sendSMSAuthService.sendToPwdUrl(map);
+	    return result;
 	}
 }

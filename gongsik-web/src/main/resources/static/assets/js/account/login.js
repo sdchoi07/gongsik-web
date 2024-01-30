@@ -8,8 +8,38 @@ var _login = function(){
 	    event.preventDefault(); // 기본 제출 동작 막기
 		_signUp();
 	  });
+	  
+	 $('#loginkakao').on('click',function(event){
+		 event.preventDefault();
+		 var type = 'kakao';
+		 _loginSNS(type);
+	 });
   }
-
+var _loginSNS = function(type){
+	if(type==='kakao'){
+		var url = '/account/login/kakao';
+	}
+	 $.ajax({
+			url: url,
+			type: 'GET',
+        	contentType: 'application/json'
+		}).done(function(response,status,xhr){
+			console.log(response);
+			location.href = response;
+            
+		}).fail(function(xhr, textStatus, errorThrowna) {
+		            if (xhr.status === 401) {
+					        // 비밀번호가 일치하지 않는 경우
+					        var errorMessage = xhr.responseJSON.message;
+					        alert("로그인 실패 하였습니다.");
+					    } else {
+					        // 다른 오류인 경우
+					        console.error("로그인 오류: " + xhr.status);
+					        alert("로그인에 실패하였습니다.");
+					    }
+		        
+		        })
+}
 var _signUp = function(){
 	 var fields = $('#loginForm').find('input'); // 폼 내 모든 input 요소 가져오기
 	  var isValid = true;
@@ -42,7 +72,6 @@ var _signUp = function(){
 			data: JSON.stringify({usrId : usrId, usrPwd:usrPwd}), // form 데이터를 JSON 문자열로 변환하여 전송
         	contentType: 'application/json'
 		}).done(function(response,status,xhr){
-			document.cookie = "usrNm=" + response+ "; path=/";
 			console.log(response);
 			var jwtToken = xhr.getResponseHeader('Authorization');
 			var refreshToken = xhr.getResponseHeader('refreshToken');
@@ -77,6 +106,8 @@ var usrData = function(response, jwtToken, refreshToken){
             'Authorization': 'Bearer ' + jwtToken,
         },
 		}).done(function(data){
+			console.log(data.usrNm);
+			localStorage.setItem("usrnm",data.usrNm);
 			window.location.href = '/';
 			
 		}).fail(function(xhr, textStatus, errorThrowna) {

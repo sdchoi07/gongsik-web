@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gongsik.gsw.account.repository.AccountRepository;
 import com.gongsik.gsw.util.oauth.provider.GoogleUserInfo;
-import com.gongsik.gsw.util.oauth.provider.KakaoUserInfo;
 import com.gongsik.gsw.util.oauth.provider.NaverUserInfo;
 import com.gongsik.gsw.util.oauth.provider.OAuth2UserInfo;
 
@@ -49,10 +48,6 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService{
 			System.out.println(oauth2User.getAttributes());
 			oAuth2UserInfo = new GoogleUserInfo(oauth2User.getAttributes());
 			logTp = "G";
-		}else if(userRequest.getClientRegistration().getRegistrationId().equals("kakao")) {
-			System.out.println(oauth2User.getAttributes());
-			oAuth2UserInfo = new KakaoUserInfo(oauth2User.getAttributes());
-			logTp = "K";
 		}
 		System.out.println("after : " + oAuth2UserInfo.getProvider());
 		System.out.println(oAuth2UserInfo.getProvider() + " " + oAuth2UserInfo.getProviderId());

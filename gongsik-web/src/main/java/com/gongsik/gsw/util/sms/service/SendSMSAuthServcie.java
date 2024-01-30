@@ -3,16 +3,23 @@ package com.gongsik.gsw.util.sms.service;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gongsik.gsw.config.WebClients;
+import com.gongsik.gsw.util.hadler.EmailSend;
 
 import reactor.core.publisher.Mono;
 
@@ -20,7 +27,10 @@ import reactor.core.publisher.Mono;
 public class SendSMSAuthServcie {
 	
 	@Autowired
-    private JavaMailSender emailSender;
+	private EmailSend emailsend;
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	public Map<String, Object> restApiCall(Map<String, String> map) {
 		Map<String, Object> restDto = new HashMap<String, Object>();
@@ -54,10 +64,12 @@ public class SendSMSAuthServcie {
 						String jsonKey = restResponse.getKey();
 						Object value = restResponse.getValue();
 						resultMap.put(jsonKey, value);
+						resultMap.put("subject", "오류알림");
 					}
 					//code 값이 fail일 경우 업무자에게 메일 전송
 					if(resultMap.get("code").equals("fail")) {
-						sendFailAuthSave(resultMap);
+					
+						emailsend.sendFailAuthSave(resultMap);
 					}
 				} catch (JsonProcessingException e) {
 					e.printStackTrace();
@@ -65,14 +77,57 @@ public class SendSMSAuthServcie {
 			});
 		return resultMap;
 	}
+
+	public Map<String, String> sendToPwdUrl(Map<String, String> requestDto) {
+		//임시 빌밀번호 생성
+		Random rand  = new Random();
+	    String numStr = "";
+	    for(int i=0; i<2; i++) {
+	       String ran = Integer.toString(rand.nextInt(4));
+	       numStr+=ran;
+	    }
+			    
+	    String tempPwd = bCryptPasswordEncoder.encode(numStr);
+	    System.out.println("resuqetDto : " + requestDto);
+	    requestDto.put("tempPwd", tempPwd);
+	    HttpClient client = HttpClientBuilder.create().build(); // HttpClient 생성
+	    HttpPost postRequest = new HttpPost("http://localhost/api/account/changePwd"); 
+	    String jsonBody;
+		try {
+			jsonBody = new ObjectMapper().writeValueAsString(requestDto);
+			// POST 메시지의 Body 설정
+			StringEntity input = new StringEntity(jsonBody);
+			input.setContentType("application/json");
+			postRequest.setEntity(input);
+			HttpResponse response = client.execute(postRequest);
+			int statusCode = response.getStatusLine().getStatusCode();
+
+           // 응답 본문 확인
+           String responseBody = EntityUtils.toString(response.getEntity());
+           System.out.println(responseBody);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		StringBuffer sb = new StringBuffer();
+		String text =  "임시 비밀 번호: " + tempPwd + " 입니다."+"\n" 
+				     + "변경을 원하시면, 해당 링크 클릭하여 비밀번호 변경 해주세요.";
+		String url = "http://localhost/account/changePwd";
+		sb.append(text).append("\n").append(url);
+		resultMap.put("msg", sb.toString());
+		resultMap.put("subject", "비밀번호 변경");
+		emailsend.sendFailAuthSave(resultMap);
+		
+		Map<String, String> map = new HashMap<>();
+		map.put("code", "success");
+		map.put("msg", "해당 아이디의 이메일 확인해주세요.");
+		return map;
+		
+				
+	}
 	
-	public void sendFailAuthSave(Map<String, Object> map) {
-		SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo("djop1212@gmail.com");
-        message.setSubject("오류 알림");
-        message.setText(map.get("msg").toString());
-        emailSender.send(message);
-    }
+
 		
 	
 	
