@@ -28,6 +28,7 @@ var _findId = function() {
 	//휴대폰 검증및 포맷 변환
 	_phoneChk();
 	
+	_changeChk();
 	//인증번호 요청
 	$('#authReq').on('click',function(event){
 		event.preventDefault();
@@ -73,7 +74,30 @@ var _chkUser = function(){
 
 //비밀번호 찾기
 var _findpwBtn = function(){
-	
+	// 나머지 필드들 검증
+	    var inputs = $("#joinForm").find('input[type="text"], input[type="password"]');
+	    inputs.each(function(index, element) {
+	        var inputValue = $(element).val().trim();
+	        if (inputValue === '') {
+	            $(element).addClass('onError');
+	        }
+	    });
+	    
+	    $('#joinForm').on('change', function() {
+		 var tempPwd = $("#joinForm").val();
+	     if(tempPwd !== undefined && tempPwd !== null && tempPwd !== ''){
+			 $("#joinForm").removeClass('onError');
+		 }
+		});
+		
+	    var inputsWithError = $("#joinForm .onError");
+
+    // 에러가 있는지 확인
+    if (inputsWithError.length > 0) {
+        chkObj.chk = false;
+        return chkObj;
+        }
+        
 	var findPwdData = $('#joinForm').serializeObject();
 	findPwdData.usrId = findPwdData.usrEmail + "@" +findPwdData.domainTxt;
 	findPwdData.usrPhNo= findPwdData.phoneNumber;
@@ -87,7 +111,8 @@ var _findpwBtn = function(){
 		console.log(data.object);
 		if(data.code === 'success'){
 			//이메일 전송 
-			_sendEmail(data.object);
+			var result = data.object;
+			_sendEmail(result);
 		}else{
 			alert(data.msg);
 		}
@@ -106,16 +131,21 @@ var _findpwBtn = function(){
 
 //이메일 전송
 var _sendEmail = function(joinDto){
-	
+	var resultData = {};
+	resultData.usrId = joinDto.usrId;
+	resultData.usrNm = joinDto.usrNm;
+	resultData.logTp = joinDto.logTp;
 	$.ajax({
 		url : "/util/pwdSend",
 	    type: 'POST',
-	    data: JSON.stringify(joinDto),
-	    contentType:'applcation/json',
+	    data: JSON.stringify(resultData),
+	    contentType:'application/json',
 	}).done(function(data){
-		console.log("sendMaile : " + data)
-		console.log(data.msg + " " + data.code);
 		if(data.code === 'success'){
+			console.log(data.result);
+			localStorage.setItem("usrId", data.result.usrId);
+			localStorage.setItem("usrNm", data.result.usrNm);
+			localStorage.setItem("logTp", data.result.logTp);
 			alert("해당 아이디 이메일의 이메일을 확인 해주세요.")
 		}else{
 			alert(data.msg);

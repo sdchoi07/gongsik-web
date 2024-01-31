@@ -3,9 +3,26 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
 
 <head>
-	<script th:src="@{/assets/js/account/join.js}"></script>
+	<script th:src="@{/assets/js/account/changePwd.js}"></script>
 	<meta charset="EUC-KR">
 	<title>비밀번호 변경</title>
+	<style>
+
+	.error_text.item_style {
+    position: relative;
+    letter-spacing: -.4px;
+	}
+	.error_text {
+    margin: 10px 4px 0;
+    font-size: 13px;
+    line-height: 18px;
+    color: #ff3f3f;
+    }
+    input::placeholder {
+        font-size: 14px; /* 원하는 크기로 조정 */
+    }
+  
+</style>
 </head>
 <body>
 <div layout:fragment="content">
@@ -13,11 +30,17 @@
 			<div class="row d-flex align-items-center justify-content-center h-100">
 				<div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1 " style="right:60px">
 					<!--login form-->
-					<form id="joinForm" autocomplete="off">
+					<form id="changePwdForm" autocomplete="off">
 						<div class="d-flex justify-content-between align-items-center mb-4">
 							<!-- 회원가입 -->
 							<label class="form-label fw-bold" for="form1Example3"
 								style="font-size: 25px; font-family: 'Noto Sans KR', sans-serif;">비밀번호 변경 </label>
+						</div>
+						<!-- 임시비밀번호 -->
+						<div class="form-group">
+							<label class="control-label">임시 비밀번호</label>
+							<input id="tempPwd" name="tempPwd" type="text" class="form-control" placeholder="비밀번호 입력"  autocomplete="new-password">
+							<div class="invalid-feedback" data-sb-feedback="password:required">임시 비밀번호를 입력해주세요.</div>
 						</div>
 						<!-- 비말번호 -->
 						<div class="form-group">
@@ -27,7 +50,7 @@
 						</div>
 						<!-- 비밀번호 확인 -->
 						<div class="form-group">
-							<label class="control-label" >비말번호 확인</label>
+							<label class="control-label" >비밀번호 확인</label>
 							<input id="passwordConfirm" type="password" maxlength="16" minlength="8" class="form-control"placeholder="비밀번호 확인 입력 " autocomplete="new-password">
 							<div class="invalid-feedback" data-sb-feedback="passwordConfirm:required">비밀번호 확인을 입력해주세요.</div>
 						</div>
@@ -36,7 +59,7 @@
 
 
 						<!-- Submit button -->
-						<button type="submit" class="btn btn-primary btn-lg btn-block border-0 fw-bold" id="joinBtn"
+						<button type="submit" class="btn btn-primary btn-lg btn-block border-0 fw-bold" id="changPwdBtn"
 							style="background-color: #000000; font-family: 'Noto Sans KR', sans-serif;">비밀번호 변경</button>
 					</form>
 

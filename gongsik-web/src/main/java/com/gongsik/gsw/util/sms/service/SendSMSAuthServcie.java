@@ -78,7 +78,9 @@ public class SendSMSAuthServcie {
 		return resultMap;
 	}
 
-	public Map<String, String> sendToPwdUrl(Map<String, String> requestDto) {
+	public Map<String, Object> sendToPwdUrl(Map<String, String> requestDto) {
+		Map<String, Object> map = new HashMap<>();
+		
 		//임시 빌밀번호 생성
 		Random rand  = new Random();
 	    String numStr = "";
@@ -88,10 +90,11 @@ public class SendSMSAuthServcie {
 	    }
 			    
 	    String tempPwd = bCryptPasswordEncoder.encode(numStr);
+	    tempPwd = tempPwd.substring(0,8);
 	    System.out.println("resuqetDto : " + requestDto);
-	    requestDto.put("tempPwd", tempPwd);
+	    requestDto.put("usrPwd", tempPwd);
 	    HttpClient client = HttpClientBuilder.create().build(); // HttpClient 생성
-	    HttpPost postRequest = new HttpPost("http://localhost/api/account/changePwd"); 
+	    HttpPost postRequest = new HttpPost("http://localhost/api/account/tempPwd"); 
 	    String jsonBody;
 		try {
 			jsonBody = new ObjectMapper().writeValueAsString(requestDto);
@@ -101,27 +104,42 @@ public class SendSMSAuthServcie {
 			postRequest.setEntity(input);
 			HttpResponse response = client.execute(postRequest);
 			int statusCode = response.getStatusLine().getStatusCode();
-
-           // 응답 본문 확인
-           String responseBody = EntityUtils.toString(response.getEntity());
-           System.out.println(responseBody);
+			if(statusCode == 200) {
+	           // 응답 본문 확인
+	           String responseBody = EntityUtils.toString(response.getEntity());
+	           System.out.println("responseBody : " +statusCode);
+	
+	           if(responseBody.contains("success")) {
+		           
+		           Map<String, Object> resultMap = new HashMap<String, Object>();
+			   		StringBuffer sb = new StringBuffer();
+			   		String text =  "임시 비밀 번호: " + tempPwd + " 입니다."+"\n" 
+			   				     + "변경을 원하시면, 해당 링크 클릭하여 비밀번호 변경 해주세요.";
+			   		String url = "http://localhost/account/changePwd";
+			   		sb.append(text).append("\n").append(url);
+			   		resultMap.put("msg", sb.toString());
+			   		resultMap.put("subject", "비밀번호 변경");
+			   		emailsend.sendFailAuthSave(resultMap);
+			   		
+	           }else {
+        	    map.put("code", "fail");
+	   	   		map.put("msg", "다시 한번 확인해 주세요.");
+	        	   
+	           }
+			}else {
+				map.put("code", "fail");
+		   		map.put("msg", "다시 한번 확인해 주세요.");
+			}
+	   		map.put("code", "success");
+	   		map.put("msg", "해당 아이디의 이메일 확인해주세요.");
+	   		map.put("result", requestDto);
+	   		return map;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		StringBuffer sb = new StringBuffer();
-		String text =  "임시 비밀 번호: " + tempPwd + " 입니다."+"\n" 
-				     + "변경을 원하시면, 해당 링크 클릭하여 비밀번호 변경 해주세요.";
-		String url = "http://localhost/account/changePwd";
-		sb.append(text).append("\n").append(url);
-		resultMap.put("msg", sb.toString());
-		resultMap.put("subject", "비밀번호 변경");
-		emailsend.sendFailAuthSave(resultMap);
-		
-		Map<String, String> map = new HashMap<>();
 		map.put("code", "success");
-		map.put("msg", "해당 아이디의 이메일 확인해주세요.");
+   		map.put("msg", "해당 아이디의 이메일 확인해주세요.");
 		return map;
 		
 				

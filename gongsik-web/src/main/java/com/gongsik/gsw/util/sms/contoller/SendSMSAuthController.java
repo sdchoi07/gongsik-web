@@ -7,7 +7,6 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -84,8 +83,8 @@ public class SendSMSAuthController {
 	
 	@PostMapping("/pwdSend")
 	@ResponseBody
-	public Map<String,String> pwdSend(Map<String, String> map){
-	    Map<String, String> result
+	public Map<String,Object> pwdSend(@RequestBody Map<String, String> map){
+	    Map<String, Object> result
 		= sendSMSAuthService.sendToPwdUrl(map);
 	    return result;
 	}

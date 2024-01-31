@@ -68,6 +68,9 @@ var _pwdChk = function() {
 	$('#password , #passwordConfirm').change(function() {
 		var password = $('#password').val();
 
+		// 비밀번호와 비밀번호 확인 값이 정의되어 있는지 확인 후 비교
+		// 이전 메시지 삭제
+		$('#pswd1Msg').remove();
 		if(password.length < 8){
 			var insertPwdHtml = '<div class="error_text item_style" id="pswd1Msg">! 비밀번호 8자 이상 16 자리 이하로 입력해주세요.</div>';
 				$('#password').addClass('onError');
@@ -84,9 +87,6 @@ var _pwdChk = function() {
 			passwordConfirmValue = passwordConfirm.replace(/[^\x21-\x7E0-9]/g, '');
 		}
 
-		// 비밀번호와 비밀번호 확인 값이 정의되어 있는지 확인 후 비교
-		// 이전 메시지 삭제
-		$('#pswd1Msg').remove();
 
 		if (passwordValue !== undefined && passwordConfirmValue !== undefined) {
 			if (passwordValue === passwordConfirmValue) {
@@ -202,7 +202,7 @@ var _beforeChk = function(chkObj){
 	    }
 	
 	    // 나머지 필드들 검증
-	    var inputs = $("#joinForm").find('input[type="text"], input[type="password"]');
+	    var inputs = $("#changePwdForm").find('input[type="text"], input[type="password"]');
 	    inputs.each(function(index, element) {
 	        var inputValue = $(element).val().trim();
 	        if (inputValue === '') {

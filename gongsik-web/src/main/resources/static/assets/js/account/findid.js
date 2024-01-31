@@ -28,6 +28,7 @@ var _findId = function() {
 	//휴대폰 검증및 포맷 변환
 	_phoneChk();
 	
+	_changeChk();
 	//인증번호 요청
 	$('#authReq').on('click',function(event){
 		event.preventDefault();
@@ -45,7 +46,31 @@ var _findId = function() {
 
 //인증번호 요청
 var _findIdBtn = function(){
+	// 나머지 필드들 검증
+    var inputs = $("#joinForm").find('input[type="text"], input[type="password"]');
+    inputs.each(function(index, element) {
+        var inputValue = $(element).val().trim();
+        if (inputValue === '') {
+            $(element).addClass('onError');
+        }
+    });
+    
+    $('#joinForm').on('change', function() {
+	 var tempPwd = $("#joinForm").val();
+     if(tempPwd !== undefined && tempPwd !== null && tempPwd !== ''){
+		 $("#joinForm").removeClass('onError');
+	 }
+	});
 	
+    var inputsWithError = $("#joinForm .onError");
+
+    // 에러가 있는지 확인
+    if (inputsWithError.length > 0) {
+        chkObj.chk = false;
+        return chkObj;
+        }
+        
+        
 	var findIdData = $('#joinForm').serializeObject();
 	var phoneNumber = findIdData.phoneNumber;
 	var authNo = findIdData.authNo;

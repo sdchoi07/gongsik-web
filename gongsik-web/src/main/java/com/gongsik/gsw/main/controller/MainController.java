@@ -22,14 +22,9 @@ public class MainController implements ErrorController{
 	        return "main/error";
 	    }
 	    
-	    @GetMapping("/user")
-	    public @ResponseBody String user() {
-	        return "user";
-	    }
-	    
-	    @GetMapping("/admin")
-	    public @ResponseBody String admin() {
-	    	return "admin";
+	    @GetMapping("/mypage")
+	    public  String mypage() {
+	    	return "mypage/mypage";
 	    }
 	    
 	  

@@ -75,10 +75,8 @@ var _signUp = function(){
 			console.log(response);
 			var jwtToken = xhr.getResponseHeader('Authorization');
 			var refreshToken = xhr.getResponseHeader('refreshToken');
-			console.log("token : " + jwtToken)// 헤더에 있는 토큰을 받아와서
-			console.log("refreshToken: " + refreshToken)
  			localStorage.setItem('accessToken', jwtToken)
- 			localStorage.setItem('username', response);
+ 			//localStorage.setItem('username', response);
             $('#username-display').text('Welcome, ' + response+ '!');
 			
             usrData(response, jwtToken, refreshToken);
@@ -96,7 +94,6 @@ var _signUp = function(){
 		        })
 }
 var usrData = function(response, jwtToken, refreshToken){
-	console.log("data" + jwtToken);
 	$.ajax({
 			url: "/api/account/data",
 			type: 'POST',
@@ -106,8 +103,8 @@ var usrData = function(response, jwtToken, refreshToken){
             'Authorization': 'Bearer ' + jwtToken,
         },
 		}).done(function(data){
-			console.log(data.usrNm);
-			localStorage.setItem("usrnm",data.usrNm);
+			console.log(data.result.usrId);
+			localStorage.setItem("data", data.result);
 			window.location.href = '/';
 			
 		}).fail(function(xhr, textStatus, errorThrowna) {
