@@ -9,26 +9,30 @@
     <th:block th:replace="~{common/config::config}"></th:block> <!-- js 및 css 파일에서 채워질 부분 -->
 	<style>
 		header {
-		    position: sticky;
 		    top: 0;
 		    left: 0;
 		    width: 100%;
-			z-index: 100;
+		    z-index: 100;
+		    transition: height 0.3s; /* 헤더바 크기 변경 시 애니메이션 적용 */
+		}
+		
+		body {
+		    overflow-y: scroll; /* 항상 y 스크롤을 표시하여 레이아웃의 변화를 방지 */
+		}
+		
+		body.no-scroll {
+		    overflow-y: hidden; /* y 스크롤을 숨김 */
+		}
+		
+		header.shrink {
+		    height: 50px; /* 스크롤이 발생했을 때의 헤더바 높이 */
 		}
 	
-
-        /* 미디어 쿼리를 사용하여 화면 크기에 따른 스타일 조정 */
-        @media screen and (min-width: 1920px) {
-            header {
-                width: 1920px;
-            }
-        }
-
        
 	</style>
 
 </head>
-<body class="d-flex flex-column h-100">
+<body class="d-flex flex-column h-200">
 	  <script>
         // 페이지 로드 후 실행될 함수
         var username = localStorage.getItem('username');
