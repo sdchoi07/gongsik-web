@@ -1,95 +1,120 @@
-<!DOCTYPE html>
-<html>
+
+
 <head>
-<meta charset="EUC-KR">
-<title>Insert title here</title>
+	<meta charset="EUC-KR">
+	<script th:src="@{/assets/js/mypage/profile.js}"></script>
+	<style>
+		.form-control {
+			border-top: none;
+			border-right: none;
+			border-left: none;
+			border-radius: 0;
+			/* 선택적으로 테두리 모서리를 둥글게 하지 않으려면 이 줄을 제거하세요. */
+			background-color: white;
+		}
+
+		.plot-img {
+			margin-right: 10px;
+			margin-top: -20px;
+			height: 35px;
+		}
+
+		.form-group {
+			margin-bottom: 50px;
+			/* 원하는 간격으로 조정하세요 */
+		}
+
+		.spanText {
+			margin-bottom: 15px;
+			font-size: 22px;
+			font-family: 'Noto Sans KR', sans-serif;
+		}
+	</style>
 </head>
-<body>
+
 	<th:block th:fragment="mypage">
-<div class="container py-5">
-			<div class="row gx-5 align-items-center justify-content-center">
-				<div class="col-md-8 col-lg-7 col-xl-6">
-					<img th:src="@{/vendor/third/img/login_pic.png}" class="img-fluid w-100" style="margin-right: 70px;" alt="Phone image">
-				</div>
-				<div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1" style="right: 100px;">
-					<!--login form-->
-					<form id="loginForm" style="">	
+		<label class="form-label" style="font-size: 30px; font-family: 'Noto Sans KR', sans-serif;">프로필 수정</label>
+		<div class="container py-5 " style="padding-top: 30px;">
 
-						<div class="d-flex justify-content-between align-items-center mb-4">
-							<!-- 회원가입 -->
-							<label class="form-label fw-bold" for="form1Example3"
-								style="font-size: 25px; font-family: 'Noto Sans KR', sans-serif;">로그인 </label>
-						</div>
-						<!-- Email input -->
-						<div class="form-floating mb-3">
-							<input class="form-control" id="username" type="text" placeholder=""
-								data-sb-validations="required" data-sb-can-submit="no" autocomplete="off" />
-							<label for="username">아이디(이메일)</label>
-							<div class="invalid-feedback" data-sb-feedback="username:required">이메일을 입력해주세요.</div>
-						</div>
-						<!-- Password input -->
-						<div class="form-floating mb-3">
-							<input class="form-control" id="password" type="password" placeholder=""
-								data-sb-validations="required" data-sb-can-submit="no"
-								autocomplete="current-password" />
-							<label for="password">비밀번호</label>
-							<div class="invalid-feedback" data-sb-feedback="password:required">비밀번호를 입력해주세요.</div>
-						</div>
-						<div class="d-flex justify-content-between align-items-center mb-4">
-							<!-- 아이디및 비밀번호 찾기 -->
-							<div class="d-flex">
-								<a class="nav-link" href="/account/join"
-									style="font-family: 'Noto Sans KR', sans-serif; ">회원가입</a>
-							</div>
-							<div class="d-flex">
-								<a class="nav-link me-2" href="/account/findid"
-									style="font-size: 12px; font-family: 'Noto Sans KR', sans-serif;">아이디찾기</a>
-								<span style="font-size: 12px;">|</span>
-								<a class="nav-link ms-2" href="/account/findpw"
-									style="font-size: 12px; font-family: 'Noto Sans KR', sans-serif;">비밀번호찾기</a>
-							</div>
-						</div>
+			<div class="col-md-10 col-lg-5 col-xl-6 offset-xl-1" style="right: 100px;">
 
-						<!-- Submit button -->
-						<button type="submit" class="btn btn-primary btn-lg btn-block border-0 fw-bold" id="loginBtn"
-							style="background-color: #000000; font-family: 'Noto Sans KR', sans-serif;">로그인</button>
-					</form>
-					<div class="divider d-flex align-items-center my-1">
-						<p class="text-center fw-bold mx-3 mb-0 text-muted"
-							style="font-family: 'Noto Sans KR', sans-serif;">또는</p>
+				<!-- 아이디 -->
+				<div class="form-group">
+					<div class="d-flex align-items-center">
+						<img th:src="@{/vendor/third/img/plot.png}" class="plot-img">
+						<span style="white-space: nowrap; " class="spanText">아이디</span>
 					</div>
-					
-					<!-- 다른계정으로 로그인-->
-					<a class="btn btn-primary btn-lg btn-block m-b-20" id="loginkakao"
-						style="background-color: #FFEB00; color: #000000; display: flex; align-items: center; justify-content: center;"
-						href="" role="button">
-						<div style="display: flex; align-items: center;">
-							<img th:src="@{/vendor/third/img/g-kakao.png}"
-								style="width: 24px; height: 24px; position: relative; left: -5px;" />
-							<span class="fw-bold" style="font-family: 'Lato', sans-serif;">kakao 로그인</span>
+					<input id="usrId" name="usrId" type="usrId" class="form-control" readonly="true"
+						style="background-color: white;">
+				</div>
+
+				<!-- 이름 -->
+				<div class="form-group">
+					<div class="d-flex align-items-center">
+						<img th:src="@{/vendor/third/img/plot.png}" class="plot-img">
+						<span style="white-space: nowrap;" class="spanText">이름</span>
+					</div>
+					<input id="usrNm" name="usrNm" type="usrNm" class="form-control" style="background-color: white;">
+				</div>
+
+				<!-- 생년월일 -->
+				<div class="form-group">
+					<div class="d-flex align-items-center">
+						<img th:src="@{/vendor/third/img/plot.png}" class="plot-img">
+						<span style="white-space: nowrap;" class="spanText">생년월일</span>
+					</div>
+					<input id="usrBirth" name="usrBirth" type="usrBirth" class="form-control"
+						style="background-color: white;">
+				</div>
+
+				<!-- 신규 패스워드 -->
+				<div class="form-group">
+					<div class="d-flex align-items-center">
+						<img th:src="@{/vendor/third/img/plot.png}" class="plot-img">
+						<span style="white-space: nowrap;" class="spanText">신규 비밀번호</span>
+					</div>
+					<input id="password" name="password" type="password" maxlength="16" minlength="8"
+						class="form-control" placeholder="신규 비밀번호 입력" autocomplete="new-password">
+				</div>
+
+				<!-- 휴대전화 -->
+				<div class="form-group">
+					<div class="d-flex align-items-center">
+						<img th:src="@{/vendor/third/img/plot.png}" class="plot-img">
+						<span style="white-space: nowrap;;" class="spanText">휴대폰 번호</span>
+					</div>
+					<div class="input-group">
+						<input id="usrPhNo" name="usrPhNo" type="usrPhNo" class="form-control">
+						<div class="input-group-append">
+							<button class="btn btn-dark rounded-1" id="authNo" type="button"
+								style="font-size: 13px; width: 80px;">인증요청</button>
 						</div>
-					</a>
-					<a class="btn btn-primary btn-lg btn-block m-b-20"
-						style="background-color: #03C75A; color: #ffffff; display: flex; align-items: center; justify-content: center;"
-						href="/oauth2/authorization/naver" role="button">
-						<div style="display: flex; align-items: center;">
-							<img th:src="@{/vendor/third/img/g-naver.png}"
-								style="width: 24px; height: 24px; position: relative; left: -5px;" />
-							<span class="fw-bold" style="font-family: 'Lato', sans-serif;">NAVER 로그인</span>
+					</div>
+				</div>
+				
+				<!-- 인증확인 -->
+				<div class="phAuth" id="phAuth"></div>
+				
+				<!-- 성별 -->
+				<div class="form-group">
+					<div class="d-flex align-items-center">
+						<img th:src="@{/vendor/third/img/plot.png}" class="plot-img">
+						<span style="white-space: nowrap; margin-right: 10px;" class="spanText">성별</span>
+					</div>
+
+					<div class="d-flex align-items-center" style="margin-top: 10px; margin-left:10px;">
+						<div class="form-check" style="margin-right: 50px;">
+							<input class="form-check-input" id="genderM" name="gender" type="checkbox" th:value="M" />
+							<label class="form-check-label" for="genderM">남</label>
 						</div>
-					</a>
-					<a class="btn btn-primary btn-lg btn-block m-b-20"
-						style="background-color: #f0f0f0; color: #757575; display: flex; align-items: center; justify-content: center;"
-						href="/oauth2/authorization/google" role="button">
-						<div style="display: flex; align-items: center;">
-							<img th:src="@{/vendor/third/img/g-google.png}"
-								style="width: 24px; height: 24px; margin-right: 5px;" />
-							<span class="fw-bold" style="font-family: 'Lato', sans-serif;">GooGle 로그인</span>
+
+						<div class="form-check">
+							<input class="form-check-input" id="genderF" name="gender" type="checkbox" th:value="F" />
+							<label class="form-check-label" for="genderF">여</label>
 						</div>
-					</a>
+					</div>
 				</div>
 			</div>
 		</div>
-</th:block>
-</body>
-</html>
+	</th:block>
+

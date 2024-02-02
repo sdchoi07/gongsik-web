@@ -16,70 +16,118 @@
 
         #sidebar-wrapper {
           width: 200px;
+          display: flex;
+	      flex-direction: column;
+	      min-height: 100vh;
         }
 
-        .tab-content {
-          flex-grow: 1;
-          margin-left: 20px; /* 탭 내용과의 간격을 위한 여백 설정 */
-        }
+/* 	border: 1px solid rgba(19, 195, 39, 0.25); */
+	    .tab-content {
+	        border-radius: 10px;
+	        flex: 1;
+	        width: 100%;
+	        padding-left: 10%; /* 오른쪽 내부 여백 지정 * */
+		}
 
         .list-group-item {
+			font-family: 'Noto Sans KR', sans-serif;
+			width: 200px;
             cursor: pointer;
-            border: none; /* 탭 테두리 제거 */
+            border-width: 0; /* 테두리 폭을 0으로 설정하여 제거 */
+			border-bottom: 2px solid  #cccccc; /* 연한 회색 */
             border-radius: 0 !important; /* 라운드 테두리 제거, !important를 사용하여 우선시함 */
         }
+	    .list-group-item:last-child {
+		    border-bottom-width: 1px; /* 맨 마지막 아이템에 대한 테두리만 하단에 적용 */
+		}
+        
+        /* 마우스 호버 시 밑줄 표시 */
+	    .list-group-item:hover {
+	        background-color: #ffe6e2 !important;
+	        transform: scaleX(1) ;
+	    }
+	    .list-group-item.active {
+	        background-color: #ffbaaf !important;
+			border-bottom: none; /* 밑줄 제거 */
+		    border-top: none;    /* 위에 밑줄 제거 */
+	        transform: scaleX(1) ;
+	    }
 	</style>
+	
+	
 	<title>마이페이지</title>
 	
 </head>
 <body>
     <div layout:fragment="content">
-        <div class="container py-1">
-            <div class="card border-0 shadow rounded-1 overflow-hidden">
-                <div class="card-body p-0">
-                    <div class="row gx-0">
-                        <div class="col-lg-6 col-xl-7"><div class="bg-featured-blog" style="background-image: url('https://dummyimage.com/700x350/343a40/6c757d')"></div></div>
-                        <div class="col-lg-3 col-xl-5 py-lg-2">
-                            <div class="p-4 p-md-5">
-                                <div class="badge bg-primary bg-gradient rounded-pill mb-2">News</div>
-                                <div class="h2 fw-bolder">Article heading goes here</div>
-                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique delectus ab doloremque, qui doloribus ea officiis...</p>
-                                <a class="stretched-link text-decoration-none" href="#!">
-                                    Read more
-                                    <i class="bi bi-arrow-right"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+		   <div class="container-fluid py-2"style="width: 69.6%;">
+			    <div class="container h-100 px-2" style="margin-top: 20px; background-color: rgba(19, 195, 39, 0.25); margin-bottom: 20px;">
+			        <div class="row gx-1">
+			            <!-- 첫 번째 컬럼 -->
+			            <div class="col-lg-2 wow fadeIn" data-wow-delay="0.1s">
+			                <div class="d-flex align-items-center h-100 px-2" style="min-height: 160px;">
+			                    <!-- 내용 추가 -->
+			                </div>
+			            </div>
+			
+			            <!-- 공통된 구조를 갖는 두 개의 컬럼 -->
+			            <div class="col-lg-5 wow fadeIn" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeIn;">
+			                <!-- 함수를 통해 중복 코드 최소화 -->
+			                <div class="bg-white shadow d-flex align-items-center h-90 px-1" style="height: 140px; margin-top: 10px; width: 100%;">
+			                    <div class="d-flex justify-content-center align-items-center" style="width: 100%;">
+			                        <div class="flex-shrink-0 btn-lg-square rounded-circle bg-light">
+			                            <i class="fa fa-users text-primary"></i>
+			                        </div>
+			                        <div class="text-center">
+			                            <!-- 제목과 내용의 차이만 처리 -->
+			                            <h4 style="color: #a9a9a9; font-size: 100%;">회원등급</h4>
+			                            <span style="font-family: 'Noto Sans KR', sans-serif; font-size: 50px;">Level <span id="levelNumber">0</span></span>
+			                        </div>
+			                    </div>
+			                </div>
+			            </div>
+			
+			            <!-- 두 번째 컬럼 -->
+			            <div class="col-lg-5 wow fadeIn" data-wow-delay="0.3s" style="visibility: visible; animation-delay: 0.3s; animation-name: fadeIn;">
+			                <!-- 중복 코드 최소화 -->
+			                <div class="bg-white shadow d-flex align-items-center h-90 px-1" style="height: 140px; margin-top: 10px; width: 100%;">
+			                    <div class="d-flex justify-content-center align-items-center" style="width: 100%;">
+			                        <div class="flex-shrink-0 btn-lg-square rounded-circle bg-light">
+			                            <i class="fa fa-users text-primary"></i>
+			                        </div>
+			                        <div class="text-center">
+			                            <!-- 제목과 내용의 차이만 처리 -->
+			                            <h4 style="color: #a9a9a9; font-size: 100%;">포인트</h4>
+			                            <span style="font-family: 'Noto Sans KR', sans-serif; font-size: 50px;">Point</span>
+			                        </div>
+			                    </div>
+			                </div>
+			            </div>
+			        </div>
+			    </div>
+			</div>
 
         <!-- 첫 번째 섹션 -->
-        <section class="container-py-5">
-            <div class="row lg-5 justify-content-center">
-                <div class="col-md-3 col-xl-5 py-lg-2" style="right:255px;">
-                    <div class="d-flex justify-content-between align-items-center mb-1">
-                        <label class="form-label fw-bold" for="form1Example3" style="font-size: 30px; font-family: 'Noto Sans KR', sans-serif;">마이페이지 </label>
-                    </div>
+        <section class="container py-1" >
                     <div id="tabs-wrapper">
                         <!-- Sidebar -->
                         <div id="sidebar-wrapper">
                             <div class="list-group">
-                                <a class="list-group-item list-group-item-action list-group-item-light p-3" data-toggle="pill" href="/profile">Dashboard</a>
-                                <a class="list-group-item list-group-item-action list-group-item-light p-3" data-toggle="pill" href="/profile">Shortcuts</a>
-                                <a class="list-group-item list-group-item-action list-group-item-light p-3" data-toggle="pill" href="#overview">Overview</a>
-                                <a class="list-group-item list-group-item-action list-group-item-light p-3" data-toggle="pill" href="#events">Events</a>
-                                <a class="list-group-item list-group-item-action list-group-item-light p-3" data-toggle="pill" href="#profile">Profile</a>
-                                <a class="list-group-item list-group-item-action list-group-item-light p-3" data-toggle="pill" href="/usrGrade">Status</a>
+								<div class="d-flex justify-content-between align-items-center mb-1">
+			                        <label class="form-label fw-bold" for="form1Example3" style="font-size: 30px; font-family: 'Noto Sans KR', sans-serif;">마이페이지 </label>
+			                    </div>
+                                <a class="list-group-item list-group-item-action list-group-item-light p-3" data-toggle="pill" href="/profile">프로필</a>
+                                <a class="list-group-item list-group-item-action list-group-item-light p-3" data-toggle="pill" href="/profile">주문내역</a>
+                                <a class="list-group-item list-group-item-action list-group-item-light p-3" data-toggle="pill" href="#overview">배송지 관리</a>
+                                <a class="list-group-item list-group-item-action list-group-item-light p-3" data-toggle="pill" href="#events">포인트</a>
+                                <a class="list-group-item list-group-item-action list-group-item-light p-3" data-toggle="pill" href="/usrGrade">회원등급</a>
                             </div>
                         </div>
                         <!-- 탭 내용 -->
                         <div class="tab-content" layout:fragment="mypage"></div>
                     </div>
-                </div>
-            </div>
         </section>
         <!-- 두 번째 섹션 및 이하의 추가 섹션들 추가 가능 -->
     </div>
+    
 </body>

@@ -104,7 +104,7 @@ var usrData = function(response, jwtToken, refreshToken){
         },
 		}).done(function(data){
 			console.log(data.result.usrId);
-			localStorage.setItem("data", data.result);
+			localStorage.setItem("data", JSON.stringify(data.result));
 			window.location.href = '/';
 			
 		}).fail(function(xhr, textStatus, errorThrowna) {

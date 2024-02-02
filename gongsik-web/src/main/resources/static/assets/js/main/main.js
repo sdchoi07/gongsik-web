@@ -12,6 +12,7 @@ var _main = function() {
 var _usrBtn = function(){
 	const token = localStorage.getItem('accessToken')
 	const test= localStorage.getItem('data')
+	console.log("test " + JSON.parse(test))
 	//console.log(JSON.stringify(test));
 	//console.log(test.usrId);
 	$.ajax({
@@ -23,7 +24,6 @@ var _usrBtn = function(){
 	}).done(function(data,textStatus,xhr){
 		if(xhr.status === 200){
 				window.location.href = '/mypage';
-			
 		}else{
 			window.location.href = '/account/login';
 		}
@@ -31,6 +31,7 @@ var _usrBtn = function(){
             // HTTP 상태 코드가 400인 경우 처리
             if (xhr.status === 401) {
         // HTTP 상태 코드가 401(Unauthorized)인 경우
+        alert(xhr.responseText);
         window.location.href = '/account/login'; // 추가적인 처리
             // 혹은 원하는 다른 오류 처리
         } else {

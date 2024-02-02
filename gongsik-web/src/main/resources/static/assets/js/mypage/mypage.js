@@ -1,10 +1,16 @@
 var mypage = function () {
+	 var data = localStorage.getItem("data")
+	 var result = JSON.parse(data);
+	 var usrGrade = result.usrGrade;
+	 var usrId = result.usrId;
+	  $('#levelNumber').text(usrGrade);
+	  $('#usrId').text(usrId);
 	 var firstTabHref = $('.list-group-item:first').attr('href');
 	 
 	   $('.list-group-item:first').trigger('click');
-	  _tabMove(firstTabHref);
-    // 탭이 클릭되었을 때의 이벤트 처리
-    $('.list-group-item').on('click', function (e) {
+	  	_tabMove(firstTabHref);
+    	// 탭이 클릭되었을 때의 이벤트 처리
+    	$('.list-group-item').on('click', function (e) {
         e.preventDefault(); // 기본 동작인 페이지 이동을 막음
 
        var targetUrl = $(this).attr('href'); // 클릭된 탭의 주소를 가져옴
@@ -12,6 +18,8 @@ var mypage = function () {
         // AJAX를 사용하여 해당 주소의 내용을 가져와서 .tab-content에 삽입
         _tabMove(targetUrl);
     });
+    
+  
 
 }
 
