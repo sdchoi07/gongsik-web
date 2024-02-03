@@ -56,7 +56,8 @@ var _chkUser = function(){
 		console.log(data.msg + " " + data.code);
 		if(data.code === 'success'){
 			//인증번호 요청
-			_authNumReq();
+			 var data = $('#joinForm').serializeObject()
+			_authNumReq(data);
 		}else{
 			alert(data.msg);
 		}

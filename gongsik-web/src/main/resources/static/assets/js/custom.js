@@ -55,7 +55,7 @@ function menus(data){
 			if (i == data.length-1 || i== data.length-2){
 				 menuItem += '</ul>';
 		         menuItem += '</li>';
-				 menuItem +='<li class="nav-item"><a class="nav-link" href="#">'+ data[i].menuNm+ '</a></li>';
+				 menuItem +='<li class="nav-item"><a class="nav-link" href="#" id="menuNm">'+ data[i].menuNm+ '</a></li>';
 			}else{
 		        if (data[i].menuLevelNo == 0) {
 		        	if(!boolean){
@@ -65,12 +65,12 @@ function menus(data){
 				        chk = false;
 					}
 		            menuItem += '<li class="nav-item dropdown">';
-		            menuItem += '<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">' + data[i].menuNm + '</a>';
+		            menuItem += '<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="menuNm">' + data[i].menuNm + '</a>';
 		            menuItem += '<ul class="dropdown-menu dropdown-menu-end" id="menus" aria-labelledby="navbarDropdown">';
 		        }
 		        else if (data[i].menuLevelNo == 1) {
 					boolean = false;
-		            menuItem += '<li><a class="dropdown-item" href="blog-home.html">' + data[i].menuNm + '</a></li>';
+		            menuItem += '<li><a class="dropdown-item" href="blog-home.html" id="menuNm">' + data[i].menuNm + '</a></li>';
 		    	    }
 				}
 			}
@@ -181,12 +181,12 @@ var _countryPhList = function(){
 	})
 }
 
-//인증번호 요청
-var _authNumReq = function(authType){
-	var joinData = $('#joinForm').serializeObject();
-	console.log(joinData);
-	var phoneNumber = joinData.phoneNumber;
-	var countryPhNo = joinData.countryPhNo;
+//인증번호 요청 
+var _authNumReq = function(form){
+	var formData = form;
+	var phoneNumber = formData.phoneNumber.replaceAll("-","");
+	formData.phoneNumber = phoneNumber;
+	var countryPhNo = formData.countryPhNo;
 
 	if(countryPhNo === '' || countryPhNo === 'undefined'){
 		alert("국제번호 선택 해주세요.");
@@ -209,7 +209,7 @@ var _authNumReq = function(authType){
 	$.ajax({
 		url : "/util/sendSMS",
 	    type: 'POST',
-        data: JSON.stringify(joinData), // form 데이터를 JSON 문자열로 변환하여 전송
+        data: JSON.stringify(formData), // form 데이터를 JSON 문자열로 변환하여 전송
         contentType: 'application/json',
 	}).done(function(data){
 		console.log(data.msg + " " + data.code);
@@ -235,6 +235,46 @@ var _phoneChk = function(){
             $(this).val(inputValue.slice(0, 11)); // 11자리까지만 입력되도록 설정
         }
 	    });
+}
+
+//생년월일 변환
+var _birthFormat = function(){
+        $('#birthDate').on('input', function() {
+            var inputValue = $(this).val().replaceAll('.','');
+            if (inputValue.length === 8) {
+                var formattedDate = inputValue.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3');
+               		var year = parseInt(inputValue.substr(0, 4));
+                    var month = parseInt(inputValue.substr(4, 2));
+                    var day = parseInt(inputValue.substr(6, 2));
+                    
+                    var dateObj = new Date(year, month - 1, day);
+                    
+                    // 이전 메시지 삭제
+					$('#birthDateMsg').remove();
+                    if (dateObj.getFullYear() !== year || dateObj.getMonth() + 1 !== month || dateObj.getDate() !== day) {
+						var insertHtml = '<div class="error_text item_style" id="birthDateMsg">! 잘못 입력된 날짜입니다.</div>';
+						$('#birthDate').addClass('onError').after(insertHtml);
+                        $(this).val('');
+                    } else {
+                        $(this).val(formattedDate);
+                        $('#birthDate').removeClass('onError')
+                    }
+                    if(formattedDate !== undefined && formattedDate !== null && formattedDate !== ''){
+						$('#birthDate').removeClass('onError')
+					}
+                } 
+        });
+}
+
+//성별체크
+var _sexChkBox = function(){
+  $('input[type="checkbox"][name="gender"]').click(function(){
+	  if($(this).prop('checked')){
+	     $('input[type="checkbox"][name="gender"]').prop('checked',false);
+	      $('input[type="checkbox"][name="gender"]').removeClass('onError');
+	     $(this).prop('checked',true);
+	    }
+	   });
 }
 
 $(document).ready(function() {

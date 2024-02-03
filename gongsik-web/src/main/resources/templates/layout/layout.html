@@ -13,7 +13,9 @@
 		    left: 0;
 		    width: 100%;
 		    z-index: 100;
+		    position: sticky;
 		    transition: height 0.3s; /* 헤더바 크기 변경 시 애니메이션 적용 */
+		    
 		}
 		
 		body {
@@ -27,7 +29,13 @@
 		header.shrink {
 		    height: 50px; /* 스크롤이 발생했을 때의 헤더바 높이 */
 		}
-	
+		
+	    .navbar {
+	        height: 80px; /* 헤더바의 높이를 조절하는 부분 */
+	    }
+	    #menuNm{
+			font-size: 30px;
+		}
        
 	</style>
 

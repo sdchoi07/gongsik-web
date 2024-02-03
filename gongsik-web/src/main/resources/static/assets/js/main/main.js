@@ -29,11 +29,14 @@ var _usrBtn = function(){
 		}
 	}).fail(function(xhr, textStatus, errorThrowna) {
             // HTTP 상태 코드가 400인 경우 처리
-            if (xhr.status === 401) {
-        // HTTP 상태 코드가 401(Unauthorized)인 경우
-        alert(xhr.responseText);
-        window.location.href = '/account/login'; // 추가적인 처리
-            // 혹은 원하는 다른 오류 처리
+        if (xhr.status === 401) {
+        	// HTTP 상태 코드가 401(Unauthorized)인 경우
+	        console.log(xhr.responseText.code)
+	        if(xhr.responseText.code === '2' ){
+		        alert(xhr.responseText);
+	    	    window.location.href = '/account/login'; // 추가적인 처리
+			}
+	    	    window.location.href = '/account/login'; // 추가적인 처리
         } else {
             // 다른 HTTP 상태 코드에 대한 처리
         }

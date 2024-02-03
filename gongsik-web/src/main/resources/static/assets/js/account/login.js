@@ -76,7 +76,6 @@ var _signUp = function(){
 			var jwtToken = xhr.getResponseHeader('Authorization');
 			var refreshToken = xhr.getResponseHeader('refreshToken');
  			localStorage.setItem('accessToken', jwtToken)
- 			//localStorage.setItem('username', response);
             $('#username-display').text('Welcome, ' + response+ '!');
 			
             usrData(response, jwtToken, refreshToken);

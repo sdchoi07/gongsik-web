@@ -1,28 +1,36 @@
 <html lang="" xmlns:th="http://www.thymeleaf.org">
 
 <th:block th:fragment="headerbar">
-	<header>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light ">
-                <a class="navbar-brand" href="/" style="position: relative; left: 20px;">
-                    <svg class="svg" style="position: relative; left: 20px;">
-                        <text x="5" y="30">공식</text>
-                    </svg>
-                </a>
-                <button class="navbar-toggler ml-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent"  >
-                    <ul class="navbar-nav ml-auto mb-2 mb-lg-0 mr-1" id="menuList"> <!-- 중앙 정렬 -->
-                    </ul>
-                    <ul class="navbar-nav ml-auto mb-2 mb-lg-0" style="position: relative; right: 50px;"> <!-- 오른쪽 정렬 -->
-                     	<li class="nav-item search"><a class="nav-link" href="pricing.html"><img th:src="@{/vendor/third/img/g-search.png}"/></a></li>
-                        <li class="nav-item profile"><a class="nav-link" id="usrBtn" href=""><img th:src="@{/vendor/third/img/g-profile.png}"/></a></li>
-                        <li class="nav-item chat"><a class="nav-link" href="faq.html"><img th:src="@{/vendor/third/img/g-chat.png}"/></a></li>
-                        <li class="nav-item notice"><a class="nav-link" href="faq.html"><img th:src="@{/vendor/third/img/g-notice.png}"/></a></li>
-                        
-                    </ul>
-                </div>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="/" style="position: relative; left: 20px;">
+                <svg class="svg" style="position: relative; left: 20px;">
+                    <text x="5" y="30">공식</text>
+                </svg>
+            </a>
+            <button class="navbar-toggler ml-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 mr-1" id="menuList"> <!-- 가운데 정렬 -->
+                </ul>
+            </div>
+            <div class="ml-auto mb-2 mb-lg-0" style="position: relative; right: 50px; bottom: 5px; "> <!-- 오른쪽 정렬 -->
+                <div class="ml-auto mb-2 mb-lg-0" style="position: relative; right: 50px; max-width: 70px;"> <!-- 오른쪽 정렬 -->
+				    <div class="ml-auto mb-2 mb-lg-0" style="position: relative; left: 100px; top: 10px;"> <!-- 로그인 버튼 영역 -->
+				        <a class="nav-link" href="/" style="font-size: 15px;font-family: 'Noto Sans KR', sans-serif;">로그인</a>
+				    </div>
+				</div>
+
+                <ul class="navbar-nav" style="position: relative; left: 30px; top: 5px;">
+                    <li class="nav-item search"><a class="nav-link" href="pricing.html"><img th:src="@{/vendor/third/img/g-search.png}"/></a></li>
+                    <li class="nav-item profile"><a class="nav-link" id="usrBtn" href=""><img th:src="@{/vendor/third/img/g-profile.png}"/></a></li>
+                    <li class="nav-item chat"><a class="nav-link" href="faq.html"><img th:src="@{/vendor/third/img/g-chat.png}"/></a></li>
+                    <li class="nav-item notice"><a class="nav-link" href="faq.html"><img th:src="@{/vendor/third/img/g-notice.png}"/></a></li>
+                </ul>
+            </div>
         </nav>
-        </header>
-    </th:block>
+    </header>
+</th:block>
+
 </html>

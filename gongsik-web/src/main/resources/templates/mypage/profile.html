@@ -1,5 +1,3 @@
-
-
 <head>
 	<meta charset="EUC-KR">
 	<script th:src="@{/assets/js/mypage/profile.js}"></script>
@@ -37,83 +35,88 @@
 		<div class="container py-5 " style="padding-top: 30px;">
 
 			<div class="col-md-10 col-lg-5 col-xl-6 offset-xl-1" style="right: 100px;">
-
-				<!-- 아이디 -->
-				<div class="form-group">
-					<div class="d-flex align-items-center">
-						<img th:src="@{/vendor/third/img/plot.png}" class="plot-img">
-						<span style="white-space: nowrap; " class="spanText">아이디</span>
+				<form id="modifyForm">
+					<input type="hidden" id="countryPhNo" name="countryPhNo">
+					<input type="hidden" id="authType" name="authType" value="M">
+					<!-- 아이디 -->
+					<div class="form-group">
+						<div class="d-flex align-items-center">
+							<img th:src="@{/vendor/third/img/plot.png}" class="plot-img">
+							<span style="white-space: nowrap; " class="spanText">아이디</span>
+						</div>
+						<input id="usrId" name="usrId" type="usrId" class="form-control" readonly="true"
+							style="background-color: white;">
 					</div>
-					<input id="usrId" name="usrId" type="usrId" class="form-control" readonly="true"
-						style="background-color: white;">
-				</div>
-
-				<!-- 이름 -->
-				<div class="form-group">
-					<div class="d-flex align-items-center">
-						<img th:src="@{/vendor/third/img/plot.png}" class="plot-img">
-						<span style="white-space: nowrap;" class="spanText">이름</span>
+	
+					<!-- 이름 -->
+					<div class="form-group">
+						<div class="d-flex align-items-center">
+							<img th:src="@{/vendor/third/img/plot.png}" class="plot-img">
+							<span style="white-space: nowrap;" class="spanText">이름</span>
+						</div>
+						<input id="usrNm" name="usrNm" type="usrNm" class="form-control" style="background-color: white;">
 					</div>
-					<input id="usrNm" name="usrNm" type="usrNm" class="form-control" style="background-color: white;">
-				</div>
-
-				<!-- 생년월일 -->
-				<div class="form-group">
-					<div class="d-flex align-items-center">
-						<img th:src="@{/vendor/third/img/plot.png}" class="plot-img">
-						<span style="white-space: nowrap;" class="spanText">생년월일</span>
+	
+					<!-- 생년월일 -->
+					<div class="form-group">
+						<div class="d-flex align-items-center">
+							<img th:src="@{/vendor/third/img/plot.png}" class="plot-img">
+							<span style="white-space: nowrap;" class="spanText">생년월일</span>
+						</div>
+						<input id="birthDate" name="birthDate" type="birthDate" class="form-control" maxlength="10"
+							style="background-color: white;">
 					</div>
-					<input id="usrBirth" name="usrBirth" type="usrBirth" class="form-control"
-						style="background-color: white;">
-				</div>
-
-				<!-- 신규 패스워드 -->
-				<div class="form-group">
-					<div class="d-flex align-items-center">
-						<img th:src="@{/vendor/third/img/plot.png}" class="plot-img">
-						<span style="white-space: nowrap;" class="spanText">신규 비밀번호</span>
+	
+					<!-- 신규 패스워드 -->
+					<div class="form-group">
+						<div class="d-flex align-items-center">
+							<img th:src="@{/vendor/third/img/plot.png}" class="plot-img">
+							<span style="white-space: nowrap;" class="spanText">신규 비밀번호</span>
+						</div>
+						<input id="password" name="password" type="password" maxlength="16" minlength="8"
+							class="form-control" placeholder="신규 비밀번호 입력" autocomplete="new-password">
 					</div>
-					<input id="password" name="password" type="password" maxlength="16" minlength="8"
-						class="form-control" placeholder="신규 비밀번호 입력" autocomplete="new-password">
-				</div>
-
-				<!-- 휴대전화 -->
-				<div class="form-group">
-					<div class="d-flex align-items-center">
-						<img th:src="@{/vendor/third/img/plot.png}" class="plot-img">
-						<span style="white-space: nowrap;;" class="spanText">휴대폰 번호</span>
-					</div>
-					<div class="input-group">
-						<input id="usrPhNo" name="usrPhNo" type="usrPhNo" class="form-control">
-						<div class="input-group-append">
-							<button class="btn btn-dark rounded-1" id="authNo" type="button"
-								style="font-size: 13px; width: 80px;">인증요청</button>
+	
+					<!-- 휴대전화 -->
+					<div class="form-group">
+						<div class="d-flex align-items-center">
+							<img th:src="@{/vendor/third/img/plot.png}" class="plot-img">
+							<span style="white-space: nowrap;" class="spanText">휴대폰 번호</span>
+						</div>
+						<div class="input-group">
+							<input id="phoneNumber" name="phoneNumber" type="phoneNumber" class="form-control">
+							<div class="input-group-append">
+								<button class="btn btn-dark rounded-1" id="reqAuthNo" type="button"
+									style="font-size: 13px; width: 80px;">인증요청</button>
+							</div>
 						</div>
 					</div>
-				</div>
-				
-				<!-- 인증확인 -->
-				<div class="phAuth" id="phAuth"></div>
-				
-				<!-- 성별 -->
-				<div class="form-group">
-					<div class="d-flex align-items-center">
-						<img th:src="@{/vendor/third/img/plot.png}" class="plot-img">
-						<span style="white-space: nowrap; margin-right: 10px;" class="spanText">성별</span>
-					</div>
-
-					<div class="d-flex align-items-center" style="margin-top: 10px; margin-left:10px;">
-						<div class="form-check" style="margin-right: 50px;">
-							<input class="form-check-input" id="genderM" name="gender" type="checkbox" th:value="M" />
-							<label class="form-check-label" for="genderM">남</label>
+					
+					<!-- 인증확인 -->
+					<div class="phAuth" id="phAuth"></div>
+					
+					<!-- 성별 -->
+					<div class="form-group">
+						<div class="d-flex align-items-center">
+							<img th:src="@{/vendor/third/img/plot.png}" class="plot-img">
+							<span style="white-space: nowrap; margin-right: 10px;" class="spanText">성별</span>
 						</div>
-
-						<div class="form-check">
-							<input class="form-check-input" id="genderF" name="gender" type="checkbox" th:value="F" />
-							<label class="form-check-label" for="genderF">여</label>
+	
+						<div class="d-flex align-items-center" style="margin-top: 10px; margin-left:10px;">
+							<div class="form-check" style="margin-right: 50px;">
+								<input class="form-check-input" id="genderM" name="gender" type="checkbox" th:value="M"/>
+								<label class="form-check-label" for="genderM">남</label>
+							</div>
+	
+							<div class="form-check">
+								<input class="form-check-input" id="genderF" name="gender" type="checkbox" th:value="F"/>
+								<label class="form-check-label" for="genderF">여</label>
+							</div>
 						</div>
 					</div>
-				</div>
+				</form>
+				<button type="submit" class="btn btn-primary btn-xg btn-block border-0 fw-bold" id="modifyBtn"
+							style="background-color: #000000; font-family: 'Noto Sans KR', sans-serif; height: 50px;">프로필 수정</button>
 			</div>
 		</div>
 	</th:block>

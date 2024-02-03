@@ -45,7 +45,8 @@ var _join = function() {
 	//인증번호 요청
 	$('#authReq').on('click',function(event){
 		event.preventDefault();
-		_authNumReq();
+		 var data = $('#joinForm').serializeObject()
+		_authNumReq(data);
 	});
 	
 	//회원가입 버튼
@@ -101,48 +102,6 @@ var _pwdChk = function() {
 
 	});
 }
-
-//성별체크
-var _sexChkBox = function(){
-  $('input[type="checkbox"][name="gender"]').click(function(){
-	  if($(this).prop('checked')){
-	     $('input[type="checkbox"][name="gender"]').prop('checked',false);
-	      $('input[type="checkbox"][name="gender"]').removeClass('onError');
-	     $(this).prop('checked',true);
-	    }
-	   });
-  
-   
-}
-//생년월일 변환
-var _birthFormat = function(){
-        $('#birthDate').on('input', function() {
-            var inputValue = $(this).val().replaceAll('.','');
-            if (inputValue.length === 8) {
-                var formattedDate = inputValue.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3');
-               		var year = parseInt(inputValue.substr(0, 4));
-                    var month = parseInt(inputValue.substr(4, 2));
-                    var day = parseInt(inputValue.substr(6, 2));
-                    
-                    var dateObj = new Date(year, month - 1, day);
-                    
-                    // 이전 메시지 삭제
-					$('#birthDateMsg').remove();
-                    if (dateObj.getFullYear() !== year || dateObj.getMonth() + 1 !== month || dateObj.getDate() !== day) {
-						var insertHtml = '<div class="error_text item_style" id="birthDateMsg">! 잘못 입력된 날짜입니다.</div>';
-						$('#birthDate').addClass('onError').after(insertHtml);
-                        $(this).val('');
-                    } else {
-                        $(this).val(formattedDate);
-                        $('#birthDate').removeClass('onError')
-                    }
-                    if(formattedDate !== undefined && formattedDate !== null && formattedDate !== ''){
-						$('#birthDate').removeClass('onError')
-					}
-                } 
-        });
-}
-
 
 
 //인증번호 요청

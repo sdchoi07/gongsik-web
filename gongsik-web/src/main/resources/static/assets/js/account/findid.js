@@ -31,8 +31,9 @@ var _findId = function() {
 	_changeChk();
 	//인증번호 요청
 	$('#authReq').on('click',function(event){
-		event.preventDefault();
-		_authNumReq();
+		 event.preventDefault();
+		 var data = $('#joinForm').serializeObject()
+		 _authNumReq(data);
 	});
 
 	//아아디 찾기
