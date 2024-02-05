@@ -18,5 +18,10 @@ public class MypageController {
 	public String usrGrade() {
 		return "mypage/usrGrade";
 	}
+	
+	@GetMapping("/orderList")
+	public String orderList() {
+		return "mypage/orderList";
+	}
 
 }

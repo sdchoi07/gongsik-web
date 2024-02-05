@@ -40,13 +40,11 @@ var _init = function () {
 
 var _accountList = function(){
 		
-	var storageData = localStorage.getItem("data");
+	var usrId = localStorage.getItem("usrId");
+	var logTp = localStorage.getItem("logTp");
 	var resultData = {};
-	storageData = JSON.parse(storageData);
-	resultData.usrId = storageData.usrId;
-	resultData.usrNm = storageData.usrNm;
-	resultData.usrPhone = storageData.usrPhone;
-	resultData.logTp = storageData.logTp;
+	resultData.usrId = usrId;
+	resultData.logTp = logTp;
 	$.ajax({
 		url : "/api/mypage/profile/list",
 	    type: 'POST',
@@ -55,9 +53,10 @@ var _accountList = function(){
 	}).done(function(data){
 			
 		if(data.code === 'success'){
-			console.log("list : " + data.data)
-				localStorage.setItem("data", JSON.stringify(data.result));
-				_profile();
+			
+			var usrData = data.result;
+			console.log("list : " + usrData)
+			_profile(usrData);
 		}else{
 			alert(data.msg);
 		}
@@ -73,18 +72,16 @@ var _accountList = function(){
 
 
 
-var _profile = function(){
-	 var data = localStorage.getItem("data")
-	 var result = JSON.parse(data);
-	 var usrId = result.usrId;
-	 var usrNm = result.usrNm;
-	 var usrBrith = result.usrNo;
-	 //usrBrith = usrBrith.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3');
-	 var usrPhNo = result.usrPhone;
-	 //usrPhNo = usrPhNo.replace(/^(\d{3})(\d{4})(\d{4})$/, '$1-$2-$3');
-	 console.log(result);
-	 var usrSex = result.usrSex;
-	 var countryPh = result.countryPh;
+var _profile = function(usrData){
+	 var usrId = usrData.usrId;
+	 var usrNm = usrData.usrNm;
+	 var usrBrith = usrData.usrNo;
+	 usrBrith = usrBrith.replace(/^(\d{4})(\d{2})(\d{2})$/, '$1.$2.$3');
+	 var usrPhNo = usrData.usrPhone;
+	 usrPhNo = usrPhNo.replace(/^(\d{3})(\d{4})(\d{4})$/, '$1-$2-$3');
+	 console.log(usrData);
+	 var usrSex = usrData.usrSex;
+	 var countryPh = usrData.countryPh;
 	  $('#countryPhNo').val(countryPh);
 	  $('#usrId').val(usrId);
 	  $('#usrNm').val(usrNm);
@@ -117,19 +114,20 @@ var _usrPhChk = function(){
 var _confirmBtn =function() {
 	var data = $('#modifyForm').serializeObject()
 	_authNumReq(data);
-    var verificationDiv = $('<div/>', {
-        id: 'verificationDiv',
-        class: 'form-group',
-        html:'<div class="d-flex align-items-center">'+ 
-        	'<img src="/vendor/third/img/plot.png" class ="plot-img">' +
-            '<span style="white-space: nowrap;"  class="spanText">휴대폰 번호</span>' +
-            '</div>'+
-            '<div class="input-group">' +
-            '<input id="authNo" name="authNo" type="authNo" class="form-control">' +
-            '<div class="input-group-append">' +
-            '<button class="btn btn-dark rounded-1" type="button" style="font-size: 13px; width: 80px;">확인</button>' +
-            '</div></div></div>'
-    });
+	if ($('#verificationDiv').length === 0) {
+	    var verificationDiv = $('<div/>', {
+	        id: 'verificationDiv',
+	        class: 'form-group',
+	        html:'<div class="d-flex align-items-center">'+ 
+	        	'<img src="/vendor/third/img/plot.png" class ="plot-img">' +
+	            '<span style="white-space: nowrap;"  class="spanText">휴대폰 번호</span>' +
+	            '</div>'+
+	            '<div class="input-group">' +
+	            '<input id="authNo" name="authNo" type="authNo" class="form-control">' +
+	            '<div class="input-group-append">' +
+	            '</div></div></div>'
+	    });
+    }
 
     // verificationDiv를 body에 추가
     $('#phAuth').after(verificationDiv);
@@ -172,6 +170,7 @@ var _modifyBtn = function(){
 	}
 		
 	var modifyData = $('#modifyForm').serializeObject();
+	console.log(modifyData);
 	var birthDate = modifyData.birthDate.replaceAll(".","");
 	var phoneNumber = modifyData.phoneNumber.replaceAll("-","");
 	modifyData.birthDate = birthDate;
@@ -182,7 +181,7 @@ var _modifyBtn = function(){
         data: JSON.stringify(modifyData), // form 데이터를 JSON 문자열로 변환하여 전송
         contentType: 'application/json',
 	}).done(function(data){
-		console.log("??: " + data.list);
+		console.log("??: " + data.msg);
 		if(data.code === 'success'){
 			if(confirm(data.msg)){
 				//localStorage.setItem("data", JSON.stringify(data.result));

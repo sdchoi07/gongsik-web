@@ -34,7 +34,6 @@ var _loginSNS = function(type){
 					        alert("로그인 실패 하였습니다.");
 					    } else {
 					        // 다른 오류인 경우
-					        console.error("로그인 오류: " + xhr.status);
 					        alert("로그인에 실패하였습니다.");
 					    }
 		        
@@ -82,11 +81,9 @@ var _signUp = function(){
 		}).fail(function(xhr, textStatus, errorThrowna) {
 		            if (xhr.status === 401) {
 					        // 비밀번호가 일치하지 않는 경우
-					        var errorMessage = xhr.responseJSON.message;
 					        alert("로그인 실패 하였습니다.");
 					    } else {
 					        // 다른 오류인 경우
-					        console.error("로그인 오류: " + xhr.status);
 					        alert("로그인에 실패하였습니다.");
 					    }
 		        
@@ -102,8 +99,8 @@ var usrData = function(response, jwtToken, refreshToken){
             'Authorization': 'Bearer ' + jwtToken,
         },
 		}).done(function(data){
-			console.log(data.result.usrId);
-			localStorage.setItem("data", JSON.stringify(data.result));
+			localStorage.setItem("usrId", data.usrId);
+			localStorage.setItem("logTp", data.logTp);
 			window.location.href = '/';
 			
 		}).fail(function(xhr, textStatus, errorThrowna) {

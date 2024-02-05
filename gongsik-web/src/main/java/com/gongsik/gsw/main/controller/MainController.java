@@ -26,7 +26,7 @@ public class MainController implements ErrorController{
 	    public  String mypage() {
 	    	return "mypage/mypage";
 	    }
-	    
+	   
 	  
 	}
 

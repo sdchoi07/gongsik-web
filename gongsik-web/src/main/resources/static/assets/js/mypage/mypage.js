@@ -1,27 +1,15 @@
 var mypage = function () {
-	 var data = localStorage.getItem("data")
-	 var result = JSON.parse(data);
-	 var usrGrade = result.usrGrade;
-	 var usrId = result.usrId;
-	  $('#levelNumber').text(usrGrade);
-	  $('#usrId').text(usrId);
-	 var firstTabHref = $('.list-group-item:first').attr('href');
-	 
-	   $('.list-group-item:first').trigger('click');
-	  	_tabMove(firstTabHref);
-    	// 탭이 클릭되었을 때의 이벤트 처리
-    	$('.list-group-item').on('click', function (e) {
-        e.preventDefault(); // 기본 동작인 페이지 이동을 막음
-
-       var targetUrl = $(this).attr('href'); // 클릭된 탭의 주소를 가져옴
-
-        // AJAX를 사용하여 해당 주소의 내용을 가져와서 .tab-content에 삽입
-        _tabMove(targetUrl);
-    });
-    
-  
+	
+	
+	//유저정보
+	_accountList();
+	
+	var currentUrl = window.location.href;
+	
+	_tabList(currentUrl);
 
 }
+
 
 var _tabMove = function (targetUrl) {
     $.ajax({
@@ -33,6 +21,36 @@ var _tabMove = function (targetUrl) {
         },
         error: function () {
             alert('탭 내용을 로드하는 중에 오류가 발생했습니다.');
+        }
+    });
+}
+var _accountList = function(){
+		
+	var usrId = localStorage.getItem("usrId");
+	var logTp = localStorage.getItem("logTp");
+	var resultData = {};
+	resultData.usrId = usrId;
+	resultData.logTp = logTp;
+	$.ajax({
+		url : "/api/mypage/profile/list",
+	    type: 'POST',
+        data: JSON.stringify(resultData), // form 데이터를 JSON 문자열로 변환하여 전송
+        contentType: 'application/json',
+	}).done(function(data){
+			
+		if(data.code === 'success'){
+			 var usrGrade = data.result.usrGrade;
+	  		$('#levelNumber').text(usrGrade);
+	  	
+		}else{
+			alert(data.msg);
+		}
+	}).fail(function(xhr, textStatus, errorThrowna) {
+       if (xhr.status === 400) {
+            // HTTP 상태 코드가 400인 경우 처리
+            var errorMessage = xhr.responseJSON.msg; // 혹은 다른 방식으로 오류 메시지 추출
+            alert(errorMessage);
+        } else {
         }
     });
 }
