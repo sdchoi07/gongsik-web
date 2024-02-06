@@ -1,64 +1,93 @@
-var init = function () {
-	
-	
-	//유저정보
-	_accountList();
-	
-	//주문목록조회
-	_orderList();
-	
+var orderListGrid = document.querySelector('#orderGrid');
+var gridOptions; // 전역 변수로 변경
+var gridApi; // 전역 변수로 변경
 
+var init = function () {
+    // 유저 정보
+    _accountList();
+
+    // Ag-Grid 초기화
+    initGrid();
+
+    // 주문 목록 조회
+    _orderList();
+
+    // 검색 버튼 클릭 이벤트 핸들러 등록
+    $('#searchBtn').on('click', function (event) {
+        event.preventDefault();
+        _orderList();
+    });
 }
 
-		var gridDiv = document.querySelector('#orderGrid');
-		var gridOptions = {
-			defaultColDef: {
-			    // 기본적으로 모든 열에 적용되는 속성을 정의합니다.
-			    sortable: true, // 열 정렬 허용
-			    filter: true,   // 열 필터링 허용
-			    resizable: true, // 열 크기 조절 허용
-			    width: 150,      // 열의 기본 너비
-			  },
-		  columnDefs: [
-		    { headerName: '', field: '' },
-		    { headerName: '사진', field: 'itemPic' },
-		    { headerName: '목록', field: 'itemNm' },
-		    { headerName: '개수', field: 'itemCnt' },
-		    { headerName: '주문상태', field: 'orderSt' },
-		  ],
-		  rowData: [
-		    { make: 'Toyota', model: 'Celica', price: 35000 },
-		    // 데이터 계속 추가
-		  ],
-		};
-		
-		new agGrid.Grid(gridDiv, gridOptions);
+var initGrid = function () {
+    // Ag-Grid 초기화 옵션 설정
+    gridOptions = {
+        statusBar: {
+            statusPanels: [
+                { statusPanel: 'agTotalRowCountComponent', align: 'center' },
+                // 다른 상태 패널 추가 가능
+            ]
+        },
+        columnDefs: [
+            {
+                maxWidth: 5,
+                headerCheckboxSelection: true,
+                checkboxSelection: true,
+            },
+            { headerName: '', field: '' },
+            { headerName: '사진', field: 'itemPic', autoSize: true },
+            { headerName: '목록', field: 'itemNm', autoSize: true },
+            { headerName: '개수', field: 'itemCnt', autoSize: true },
+            { headerName: '주문상태', field: 'orderSt', autoSize: true },
+        ],
+        defaultColDef: {
+            flex: 1,
+            minWidth: 200,
+            sortable: true,
+            resizable: true,
+            editable: true,
+            floatingFilter: true,
+        },
+        rowSelection: 'multiple',
+        editType: 'fullRow',
+        onSelectionChanged: function () {
+            // 선택 변경이 발생했을 때의 동작
+        }
+    };
 
+    // Ag-Grid 초기화
+    gridApi = agGrid.createGrid(orderListGrid, gridOptions);
+}
 
-var _orderList = function(){
-	$.ajax({
-		url : "/api/mypage/orderList",
-	    type: 'POST',
-        data: JSON.stringify(resultData), // form 데이터를 JSON 문자열로 변환하여 전송
+var _orderList = function () {
+    var resultData = {};
+    var usrId = localStorage.getItem("usrId");
+    var orderDt = $('#selectDate').val();
+    resultData.usrId = usrId;
+    resultData.orderDt = orderDt;
+    $.ajax({
+        url: '/api/mypage/order/orderList',
+        type: 'POST',
+        data: JSON.stringify(resultData),
         contentType: 'application/json',
-	}).done(function(data){
-			
-		if(data.code === 'success'){
-			 var usrGrade = data.result.usrGrade;
-	  		$('#levelNumber').text(usrGrade);
-	  	
-		}else{
-			alert(data.msg);
-		}
-	}).fail(function(xhr, textStatus, errorThrowna) {
-       if (xhr.status === 400) {
+    }).done(function (data) {
+        console.log("data : " + data.result.content);
+        console.log("dctna : " + data.cnt);
+
+        // Ag-Grid의 행 데이터 설정
+        gridApi.setGridOption('rowData', data.result.content);
+
+    }).fail(function (xhr, textStatus, errorThrowna) {
+        if (xhr.status === 400) {
             // HTTP 상태 코드가 400인 경우 처리
-            var errorMessage = xhr.responseJSON.msg; // 혹은 다른 방식으로 오류 메시지 추출
+            var errorMessage = xhr.responseJSON.msg;
             alert(errorMessage);
         } else {
+            // 그 외의 경우 처리
         }
     });
 }
+
 $(document).ready(function () {
     init();
 });

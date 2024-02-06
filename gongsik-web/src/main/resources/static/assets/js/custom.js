@@ -277,6 +277,9 @@ var _sexChkBox = function(){
 	   });
 }
 
+
+//그리드
+
 $(document).ready(function() {
 	useCachedData();
 });

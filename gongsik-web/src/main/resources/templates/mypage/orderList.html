@@ -1,34 +1,38 @@
 <head>
-	<script th:src="@{/assets/js/mypage/orderList.js}"></script>
+    <script th:src="@{/assets/js/mypage/orderList.js}"></script>
 </head>
 
-	<th:block th:fragment="mypage">
-		<label class="form-label" style="font-size: 30px; font-family: 'Noto Sans KR', sans-serif;">주문 내역</label>
-		<div class="container py-5 " style="padding-top: 30px;">
-				  <div class="row mt-3">
-				    <div class="col-md-6">
-				      <p>1달 이내 주문 내역</p>
-				    </div>
-				    <div class="col-md-6">
-				      <div class="input-group">
-				        <label class="input-group-text" for="selectDate">날짜 선택</label>
-				        <select class="form-select" id="selectDate">
-				          <!-- 날짜 옵션 추가 (예시로 1월부터 12월까지) -->
-				          <option value="1">최근 1개월</option>
-				          <option value="2">최근 3개월</option>
-				          <option value="3">최근 6개월</option>
-				          <option value="4">최근 1년</option>
-				        </select>
-				      </div>
-				    </div>
-				  </div>
-				
-				
-				<div id="orderGrid" style="height: 500px;" class="ag-theme-alpine mt-3"></div>
+<th:block th:fragment="mypage">
+    <label class="form-label" style="font-size: 30px; font-family: 'Noto Sans KR', sans-serif;">주문 내역</label>
+    <div class="container py-5 " style="padding-top: 30px;">
+        <div class="row mt-3">
+            <div class="col-md-6">
+                <p>1달 이내 주문 내역</p>
+            </div>
+            <div class="col-md-3 offset-md-2" style="left:10px">
+                <div class="input-group">
+                    <label class="input-group-text" for="selectDate">날짜 </label>
+                    <select class="form-select" id="selectDate">
+                        <!-- 날짜 옵션 추가 (예시로 1월부터 12월까지) -->
+                        <option value="1">최근 1개월</option>
+                        <option value="2">최근 3개월</option>
+                        <option value="3">최근 6개월</option>
+                        <option value="4">최근 1년</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <!-- 조회 버튼 추가 -->
+                <button type="button" class="btn btn-primary border-0 fw-bold" id="searchBtn" 
+                style="background-color: #000000; font-family: 'Noto Sans KR', sans-serif;">조회</button>
+            </div>
+        </div>
 
-			<div class="col-md-10 col-lg-5 col-xl-2 mt-3 ml-auto" style="left:15px">
-			    <button type="submit" class="btn btn-primary btn-xg btn-block border-0 fw-bold" id="modifyBtn"
-			            style="background-color: #000000; font-family: 'Noto Sans KR', sans-serif; height: 40px;">주문 취소</button>
-			</div>
-			</div>
-	</th:block>
+        <div id="orderGrid" style="height: 500px;" class="ag-theme-alpine mt-3"></div>
+
+        <div class="col-md-10 col-lg-5 col-xl-2 mt-3 ml-auto" style="left: 15px;">
+            <button type="submit" class="btn btn-primary btn-xg btn-block border-0 fw-bold" id="modifyBtn"
+                    style="background-color: #000000; font-family: 'Noto Sans KR', sans-serif; height: 40px;">주문 취소</button>
+        </div>
+    </div>
+</th:block>
