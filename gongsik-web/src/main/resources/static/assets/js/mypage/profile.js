@@ -1,8 +1,9 @@
+
 var _init = function () {
 	
 	
 	//유저정보
-	_accountList();
+	_accountListProfile();
 	
 	//휴대전화 
 	_usrPhChk();
@@ -38,8 +39,8 @@ var _init = function () {
 	
 }
 
-var _accountList = function(){
-		
+var _accountListProfile = function(){
+    var token = localStorage.getItem("accessToken");
 	var usrId = localStorage.getItem("usrId");
 	var logTp = localStorage.getItem("logTp");
 	var resultData = {};
@@ -49,6 +50,9 @@ var _accountList = function(){
 		url : "/api/mypage/profile/list",
 	    type: 'POST',
         data: JSON.stringify(resultData), // form 데이터를 JSON 문자열로 변환하여 전송
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         contentType: 'application/json',
 	}).done(function(data){
 			
@@ -178,6 +182,9 @@ var _modifyBtn = function(){
 	$.ajax({
 		url : "/api/mypage/profile/modify",
 	    type: 'POST',
+	    headers: {
+            'Authorization': 'Bearer ' + token
+        },
         data: JSON.stringify(modifyData), // form 데이터를 JSON 문자열로 변환하여 전송
         contentType: 'application/json',
 	}).done(function(data){

@@ -1,6 +1,5 @@
 var _main = function() {
 
-    
 	$('#usrBtn').on('click',function(event){
 		event.preventDefault();
 		_usrBtn();
@@ -30,6 +29,35 @@ var _main = function() {
 	
 }
 
+var checkTokenExpiry = function(){
+	var accessToken = localStorage.getItem("accessToken");
+
+    if (accessToken) {
+        var decodedToken = parseJwt(accessToken);
+        var currentTime = Math.floor(Date.now() / 1000); // 현재 시간(초 단위)
+		
+        if (decodedToken.exp && decodedToken.exp < currentTime) {
+            // 토큰이 만료되었으면 로컬 스토리지에서 제거
+            localStorage.removeItem("accessToken");
+        	localStorage.removeItem("usrId");
+            console.log("토큰이 만료되었습니다. 로그아웃 처리 등을 수행할 수 있습니다.");
+            var msg = "로그인 다시 해주시길 바랍니다.";
+            if(confirm(msg)){
+				window.location.href="/account/login";
+			}
+        }
+    }
+}
+
+function parseJwt(token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+}
 //탭이동
 var _tabList = function(currentUrl) {
     var url = currentUrl.split('/').pop();
@@ -154,3 +182,4 @@ $(document).ready(function() {
 	_main();
 	 
 });
+setInterval(checkTokenExpiry, 10 * 1000);

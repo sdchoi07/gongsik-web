@@ -1,38 +1,143 @@
 <head>
-    <script th:src="@{/assets/js/mypage/orderList.js}"></script>
+	<script th:src="@{/assets/js/mypage/orderList.js}"></script>
+	<style>
+		.product-image {
+			max-width: 100px;
+			max-height: 100px;
+			width: 100%;
+			height: auto;
+			vertical-align: middle;
+			/* 이미지를 수직으로 중앙 정렬 */
+		}
+
+		th {
+			text-align: center;
+		}
+
+
+		.itemNm {
+			margin-left: 10px;
+			display: inline-block;
+			vertical-align: middle;
+			/* 브랜드 이름을 수직으로 중앙 정렬 */
+		}
+
+		.n-prd-row {
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			/* 이미지와 브랜드 이름을 왼쪽 정렬 */
+		}
+
+		.pagination {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-top: 20px;
+		}
+
+		.pagination button {
+			background-color: white;
+			border: 2px solid rgba(19, 195, 39, 0.25);
+			color: black;
+			;
+			padding: 10px 20px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			cursor: pointer;
+			border-radius: 5px;
+
+		}
+
+		.pagination button:hover {
+			background-color: rgba(19, 195, 39, 0.25);
+			color: white;
+
+		}
+
+		#prevBtn:hover::before {
+			color: white;
+		}
+
+		#prevBtn::before {
+			content: '\003C';
+			/* < 기호 추가 */
+			color: black;
+			margin-right: 5px;
+		}
+
+
+		#nextBtn::after {
+			content: '\003E';
+			/* > 기호 추가 */
+			color: black;
+			margin-left: 5px;
+		}
+
+		#nextBtn:hover::after {
+			color: white;
+		}
+	</style>
+
 </head>
 
 <th:block th:fragment="mypage">
-    <label class="form-label" style="font-size: 30px; font-family: 'Noto Sans KR', sans-serif;">주문 내역</label>
-    <div class="container py-5 " style="padding-top: 30px;">
-        <div class="row mt-3">
-            <div class="col-md-6">
-                <p>1달 이내 주문 내역</p>
-            </div>
-            <div class="col-md-3 offset-md-2" style="left:10px">
-                <div class="input-group">
-                    <label class="input-group-text" for="selectDate">날짜 </label>
-                    <select class="form-select" id="selectDate">
-                        <!-- 날짜 옵션 추가 (예시로 1월부터 12월까지) -->
-                        <option value="1">최근 1개월</option>
-                        <option value="2">최근 3개월</option>
-                        <option value="3">최근 6개월</option>
-                        <option value="4">최근 1년</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-1">
-                <!-- 조회 버튼 추가 -->
-                <button type="button" class="btn btn-primary border-0 fw-bold" id="searchBtn" 
-                style="background-color: #000000; font-family: 'Noto Sans KR', sans-serif;">조회</button>
-            </div>
-        </div>
+	<label class="form-label" style="font-size: 30px; font-family: 'Noto Sans KR', sans-serif;">주문 내역</label>
+	<div class="container py-6 " style="padding-top: 30px;">
+		<div class="row mt-3">
+			<div class="col-md-6">
+				<p id="selectedDateText">1달 이내 주문 내역</p>
+			</div>
+			<div class="col-md-3 offset-md-2" style="left:10px">
+				<div class="input-group">
+					<label class="input-group-text" for="selectDate">날짜 </label>
+					<select class="form-select" id="selectDate">
+						<!-- 날짜 옵션 추가 (예시로 1월부터 12월까지) -->
+						<option value="1">최근 1개월</option>
+						<option value="2">최근 3개월</option>
+						<option value="3">최근 6개월</option>
+						<option value="4">최근 1년</option>
+					</select>
+				</div>
+			</div>
+			<div class="col-md-1">
+				<!-- 조회 버튼 추가 -->
+				<button type="button" class="btn btn-primary border-0 fw-bold" id="searchBtn"
+					style="background-color: #000000; font-family: 'Noto Sans KR', sans-serif;">조회</button>
+			</div>
+		</div>
 
-        <div id="orderGrid" style="height: 500px;" class="ag-theme-alpine mt-3"></div>
+		<!--        <div id="orderGrid" style="height: 500px;" class="ag-theme-alpine mt-3"></div>-->
 
-        <div class="col-md-10 col-lg-5 col-xl-2 mt-3 ml-auto" style="left: 15px;">
-            <button type="submit" class="btn btn-primary btn-xg btn-block border-0 fw-bold" id="modifyBtn"
-                    style="background-color: #000000; font-family: 'Noto Sans KR', sans-serif; height: 40px;">주문 취소</button>
-        </div>
-    </div>
+		<table class="table table-col n-order-view mt-3">
+			<colgroup>
+				<col style="width:auto">
+				<col style="width:15%">
+				<col style="width:20%">
+				<col style="width:25%">
+			</colgroup>
+			<thead>
+				<tr>
+					<th scope="col">상품정보</th>
+					<th scope="col">주문일자</th>
+					<th scope="col">주문금액(수량)</th>
+					<th scope="col" colspan="2">주문상태</th>
+				</tr>
+			</thead>
+			<tbody id="orderTableBody" name="orderTableBody">
+
+			</tbody>
+		</table>
+		<div class="pagination">
+			<button id="prevBtn">이전</button>
+			<button id="nextBtn">다음</button>
+		</div>
+		<!--        <div class="col-md-10 col-lg-5 col-xl-2 mt-3 ml-auto" style="left: 15px;">-->
+		<!--            <button type="submit" class="btn btn-primary btn-xg btn-block border-0 fw-bold" id="modifyBtn"-->
+		<!--                    style="background-color: #000000; font-family: 'Noto Sans KR', sans-serif; height: 40px;">주문 취소</button>-->
+		<!--        </div>-->
+	</div>
 </th:block>

@@ -28,6 +28,7 @@ var _accountList = function(){
 		
 	var usrId = localStorage.getItem("usrId");
 	var logTp = localStorage.getItem("logTp");
+	var token = localStorage.getItem("accessToken");
 	var resultData = {};
 	resultData.usrId = usrId;
 	resultData.logTp = logTp;
@@ -35,6 +36,9 @@ var _accountList = function(){
 		url : "/api/mypage/profile/list",
 	    type: 'POST',
         data: JSON.stringify(resultData), // form 데이터를 JSON 문자열로 변환하여 전송
+        headers: {
+            'Authorization': 'Bearer ' + token
+        },
         contentType: 'application/json',
 	}).done(function(data){
 			

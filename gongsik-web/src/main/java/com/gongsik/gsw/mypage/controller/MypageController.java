@@ -23,5 +23,10 @@ public class MypageController {
 	public String orderList() {
 		return "mypage/orderList";
 	}
+	
+	@GetMapping("/delvList")
+	public String delvList() {
+		return "mypage/delvList";
+	}
 
 }
