@@ -1,70 +1,98 @@
 <head>
 	<script th:src="@{/assets/js/mypage/delvList.js}"></script>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 	<style>
-	
+		.form-control {
+			border-top: none;
+			border-right: none;
+			border-left: none;
+			border-radius: 0;
+			/* 선택적으로 테두리 모서리를 둥글게 하지 않으려면 이 줄을 제거하세요. */
+			background-color: white;
+		}
+		::placeholder {
+		    font-size: 80%;
+		}
 	</style>
 </head>
 <th:block th:fragment="mypage">
 	<label class="form-label" style="font-size: 30px; font-family: 'Noto Sans KR', sans-serif;">배송지 관리</label>
-	<div class="container py-5 " style="padding-top: 30px;">
-		<div class ="col-xl-12 mb-4" style ="background-color: lightgoldenrodyellow; height: 100px; padding-top: 20px;">
-			<div data-name="address_form_wrapper">
-				<ul data-name="address_list" class="list-unstyled">
-					<li class="px-[18px] first:border-t border-b border-gray-e9">
-						<div class="d-flex justify-content-between align-items-center" data-name="address_wrapper">
-								<div class="d-flex flex-column" data-name="address_info">
-								    <div class="info mb-2">
-								        <span data-name="receiving_name" class="font-weight-bold">집</span>
-								        <span data-name="phone" class="inline-block ml-[12px] font-weight-bold">010-9403-6242</span>
-								    </div>
-								    <div class="address">
-								        <span>[02033] 서울 중랑구 동일로 946 </span>
-								    </div>
-								</div>
-								<div class="d-flex align-items-center ml-auto mt-2">
-								    <span class="text-footer10 font-weight-bold mr-5">기본배송지</span>
-								    <!-- 조회 버튼 추가 -->
-								    <button type="button" class="btn btn-primary border-0 fw-bold" id="searchBtn" style="background-color: #000000; font-family: 'Noto Sans KR', sans-serif; width: 60px;">수정</button>
-								</div>
-	
-	
-						</div>
-					</li>
-				</ul>
-			</div>
-		</div>
-		<div class ="col-xl-12 mb-4" style ="background-color: lightgoldenrodyellow; height: 100px; padding-top: 20px;">
-			<div data-name="address_form_wrapper">
-				<ul data-name="address_list" class="list-unstyled">
-					<li class="px-[18px] first:border-t border-b border-gray-e9">
-						<div class="d-flex justify-content-between align-items-center" data-name="address_wrapper">
-								<div class="d-flex flex-column" data-name="address_info">
-								    <div class="info mb-2">
-								        <span data-name="receiving_name" class="font-weight-bold">집</span>
-								        <span data-name="phone" class="inline-block ml-[12px] font-weight-bold">010-9403-6242</span>
-								    </div>
-								    <div class="address">
-								        <span>[02033] 서울 중랑구 동일로 946 </span>
-								    </div>
-								</div>
-								<div class="d-flex align-items-center ml-auto mt-2">
-								    <span class="text-footer10 font-weight-bold mr-5">기본배송지</span>
-								    <!-- 조회 버튼 추가 -->
-								    <button type="button" class="btn btn-primary border-0 fw-bold" id="searchBtn" style="background-color: #000000; font-family: 'Noto Sans KR', sans-serif; width: 60px;">수정</button>
-								</div>
-	
-	
-						</div>
-					</li>
-				</ul>
-			</div>
-		</div>
+	<div class="container py-5 delvList" style="padding-top: 30px;">
 
 
-		<div class="d-flex justify-content-end">
-		    <!-- 조회 버튼 추가 -->
-		    <button type="button" class="btn btn-primary border-0 fw-bold" id="searchBtn" style="background-color: #000000; font-family: 'Noto Sans KR', sans-serif;">배송지 추가</button>
+
+	</div>
+
+	<div class="modal fade" id="delvAdd" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+		aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<!-- 닫기 버튼 -->
+					<span class="form-label fw-bold" style="font-size: 20px; font-family: 'Noto Sans KR', sans-serif;">새 배송지
+						추가</span>
+						<button onclick="closeModal()" class="close" aria-label="Close"style="position: relative; top: -10px"><span aria-hidden="true">&times;</span></button>
+					</button>
+				</div>
+				<div class="modal-body mt-3">
+					<div class="container py-2 " >
+						<div class="col-md-12">
+							<form id="saveForm">
+								<!-- 이름 -->
+								<div class="form-group">
+									<input id="addressNm" name="addressNm" type="addressNm" class="form-control"
+										style="background-color: white;" placeholder="이름을 입력해주세요.">
+								</div>
+
+								<!-- 휴대전화 -->
+								<div class="form-group mt-3">
+									<div class="input-group">
+										<input id="phoneNumber" name="phoneNumber" type="phoneNumber"
+											class="form-control" placeholder="핸드폰 번호 입력해주세요.">
+									</div>
+								</div>
+
+								<!-- 성별 -->
+								<label class="form-label mt-4"
+									style="font-size: 12px; font-family: 'Noto Sans KR', sans-serif;">주소</label>
+								<div class="form-group">
+									<div class="input-group">
+										<input id="zipCode" name="zipCode" type="zipCode" readonly="ture"
+											class="form-control" placeholder="우편번호 검색">
+										<div class="input-group-append">
+											<button class="btn btn-dark rounded-1" type="button" onclick="searchAddress()"
+												style="font-size: 12px; width: 110px; height:30px;top:8px">우편번호 찾기</button>
+										</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<input id="address" name="address" type="address" class="form-control" readonly="true"
+										style="background-color: white;" placeholder="주소">
+								</div>
+								<div class="form-group">
+									<input id="addressDetail" name="addressDetail" type="addressDetail" class="form-control" readonly="true"
+										style="background-color: white;" placeholder="상세 주소 입력">
+								</div>
+
+								<div class="form-check mt-4">
+									<input class="form-check-input" type="checkbox" value="Y" id="addressYn" name ="addressYn">
+									<label class="form-check-label" for="defaultCheck1">
+										기본 배송지 선택
+									</label>
+								</div>
+
+								<button type="button" class="btn btn-primary btn-xg btn-block border-0 fw-bold mt-4"
+									id="saveBtn"
+									style="background-color: #000000; font-family: 'Noto Sans KR', sans-serif; height: 40px;">저장하기
+								</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
+
+
 </th:block>

@@ -64,3 +64,28 @@ background: #ccc;
 .form-floating label {
   color: #999; 
 }
+
+
+/* 모달 스타일 */
+.modal-header {
+    width: 100%; /* 최대 너비를 지정할 수도 있습니다. */
+}
+
+.modal-content {
+	width: 650px;
+	height: 650px;
+}
+
+#delvAdd {
+    top: 80px;
+    left: -3%;
+}
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    color: #555;
+}
+

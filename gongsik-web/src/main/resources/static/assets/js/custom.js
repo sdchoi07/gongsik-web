@@ -277,6 +277,12 @@ var _sexChkBox = function(){
 	   });
 }
 
+function closeModal() {
+    $('#delvAdd').modal('hide'); // Bootstrap을 사용하는 경우
+}
+function openModal() {
+     $('#delvAdd').modal("show"); // Bootstrap을 사용하는 경우
+}
 
 //그리드
 
