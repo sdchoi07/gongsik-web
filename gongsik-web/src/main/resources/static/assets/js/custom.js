@@ -281,8 +281,16 @@ function closeModal() {
     $('#delvAdd').modal('hide'); // Bootstrap을 사용하는 경우
 }
 function openModal() {
-     $('#delvAdd').modal("show"); // Bootstrap을 사용하는 경우
+	$('#addressNm').val('');
+	$('#phoneNumber').val('');
+	$('#zipCode').val('');
+	$('#address').val('');
+	$('#addressDetail').val('');
+	$('#addressYn').prop('checked', false);
+	$('#modalDelvAresSeq').val(0);
+    $('#delvAdd').modal("show"); // Bootstrap을 사용하는 경우
 }
+
 
 //그리드
 

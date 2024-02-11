@@ -14,12 +14,14 @@
 		::placeholder {
 		    font-size: 80%;
 		}
+		.btn-link {
+		    text-decoration: none !important;
+		}
 	</style>
 </head>
 <th:block th:fragment="mypage">
 	<label class="form-label" style="font-size: 30px; font-family: 'Noto Sans KR', sans-serif;">배송지 관리</label>
 	<div class="container py-5 delvList" style="padding-top: 30px;">
-
 
 
 	</div>
@@ -29,6 +31,7 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
+					<input id="modalDelvAresSeq" name="modalDelvAresSeq" type="hidden" value="">
 					<!-- 닫기 버튼 -->
 					<span class="form-label fw-bold" style="font-size: 20px; font-family: 'Noto Sans KR', sans-serif;">새 배송지
 						추가</span>
@@ -48,8 +51,8 @@
 								<!-- 휴대전화 -->
 								<div class="form-group mt-3">
 									<div class="input-group">
-										<input id="phoneNumber" name="phoneNumber" type="phoneNumber"
-											class="form-control" placeholder="핸드폰 번호 입력해주세요.">
+										<input id="phoneNumber" name="phoneNumber" type="phoneNumber" maxlength="11"
+											class="form-control" placeholder="핸드폰 번호 입력해주세요.('-'제외)">
 									</div>
 								</div>
 
@@ -58,7 +61,7 @@
 									style="font-size: 12px; font-family: 'Noto Sans KR', sans-serif;">주소</label>
 								<div class="form-group">
 									<div class="input-group">
-										<input id="zipCode" name="zipCode" type="zipCode" readonly="ture"
+										<input id="zipCode" name="zipCode" readonly="true"
 											class="form-control" placeholder="우편번호 검색">
 										<div class="input-group-append">
 											<button class="btn btn-dark rounded-1" type="button" onclick="searchAddress()"
@@ -71,7 +74,7 @@
 										style="background-color: white;" placeholder="주소">
 								</div>
 								<div class="form-group">
-									<input id="addressDetail" name="addressDetail" type="addressDetail" class="form-control" readonly="true"
+									<input id="addressDetail" name="addressDetail" type="addressDetail" class="form-control"
 										style="background-color: white;" placeholder="상세 주소 입력">
 								</div>
 
