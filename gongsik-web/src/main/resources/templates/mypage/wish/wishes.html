@@ -1,0 +1,58 @@
+
+<th:block th:fragment="usrwish">
+<label class="form-label" style="font-size: 30px; font-family: 'Noto Sans KR', sans-serif;">등급</label>
+	<div class="container py-2" style="background-color: rgba(19, 195, 39, 0.25);">
+		<div class="row gx-1">
+			<!-- 두 번째 컬럼 -->
+			<div class="col-xl-12">
+				<!-- 중복 코드 최소화 -->
+				<div class="bg-white shadow d-flex " style="height: 300px;  width: 100%;">
+					<div class="d-flex justify-content-center align-items-center" style="width: 100%;">
+						<div class="flex-shrink-0 btn-lg-square rounded-circle bg-light">
+							<i class="fa fa-users text-primary"></i>
+						</div>
+						<div class="col-xl-12 text-center">
+							<!-- 제목과 내용의 차이만 처리 -->
+							<h5 style="font-family: 'Noto Sans KR', sans-serif; font-size: 30px;"><span id="gradeUsrNm"></span>님의 회원등급</h5>
+							<!-- img 태그를 이동시켰습니다 -->
+							<div class="col-xl-12 mt-4 d-flex  justify-content-between  align-items-center">
+								<div class="image-with-text" id="level1">
+									<img class="img-fluid product-image">
+									<h2>Level 1</h2>
+								</div>
+								<div class="image-with-text" id="level2">
+									<img class="img-fluid product-image">
+									<h2>Level 2</h2>
+								</div>
+								<div class="image-with-text" id="level3">
+									<img class="img-fluid product-image">
+									<h2>Level 3</h2>
+								</div>
+								<div class="image-with-text" id="level4">
+									<img class="img-fluid product-image">
+									<h2>Level 4 </h2>
+								</div>
+								<div class="image-with-text" id="level5">
+									<img  class="img-fluid product-image">
+									<h2>Level 5</h2>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<label class="form-label mt-5" style="font-size: 30px; font-family: 'Noto Sans KR', sans-serif;">등급별 혜택</label>
+    <div class="row gx-1">
+        <!-- 두 번째 컬럼 -->
+<div class="col-md-12">
+    <!-- 중복 코드 최소화 -->
+    <div class="gradeContainer">
+    </div>
+</div>
+</div>
+</th:block>

@@ -1,0 +1,76 @@
+<head>
+	<script th:src="@{/assets/js/mypage/usrPoint.js}"></script>
+	<style>
+		.form-control {
+			border-top: none;
+			border-right: none;
+			border-left: none;
+			border-radius: 0;
+			/* 선택적으로 테두리 모서리를 둥글게 하지 않으려면 이 줄을 제거하세요. */
+			background-color: white;
+		}
+		 .form-control input:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+	</style>
+</head>
+<th:block th:fragment="mypage">
+	<label class="form-label" style="font-size: 30px; font-family: 'Noto Sans KR', sans-serif;">포인트</label>
+	<div class="container py-5" style="padding-top: 30px;">
+		<div class="col-xl-12" data-wow-delay="0.3s"
+			style="visibility: visible; animation-delay: 0.3s; animation-name: fadeIn;">
+			<!-- 중복 코드 최소화 -->
+			<div class="bg-white shadow d-flex align-items-center h-90 px-1"
+				style="height: 140px; margin-top: 10px; width: 100%;">
+				<div class="d-flex justify-content-center align-items-center" style="width: 100%;">
+					<div class="flex-shrink-0 btn-lg-square rounded-circle bg-light">
+						<i class="fa fa-users text-primary"></i>
+					</div>
+					<div class="text-center">
+						<!-- 제목과 내용의 차이만 처리 -->
+						<h4 style="color: #a9a9a9; font-size: 100%;"><span id="usrNm"></span> 님이 보유한 포인트</h4>
+						<span style="font-family: 'Noto Sans KR', sans-serif; font-size: 50px;"><span id="pointTotal">0</span>P</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-xl-12 mt-5">
+			<label class="form-label" style="font-size: 15px; font-family: 'Noto Sans KR', sans-serif;">포인트 이용내역</label>
+			<div class="d-flex justify-content-end">
+				<div class="col-md-2" style="left:20px">
+					<div class="input-group">
+						<label class="input-group-text" for="selectDate1">분류</label>
+						<select class="form-select" id="pointSt">
+							<option value="A">전체</option>
+							<option value="S">적립</option>
+							<option value="U">사용</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="col-md-3" style="left:10px">
+					<div class="input-group">
+						<label class="input-group-text" for="selectDate2">기간</label>
+						<select class="form-select" id="searchDate">
+							<option value="1">최근 1개월</option>
+							<option value="2">최근 3개월</option>
+							<option value="3">최근 6개월</option>
+							<option value="4">최근 1년</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-md-1">
+				<!-- 조회 버튼 추가 -->
+				<button type="button" class="btn btn-primary border-0 fw-bold" id="searchBtn"
+					style="background-color: #000000; font-family: 'Noto Sans KR', sans-serif;">조회</button>
+			</div>
+			</div>
+		</div>
+		<div class="col-md-12 mt-5 usrPoint">
+			<div class="form-group">
+				<input id="pointInfo" name="pointInfo" type="pointInfo" class="form-control" style="background-color: white;">
+			</div>
+		</div>
+	</div>
+</th:block>

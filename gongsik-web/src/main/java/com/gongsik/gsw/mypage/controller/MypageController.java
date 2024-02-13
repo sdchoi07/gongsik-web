@@ -11,7 +11,7 @@ public class MypageController {
 	
 	@GetMapping("/profile")
 	public String login() {
-		return "mypage/profile";
+		return "mypage/usrProfile";
 	}
 	
 	@GetMapping("/usrGrade")
@@ -21,12 +21,31 @@ public class MypageController {
 	
 	@GetMapping("/orderList")
 	public String orderList() {
-		return "mypage/orderList";
+		return "mypage/usrOrderList";
 	}
 	
 	@GetMapping("/delvList")
 	public String delvList() {
-		return "mypage/delvList";
+		return "mypage/usrDelvList";
 	}
-
+	
+	@GetMapping("/usrPoint")
+	public String usrPoint() {
+		return "mypage/usrPoint";
+	}
+	
+	@GetMapping("/usrWish")
+	public String usrWish() {
+		return "mypage/usrWish";
+	}
+	
+	@GetMapping("/wishes")
+	public String wishes() {
+		return "mypage/wishes";
+	}
+	
+	@GetMapping("/likes")
+	public String likes() {
+		return "mypage/likes";
+	}
 }
