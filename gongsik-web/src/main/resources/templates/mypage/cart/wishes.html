@@ -1,0 +1,90 @@
+<script th:src="@{/assets/js/mypage/cart/wishes.js}"></script>
+<style>
+	
+		th {
+			text-align: center;
+		}
+			.pagination {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-top: 20px;
+		}
+
+		.pagination button {
+			background-color: white;
+			border: 2px solid rgba(19, 195, 39, 0.25);
+			color: black;
+			;
+			padding: 10px 20px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			cursor: pointer;
+			border-radius: 5px;
+
+		}
+
+		.pagination button:hover {
+			background-color: rgba(19, 195, 39, 0.25);
+			color: white;
+
+		}
+
+		#prevBtn:hover::before {
+			color: white;
+		}
+
+		#prevBtn::before {
+			content: '\003C';
+			/* < 기호 추가 */
+			color: black;
+			margin-right: 5px;
+		}
+
+
+		#nextBtn::after {
+			content: '\003E';
+			/* > 기호 추가 */
+			color: black;
+			margin-left: 5px;
+		}
+
+		#nextBtn:hover::after {
+			color: white;
+		}
+	</style>
+</style>
+<th:block th:fragment="usrwish">
+		
+	<div class="row gx-1 mt-2">
+			<table class="table table-col n-order-view mt-3">
+			<colgroup>
+				<col style="width:15%">
+				<col style="width:auto">
+				<col style="width:20%">
+				<col style="width:25%">
+			</colgroup>
+			<thead>
+				<tr>
+					<th scope="col"></th>
+					<th scope="col">상품정보</th>
+					<th scope="col">수량</th>
+					<th scope="col" colspan="2">가격</th>
+				</tr>
+			</thead>
+			<tbody id="orderTableBody" name="orderTableBody">
+
+			</tbody>
+		</table>
+		<div class="pagination">
+			<button id="prevBtn">이전</button>
+			<button id="nextBtn">다음</button>
+		</div>
+
+	</div>
+
+
+</th:block>

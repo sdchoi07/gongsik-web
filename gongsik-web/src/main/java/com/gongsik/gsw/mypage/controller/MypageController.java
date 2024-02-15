@@ -34,18 +34,18 @@ public class MypageController {
 		return "mypage/usrPoint";
 	}
 	
-	@GetMapping("/usrWish")
+	@GetMapping("/usrCart")
 	public String usrWish() {
-		return "mypage/usrWish";
+		return "mypage/usrCart";
 	}
 	
-	@GetMapping("/wishes")
+	@GetMapping("/cart/wishes")
 	public String wishes() {
-		return "mypage/wishes";
+		return "mypage/cart/wishes";
 	}
 	
-	@GetMapping("/likes")
+	@GetMapping("/cart/likes")
 	public String likes() {
-		return "mypage/likes";
+		return "mypage/cart/likes";
 	}
 }

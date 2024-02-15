@@ -58,52 +58,6 @@ function parseJwt(token) {
 
     return JSON.parse(jsonPayload);
 }
-//탭이동
-var _tabList = function(currentUrl) {
-    var url = currentUrl.split('/').pop();
-    if (url === 'mypage') {
-        var firstTabHref = $('.list-group-item:first').attr('href');
-
-        // 처음 로딩될 때 activeTabId가 없을 경우에는 첫 번째 탭을 보여줌
-        if (!localStorage.getItem('activeTabId')) {
-            _tabMove(firstTabHref);
-            $('.list-group-item[href="' + firstTabHref + '"]').addClass('active');
-            localStorage.setItem('activeTabId', firstTabHref);
-        } else {
-            // 저장된 탭 ID를 불러와서 해당 탭으로 전환
-            var activeTabId = localStorage.getItem('activeTabId');
-            _tabMove(activeTabId);
-            $('.list-group-item[href="' + activeTabId + '"]').addClass('active');
-        }
-
-        // 탭이 클릭되었을 때의 이벤트 처리
-        $('.list-group-item').on('click', function(e) {
-            e.preventDefault(); // 기본 동작인 페이지 이동을 막음
-            var targetUrl = $(this).attr('href'); // 클릭된 탭의 주소를 가져옴
-            _tabMove(targetUrl);
-            localStorage.setItem('activeTabId', targetUrl);
-
-            // 클릭된 탭에 active 클래스 추가, 다른 탭의 active 클래스 제거
-            $('.list-group-item').removeClass('active');
-            $(this).addClass('active');
-        });
-    }
-}
-
-//탭 이동
-var _tabMove = function (targetUrl) {
-    $.ajax({
-        url: '/mypage' + targetUrl, // 실제로는 해당 URL을 탭에 맞게 수정해야 합니다.
-        type: 'GET',
-        success: function (data) {
-            // 서버로부터 받아온 데이터로 탭 내용 업데이트
-            $('.tab-content').html(data);
-        },
-        error: function () {
-            alert('탭 내용을 로드하는 중에 오류가 발생했습니다.');
-        }
-    });
-}
 
 //인증
 var _usrBtn = function(){
@@ -177,6 +131,52 @@ function _logOut(){
     });
 }
 
+//탭이동
+var _tabList = function(currentUrl) {
+    var url = currentUrl.split('/').pop();
+    if (url === 'mypage') {
+        var firstTabHref = $('.list-group-item:first').attr('href');
+
+        // 처음 로딩될 때 activeTabId가 없을 경우에는 첫 번째 탭을 보여줌
+        if (!localStorage.getItem('activeTabId')) {
+            _tabMove(firstTabHref);
+            $('.list-group-item[href="' + firstTabHref + '"]').addClass('active');
+            localStorage.setItem('activeTabId', firstTabHref);
+        } else {
+            // 저장된 탭 ID를 불러와서 해당 탭으로 전환
+            var activeTabId = localStorage.getItem('activeTabId');
+            _tabMove(activeTabId);
+            $('.list-group-item[href="' + activeTabId + '"]').addClass('active');
+        }
+
+        // 탭이 클릭되었을 때의 이벤트 처리
+        $('.list-group-item').on('click', function(e) {
+            e.preventDefault(); // 기본 동작인 페이지 이동을 막음
+            var targetUrl = $(this).attr('href'); // 클릭된 탭의 주소를 가져옴
+            _tabMove(targetUrl);
+            localStorage.setItem('activeTabId', targetUrl);
+
+            // 클릭된 탭에 active 클래스 추가, 다른 탭의 active 클래스 제거
+            $('.list-group-item').removeClass('active');
+            $(this).addClass('active');
+        });
+    }
+}
+
+//탭 이동
+var _tabMove = function (targetUrl) {
+    $.ajax({
+        url: '/mypage' + targetUrl, // 실제로는 해당 URL을 탭에 맞게 수정해야 합니다.
+        type: 'GET',
+        success: function (data) {
+            // 서버로부터 받아온 데이터로 탭 내용 업데이트
+            $('.tab-content').html(data);
+        },
+        error: function () {
+            alert('탭 내용을 로드하는 중에 오류가 발생했습니다.');
+        }
+    });
+}
 
 $(document).ready(function() {
 	_main();

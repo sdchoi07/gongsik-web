@@ -1,0 +1,43 @@
+<head>
+		<script th:src="@{/assets/js/mypage/usrCart.js}"></script>
+		<style>
+			
+	#myTabs {
+		outline:none !important;
+        border :none !important;
+    }
+
+
+    .wishNav {
+		outline:none !important;
+        color: black; /* 비활성화된 탭의 글씨색을 검정색으로 설정 */
+        border-top :none !important;
+        border-left :none !important;
+        border-right :none !important;
+    }
+
+    .wishNav.active {
+        color: rgba(39, 123, 245, 0.6) !important; /* 활성화된 탭의 글씨색을 파란색으로 설정 */
+        border-top :none !important;
+        border-left :none !important;
+        border-right :none !important;
+        border-bottom-color: rgba(39, 123, 245, 0.4) !important; /* 활성화된 탭의 밑줄색을 파란색으로 설정 */
+    }
+</style>
+
+</head>
+
+<th:block th:fragment="mypage">
+	<div class="container mt-5 ">
+    <ul class="nav nav-tabs nav-justified wishTabs" id="myTabs">
+        <li class="nav-item ">
+            <a class="nav-link active wishNav" id="tab1-tab" data-bs-toggle="tab" href="/cart/wishes">장바구니</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link wishNav" id="tab2-tab" data-bs-toggle="tab" href="/cart/likes">좋아요</a>
+        </li>
+    </ul>
+   <div class="tab-content wish-content " layout:fragment="usrwish">
+</div>
+
+</th:block>
