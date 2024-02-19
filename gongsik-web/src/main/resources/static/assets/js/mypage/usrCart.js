@@ -1,8 +1,7 @@
-var init = function () {
+var initCart = function () {
 	
 	
 	var firstTabHref = $('.wishNav.active').attr('href');
-	 
 	_tabWishMove(firstTabHref);
 	
     // 탭이 클릭되었을 때의 이벤트 처리
@@ -25,13 +24,13 @@ var init = function () {
 
 
 var _tabWishMove = function (targetUrl) {
-	console.log("target : " + targetUrl )
     $.ajax({
         url: '/mypage' + targetUrl, // 실제로는 해당 URL을 탭에 맞게 수정해야 합니다.
         type: 'GET',
         success: function (data) {
             // 서버로부터 받아온 데이터로 탭 내용 업데이트
             $('.wish-content').html(data);
+
         },
         error: function () {
             alert('탭 내용을 로드하는 중에 오류가 발생했습니다.');
@@ -42,5 +41,5 @@ var _tabWishMove = function (targetUrl) {
 
 
 $(document).ready(function () {
-    init();
+    initCart();
 });

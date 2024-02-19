@@ -99,6 +99,8 @@ var _orderList = function () {
     var resultData = {};
 	var pageSize =  '5';
 	if(currentPage <= 0){
+		alert("조회 할 내역이 없습니다.");
+		currentPage = 1;
 		return;
 	}
     var usrId = localStorage.getItem("usrId");
@@ -140,6 +142,7 @@ var _tableData = function(data){
 	console.log(data.cnt)
 	if(data.cnt === 0){
 		alert("더 이상 조회 할 내역이 없습니다.");
+		currentPage--;
 		return;
 	}
     var tableBody = $("#orderTableBody");

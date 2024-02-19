@@ -70,7 +70,7 @@ function menus(data){
 		        }
 		        else if (data[i].menuLevelNo == 1) {
 					boolean = false;
-		            menuItem += '<li><a class="dropdown-item" href="blog-home.html" id="menuNm">' + data[i].menuNm + '</a></li>';
+		            menuItem += `<li><a class="dropdown-item" href="${data[i].menuUrl}?menuItemNo=${data[i].menuItemNo}&menuNm=${data[i].menuNm}" id="menuNm">` + data[i].menuNm + '</a></li>';
 		    	    }
 				}
 			}

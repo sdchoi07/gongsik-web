@@ -56,26 +56,25 @@
 			color: white;
 		}
 	</style>
-</style>
 <th:block th:fragment="usrwish">
-		
+	<input type="hidden" name="cartSt" id="cartSt" value ="W">
 	<div class="row gx-1 mt-2">
-			<table class="table table-col n-order-view mt-3">
+			<table class="table table-col n-wish-view mt-3">
 			<colgroup>
-				<col style="width:15%">
 				<col style="width:auto">
+				<col style="width:15%">
 				<col style="width:20%">
-				<col style="width:25%">
+				<col style="width:15%">
 			</colgroup>
 			<thead>
 				<tr>
-					<th scope="col"></th>
 					<th scope="col">상품정보</th>
 					<th scope="col">수량</th>
-					<th scope="col" colspan="2">가격</th>
+					<th scope="col" >가격</th>
+					<th scope="col" colspan="2"></th>
 				</tr>
 			</thead>
-			<tbody id="orderTableBody" name="orderTableBody">
+			<tbody id="wishTableBody" name="wishTableBody">
 
 			</tbody>
 		</table>

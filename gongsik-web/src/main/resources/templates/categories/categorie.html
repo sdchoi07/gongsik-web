@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
+
+<head>
+	<script th:src="@{/assets/js/categories/categorie.js}"></script>
+	<meta charset="EUC-KR">
+	<title th:text="${menuNm}"></title>
+	<style>
+
+		.list-group-item {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+		}
+
+		.card {
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.card-body {
+			flex-grow: 1;
+		}
+
+		.card-footer {
+			display: flex;
+			align-items: center;
+			
+		}
+
+
+		.pagination {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-top: 20px;
+		}
+
+		.pagination button {
+			background-color: white;
+			border: 2px solid rgba(19, 195, 39, 0.25);
+			color: black;
+			;
+			padding: 10px 20px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			cursor: pointer;
+			border-radius: 5px;
+
+		}
+
+		.pagination button:hover {
+			background-color: rgba(19, 195, 39, 0.25);
+			color: white;
+
+		}
+
+		#prevBtn:hover::before {
+			color: white;
+		}
+
+		#prevBtn::before {
+			content: '\003C';
+			/* < 기호 추가 */
+			color: black;
+			margin-right: 5px;
+		}
+
+
+		#nextBtn::after {
+			content: '\003E';
+			/* > 기호 추가 */
+			color: black;
+			margin-left: 5px;
+		}
+
+		#nextBtn:hover::after {
+			color: white;
+		}
+	</style>
+</head>
+
+<div layout:fragment="content">
+
+
+
+
+	<!-- Page Header Start -->
+	<input type="hidden" th:value="${menuItemNo}" id="itemKey" name="itemKey">
+<div class="container-fluid bg-secondary mb-5" style="background-image: url('/vendor/third/img/cate00.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+    <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+        <h1 class="font-weight-semi-bold text-uppercase mb-3">Our Shop</h1>
+        <div class="d-inline-flex">
+            <p class="m-0"><a href="">Home</a></p>
+            <p class="m-0 px-2">-</p>
+            <p class="m-0">Shop</p>
+        </div>
+    </div>
+</div>
+
+	<div class="container py-2">
+	<div class="d-flex align-items-left justify-content-end mb-4">
+		<div class="col-md-2" style=" width: 200px; left: 40px;">
+			<div class="input-group">
+				<select class="form-select" id="selectOrder">
+					<!-- 날짜 옵션 추가 (예시로 1월부터 12월까지) -->
+					<option value="0">Sort By</option>
+					<option value="1">이름순</option>
+					<option value="2">낮은 가격순</option>
+					<option value="3">높은 가격순</option>
+					<option value="4">인기순</option>
+				</select>
+			</div>
+		</div>
+	</div>
+		<div class="row gx-1">
+			<!-- 두 번째 컬럼 -->
+			<div class="col-md-12">
+				<!-- 중복 코드 최소화 -->
+				<div class="itemContainer">
+				</div>
+			</div>
+		</div>
+
+		<div class="pagination">
+			<button id="prevBtn">이전</button>
+			<button id="nextBtn">다음</button>
+		</div>
+	</div>
+</div>

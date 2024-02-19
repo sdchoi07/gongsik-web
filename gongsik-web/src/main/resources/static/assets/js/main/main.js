@@ -7,7 +7,6 @@ var _main = function() {
 	
 	
 	var usrId = localStorage.getItem('usrId') 
-	console.log("logOut : " +$('#loginButton').text());
 	if(usrId !== null && usrId !== undefined && usrId !== ''){
 		$('#loginButton').on('click',function(event){
 			event.preventDefault();
@@ -97,7 +96,6 @@ var _usrBtn = function(){
 //로그인 상태
 var _loginInOut = function() {
 	const usrId = localStorage.getItem("usrId");
-	console.log("??? : " + usrId)
 	const loginButton = $('#loginButton');
 	if(usrId !== null && usrId !== '' && usrId !== undefined){
 		loginButton.text('로그아웃');
@@ -121,7 +119,6 @@ function _logOut(){
 	    data: JSON.stringify(data),
 	    contentType : 'application/json'
 	}).done(function(data,textStatus,xhr){
-		console.log("logOut : " + data);
 		localStorage.removeItem('usrId');
 		localStorage.removeItem('accessToken');
 		localStorage.removeItem('logTp');
@@ -134,6 +131,7 @@ function _logOut(){
 //탭이동
 var _tabList = function(currentUrl) {
     var url = currentUrl.split('/').pop();
+
     if (url === 'mypage') {
         var firstTabHref = $('.list-group-item:first').attr('href');
 

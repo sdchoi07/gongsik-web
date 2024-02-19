@@ -1,5 +1,5 @@
 <head>
-		<script th:src="@{/assets/js/mypage/usrCart.js}"></script>
+	<script th:src="@{/assets/js/mypage/usrCart.js}"></script>
 		<style>
 			
 	#myTabs {
@@ -26,7 +26,6 @@
 </style>
 
 </head>
-
 <th:block th:fragment="mypage">
 	<div class="container mt-5 ">
     <ul class="nav nav-tabs nav-justified wishTabs" id="myTabs">
@@ -37,7 +36,7 @@
             <a class="nav-link wishNav" id="tab2-tab" data-bs-toggle="tab" href="/cart/likes">좋아요</a>
         </li>
     </ul>
-   <div class="tab-content wish-content " layout:fragment="usrwish">
+   <div class="wish-content" layout:fragment="usrwish">
 </div>
 
 </th:block>
