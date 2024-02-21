@@ -27,6 +27,7 @@ var _categoriesList = function() {
 	var itemKey = $('#itemKey').val();
 	var resultData = {};
 	var ordering = $('#selectOrder').val();
+	var usrId = localStorage.getItem("usrId");
 	if (currentPage <= 0) {
 		alert("조회 할 내역이 없습니다.");
 		currentPage = 1;
@@ -36,6 +37,7 @@ var _categoriesList = function() {
 	resultData.itemkey = itemKey;
 	resultData.orderBy = ordering;
 	resultData.currentPage = currentPage;
+	resultData.usrId = usrId;
 	$.ajax({
 		url: '/api/categories/categoriesList',
 		type: 'POST',
@@ -77,8 +79,9 @@ var _tableItemData = function(data) {
 		}
 		itemList += `
 		<input type="hidden" value="${list[i].invenSClsNo}" id="invenNo${i}" name="invenNo">
+		<input type="hidden" value="${list[i].useYn}" id="useYn${i}" name="useYn">
         <li class="list-group-item bg-gray-f6 px-4 py-3 flex-grow-1 border p-3 m-1 gradeList col-md-3">
-            <a href="" style="text-decoration: none !important; color: black">
+            <a href="/categories/itemDetaiList?menuItemNo=${list[i].invenSClsNo}&menuNm=${list[i].invenSClsNm}" style="text-decoration: none !important; color: black">
                 <div class="card product-item border-0 mb-4">
                     <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0" style="border-bottom: none !important">
                         <img class="img-fluid mx-auto d-block" style="width:400px; height:250px;" src="${list[i].invenUrl}" alt="">
@@ -86,7 +89,7 @@ var _tableItemData = function(data) {
                     <div class="card-body border-left border-right text-left p-0 pt-4 pb-3">
                         <h6 class="text-truncate mb-3" style = "margin-left: 10px;">${list[i].invenSClsNm}</h6>
                         <div class="d-flex justify-left-left">
-                            <span style = "margin-left: 10px;">${list[i].invenPrice}원</span>
+                            <span style = "margin-left: 10px;">${list[i].invenPrice}</span>
                         </div>
                     </div>
                 </div>
@@ -108,14 +111,18 @@ var _tableItemData = function(data) {
 
 }
 
+
+
 function intoCart(index) {
 	var invenNo = $(`#invenNo${index}`).val();
+	var useYn = $(`#useYn${index}`).val();
 	var resultData = {};
 	var token = localStorage.getItem("accessToken");
 	var usrId = localStorage.getItem("usrId");
 	console.log(" ? ?" + invenNo)
 	resultData.invenNo = invenNo;
 	resultData.usrId = usrId;
+	resultData.useYn = useYn;
 	$.ajax({
 		url: '/api/categories/intoCart',
 		type: 'POST',

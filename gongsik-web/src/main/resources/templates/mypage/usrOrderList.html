@@ -2,10 +2,8 @@
 	<script th:src="@{/assets/js/mypage/usrOrderList.js}"></script>
 	<style>
 		.product-image {
-			max-width: 100px;
-			max-height: 100px;
-			width: 100%;
-			height: auto;
+			width: 100px;
+			height: 100px;
 			vertical-align: middle;
 			/* 이미지를 수직으로 중앙 정렬 */
 		}
@@ -14,9 +12,22 @@
 			text-align: center;
 		}
 
+		a {
+			text-decoration: none;
+			/* 밑줄 제거 */
+			color: inherit;
+			/* 부모 요소의 색상 상속 */
+		}
 
+		a:hover {
+			text-decoration: none;
+			/* 마우스 hover 시에도 밑줄 제거 */
+			color: inherit;
+			/* 부모 요소의 색상 상속 */
+		}
+		
 		.itemNm {
-			margin-left: 10px;
+			margin-left: 20px;
 			display: inline-block;
 			vertical-align: middle;
 			/* 브랜드 이름을 수직으로 중앙 정렬 */

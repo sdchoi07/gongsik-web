@@ -131,14 +131,14 @@ var _tableLikesData = function(data){
       // 셀 생성 및 추가
       row.append(`<td class="align-middle">
                     <div class="n-prd-row d-flex align-items-center">
-                      <a href="${likes.itemImg}" class="img-block">
-                        <img src="${likes.itemImg}" alt="${likes.cartItemNm}" class="img-fluid product-image">
+                      <a href="${likes.cartUrl}" class="img-block">
+                        <img src="${likes.cartUrl}" alt="${likes.cartItemNm}" class="img-fluid product-image">
                       </a>		
-                      <span class="itemNm"><a href="${likes.itemImg}">${likes.cartItemNm}</a></span>	
+                      <span class="itemNm"><a href="${likes.cartUrl}">${likes.cartItemNm}</a></span>	
                     </div>
                   </td>`);
       row.append(`<input type="hidden" name="cartNo" id="cartNo${i}" value ="${likes.cartNo}">`);
-      row.append(`<td class="align-middle text-center">${likes.cartItemCnt}</td>`);
+      row.append(`<td class="align-middle text-center">${likes.cartPrice}</td>`);
        row.append(`<td class="align-middle">
               <div class="d-flex flex-column justify-content-center text-center align-items-center">
                  <button type="button" class="btn btn-link border-0 fw-lighter ml-2" onclick='addWishList(${i})' style="color: #000000;  font-family: 'Noto Sans KR', sans-serif;">장바구니 담기</button>

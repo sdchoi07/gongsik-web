@@ -1,16 +1,51 @@
 <head>
-	
+
 	<script th:src="@{/assets/js/mypage/cart/likes.js}"></script>
-<style>
-	
-	.btn-link {
-		    text-decoration: none !important;
+	<style>
+		.product-image {
+			width: 100px;
+			height: 100px;
+			vertical-align: middle;
+			/* 이미지를 수직으로 중앙 정렬 */
 		}
-	
+
+		a {
+			text-decoration: none;
+			/* 밑줄 제거 */
+			color: inherit;
+			/* 부모 요소의 색상 상속 */
+		}
+
+		a:hover {
+			text-decoration: none;
+			/* 마우스 hover 시에도 밑줄 제거 */
+			color: inherit;
+			/* 부모 요소의 색상 상속 */
+		}
+
+		.itemNm {
+			margin-left: 20px;
+			display: inline-block;
+			vertical-align: middle;
+			/* 브랜드 이름을 수직으로 중앙 정렬 */
+		}
+
+		.n-prd-row {
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			/* 이미지와 브랜드 이름을 왼쪽 정렬 */
+		}
+
+		.btn-link {
+			text-decoration: none !important;
+		}
+
 		th {
 			text-align: center;
 		}
-			.pagination {
+
+		.pagination {
 			display: flex;
 			justify-content: center;
 			align-items: center;
@@ -64,9 +99,9 @@
 	</style>
 </head>
 <th:block th:fragment="usrwish">
-	<input type="hidden" name="cartSt" id="cartSt" value ="L">
+	<input type="hidden" name="cartSt" id="cartSt" value="L">
 	<div class="row gx-1 mt-2">
-			<table class="table table-col n-likes-view mt-3">
+		<table class="table table-col n-likes-view mt-3">
 			<colgroup>
 				<col style="width:auto">
 				<col style="width:15%">
@@ -76,8 +111,8 @@
 			<thead>
 				<tr>
 					<th scope="col">상품정보</th>
-					<th scope="col" >가격</th>
-					<th scope="col" ></th>
+					<th scope="col">가격</th>
+					<th scope="col"></th>
 					<th scope="col" colspan="2"></th>
 				</tr>
 			</thead>

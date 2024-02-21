@@ -16,4 +16,11 @@ public class CategoriesController {
 		model.addAttribute("menuNm", menuNm);
 		return "categories/categorie";
 	}
+	
+	@GetMapping("/itemDetaiList")
+	public String itemDetaiList(@RequestParam(name = "menuItemNo", required = false) String menuItemNo, @RequestParam(name = "menuNm", required = false) String menuNm, Model model) {
+		model.addAttribute("menuItemNo", menuItemNo);
+		model.addAttribute("menuNm", menuNm);
+		return "categories/categorieDetail";
+	}
 }
