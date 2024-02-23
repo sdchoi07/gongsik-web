@@ -55,7 +55,7 @@ function menus(data){
 			if (i == data.length-1 || i== data.length-2){
 				 menuItem += '</ul>';
 		         menuItem += '</li>';
-				 menuItem +='<li class="nav-item"><a class="nav-link" href="#" id="menuNm">'+ data[i].menuNm+ '</a></li>';
+				 menuItem +=`<li class="nav-item"><a class="nav-link" href="${data[i].menuUrl}" id="menuNm">`+ data[i].menuNm+ '</a></li>';
 			}else{
 		        if (data[i].menuLevelNo == 0) {
 		        	if(!boolean){
@@ -65,7 +65,7 @@ function menus(data){
 				        chk = false;
 					}
 		            menuItem += '<li class="nav-item dropdown">';
-		            menuItem += '<a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="menuNm">' + data[i].menuNm + '</a>';
+		            menuItem += `<a class="nav-link dropdown-toggle" href="" role="button" data-bs-toggle="dropdown" aria-expanded="false" id="menuNm">` + data[i].menuNm + '</a>';
 		            menuItem += '<ul class="dropdown-menu dropdown-menu-end" id="menus" aria-labelledby="navbarDropdown">';
 		        }
 		        else if (data[i].menuLevelNo == 1) {

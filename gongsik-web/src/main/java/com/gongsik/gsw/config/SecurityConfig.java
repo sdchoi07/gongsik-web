@@ -43,7 +43,6 @@ public class SecurityConfig {
 				authorizeRequests
 						.requestMatchers("/user/**").authenticated()
 						.requestMatchers("/admin/**", "/api/admins/**").hasRole("ADMIN")
-						.requestMatchers("/posts/**", "/api/v1/posts/**").hasRole("USER")
 						.anyRequest().permitAll()
 		)
 		.formLogin((formLogin) ->

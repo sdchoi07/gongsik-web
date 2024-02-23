@@ -44,7 +44,6 @@ var _categoriesList = function() {
 		data: JSON.stringify(resultData),
 		contentType: 'application/json',
 	}).done(function(data) {
-		console.log("data : " + data);
 		_tableItemData(data)
 	}).fail(function(xhr, textStatus, errorThrowna) {
 		if (xhr.status === 403) {
@@ -60,7 +59,6 @@ var _categoriesList = function() {
 
 
 var _tableItemData = function(data) {
-	console.log(" ?? " + data.cnt)
 	if (data.cnt === 0) {
 		alert("더 이상 조회 할 내역이 없습니다.");
 		currentPage--;
@@ -119,10 +117,11 @@ function intoCart(index) {
 	var resultData = {};
 	var token = localStorage.getItem("accessToken");
 	var usrId = localStorage.getItem("usrId");
-	console.log(" ? ?" + invenNo)
+	var cartSt = $('#cartSt').val();
 	resultData.invenNo = invenNo;
 	resultData.usrId = usrId;
 	resultData.useYn = useYn;
+	resultData.cartSt = cartSt;
 	$.ajax({
 		url: '/api/categories/intoCart',
 		type: 'POST',
