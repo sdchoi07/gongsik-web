@@ -68,3 +68,5 @@ jasypt:
 kakao:
   api-key: 487df06077ec2b2eecb7a10d4e48e6dc
   
+upload:
+  directory: /path/to/uploaded/file
