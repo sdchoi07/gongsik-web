@@ -43,6 +43,8 @@ var checkTokenExpiry = function(){
             var msg = "로그인 다시 해주시길 바랍니다.";
             if(confirm(msg)){
 				window.location.href="/account/login";
+			}else{
+				window.location.href="/";
 			}
         }
     }

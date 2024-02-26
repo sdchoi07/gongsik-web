@@ -12,5 +12,10 @@ public class PostController {
 	public String sharePost() {
 		return "posts/sharePost";
 	}
+	
+	@GetMapping("/createPost")
+	public String createPost() {
+		return "posts/createPost";
+	}
 
 }

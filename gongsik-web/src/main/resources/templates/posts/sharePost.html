@@ -1,122 +1,174 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    layout:decorate="~{layout/layout}">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
+
 <head>
 	<script th:src="@{/assets/js/posts/sharePost.js}"></script>
 	<meta charset="EUC-KR">
 	<style>
+		.nav-link {
+			color: black;
+		}
+
+		.nav-link:hover {
+			color: green;
+		}
+
+		.pagination {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-top: 20px;
+		}
+
+		.pagination button {
+			background-color: white;
+			border: 2px solid rgba(19, 195, 39, 0.25);
+			color: black;
+			;
+			padding: 10px 20px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			cursor: pointer;
+			border-radius: 5px;
+
+		}
+
+		.pagination button:hover {
+			background-color: rgba(19, 195, 39, 0.25);
+			color: white;
+
+		}
+
+		#prevBtn:hover::before {
+			color: white;
+		}
+
+		#prevBtn::before {
+			content: '\003C';
+			/* < 기호 추가 */
+			color: black;
+			margin-right: 5px;
+		}
+
+
+		#nextBtn::after {
+			content: '\003E';
+			/* > 기호 추가 */
+			color: black;
+			margin-left: 5px;
+		}
+
+		#nextBtn:hover::after {
+			color: white;
+		}
 	</style>
-	
-	
+
+
+
 	<title>마이페이지</title>
-	
+
 </head>
-    <div layout:fragment="content">
-		<div class="section search-result-wrap">
-    <div class="container">
-      
-      <div class="row posts-entry">
-        <div class="col-lg-8">
-          <div class="blog-entry d-flex blog-entry-search-item">
-            <a href="single.html" class="img-link me-4">
-              <img src="images/img_1_sq.jpg" alt="Image" class="img-fluid">
-            </a>
-            <div>
-              <span class="date">Apr. 14th, 2022 • <a href="#">Business</a></span>
-              <h2><a href="single.html">Thought you loved Python? Wait until you meet Rust</a></h2>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde, nobis ea quis inventore vel voluptas.</p>
-              <p><a href="single.html" class="btn btn-sm btn-outline-primary">Read More</a></p>
-            </div>
-          </div>
+<div layout:fragment="content">
 
-          <div class="blog-entry d-flex blog-entry-search-item">
-            <a href="single.html" class="img-link me-4">
-              <img src="images/img_5_sq.jpg" alt="Image" class="img-fluid">
-            </a>
-            <div>
-              <span class="date">Apr. 14th, 2022 • <a href="#">Business</a></span>
-              <h2><a href="single.html">Thought you loved Python? Wait until you meet Rust</a></h2>
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde, nobis ea quis inventore vel voluptas.</p>
-              <p><a href="single.html" class="btn btn-sm btn-outline-primary">Read More</a></p>
-            </div>
-          </div>
+	<div class="container-fluid bg-secondary mb-5"
+		style="background-image: url('/vendor/third/img/cate00.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+		<div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
+			<h1 class="font-weight-semi-bold text-uppercase mb-3">Sharing</h1>
+			<div class="d-inline-flex">
+				<p class="m-0"><a href="">Home</a></p>
+				<p class="m-0 px-2">-</p>
+				<p class="m-0">Shop</p>
+			</div>
+		</div>
+	</div>
 
-          <div class="row text-start pt-5 border-top">
-            <div class="col-md-12">
-              <div class="custom-pagination">
-                <span>1</span>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#">4</a>
-                <span>...</span>
-                <a href="#">15</a>
-              </div>
-            </div>
-          </div>
 
-        </div>
+	<div class="section search-result-wrap">
+		<div class="container">
+			<div class="d-flex justify-content-between align-items-center mb-4">
+				<label class="form-label fw-bold" style="font-size: 40px; font-family: 'Noto Sans KR', sans-serif;"> 공유
+					게시물</label>
+			</div>
 
-        <div class="col-lg-4 sidebar">
+			<div class="divider d-flex align-items-center my-3" style="width: 100%;">
+			</div>
+			<ul class="nav">
+				<li class="nav-item">
+					<a class="nav-link active" aria-current="page" href="#">일반</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">정보</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">후기</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">질문</a>
+				</li>
+				<li class="nav-item ml-auto">
+					<a class="nav-link" href="/posts/createPost">게시글 작성</a>
+				</li>
+			</ul>
 
-          <!-- END sidebar-box -->
-          <div class="sidebar-box">
-            <h3 class="heading">Popular Posts</h3>
-            <div class="post-entry-sidebar">
-              <ul>
-                <li>
-                  <a href="">
-                    <img src="images/img_1_sq.jpg" alt="Image placeholder" class="me-4 rounded">
-                    <div class="text">
-                      <h4>There’s a Cool New Way for Men to Wear Socks and Sandals</h4>
-                      <div class="post-meta">
-                        <span class="mr-2">March 15, 2018 </span>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a href="">
-                    <img src="images/img_2_sq.jpg" alt="Image placeholder" class="me-4 rounded">
-                    <div class="text">
-                      <h4>There’s a Cool New Way for Men to Wear Socks and Sandals</h4>
-                      <div class="post-meta">
-                        <span class="mr-2">March 15, 2018 </span>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-                <li>
-                  <a href="">
-                    <img src="images/img_3_sq.jpg" alt="Image placeholder" class="me-4 rounded">
-                    <div class="text">
-                      <h4>There’s a Cool New Way for Men to Wear Socks and Sandals</h4>
-                      <div class="post-meta">
-                        <span class="mr-2">March 15, 2018 </span>
-                      </div>
-                    </div>
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <!-- END sidebar-box -->
 
-          <div class="sidebar-box">
-            <h3 class="heading">Categories</h3>
-            <ul class="categories">
-              <li><a href="#">Food <span>(12)</span></a></li>
-              <li><a href="#">Travel <span>(22)</span></a></li>
-              <li><a href="#">Lifestyle <span>(37)</span></a></li>
-              <li><a href="#">Business <span>(42)</span></a></li>
-              <li><a href="#">Adventure <span>(14)</span></a></li>
-            </ul>
-          </div>
- 
 
-        </div>
-      </div>
-    </div>
-  </div>
-  </div>
+			<div class="row posts-entry mt-4">
+				<div class="col-lg-8">
+					<div class="blog-entry d-flex blog-entry-search-item">
+						<a href="single.html" class="img-link me-4">
+							<img th:src="@{/vendor/third/img/con01.jpg}" alt="Image" class="img-fluid">
+						</a>
+						<div>
+							<span class="date">Apr. 14th, 2022 • <a href="#">Business</a></span>
+							<h2><a href="single.html">Thought you loved Python? Wait until you meet Rust</a></h2>
+						</div>
+					</div>
+					<div class="blog-entry d-flex blog-entry-search-item mt-4">
+						<a href="single.html" class="img-link me-4">
+							<img th:src="@{/vendor/third/img/con01.jpg}" alt="Image" class="img-fluid">
+						</a>
+						<div>
+							<span class="date">Apr. 14th, 2022 • <a href="#">Business</a></span>
+							<h2><a href="single.html">Thought you loved Python? Wait until you meet Rust</a></h2>
+						</div>
+					</div>
+					<div class="pagination mt-4" style="height: 300px;">
+						<button id="prevBtn">이전</button>
+						<button id="nextBtn">다음</button>
+					</div>
+				</div>
+
+				<div class="col-lg-4 sidebar">
+
+					<!-- END sidebar-box -->
+					<div class="sidebar-box">
+						<h3 class="heading">인기 있는 게시물</h3>
+						<div class="post-entry-sidebar">
+							<ul>
+								<li style="display: flex; align-items: center;">
+									<img th:src="@{/vendor/third/img/con01.jpg}" alt="Image placeholder"
+										class="me-2 rounded" style="width: 30%;">
+									<div class="text">
+										<h4>There’s a Cool New Way for Men to Wear Socks and Sandals</h4>
+										<div class="post-meta">
+											<span>March 15, 2018</span>
+										</div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+
+
+					<!-- END sidebar-box -->
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>

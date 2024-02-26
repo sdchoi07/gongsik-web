@@ -1,5 +1,8 @@
 @charset "EUC-KR";
 
+form-select:focus {
+    outline: none !important;
+}
      
 /* 화살표 숨기기 */
 .dropdown-toggle::after {
