@@ -8,9 +8,6 @@
 	<script th:src="@{/assets/js/posts/createPost.js}"></script>
 
 	<!-- 네이버 스마트에디터 스크립트 로드 -->
-<!--	<script type="text/javascript" src="/smarteditor/js/service/HuskyEZCreator.js" charset="utf-8"></script>-->
-<!--	<script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>-->
-<!--	<script src="https://ckeditor.com/apps/ckfinder/3.5.0/ckfinder.js"></script>-->
 	<script type="text/javascript" src="/vendor/third/js/ckeditor.js" charset="utf-8"></script>
 	<script th:src="@{/assets/js/upload.js}"></script>
 	<meta charset="EUC-KR">
@@ -33,11 +30,14 @@
 		
 		.ck-editor__editable { height: 400px; }
 		.ck-content { font-size: 13px; }
+		
+		
 	</style>
 
 </head>
 <div layout:fragment="content">
 	<div class="container py-5">
+		<input type="hidden" th:value="${postsNo}" id="itemKey" name="itemKey">
 		<div class="d-flex justify-content-between align-items-center mb-4">
 			<label class="form-label fw-bold" style="font-size: 40px; font-family: 'Noto Sans KR', sans-serif;"> 게시물
 				작성</label>
@@ -45,46 +45,40 @@
 
 		<div class="divider d-flex align-items-center my-3" style="width: 100%;">
 		</div>
-		<form action="insertStudentInfoForm" method="post">
 			<div class="card" style="width: 50rem auto;">
 				<ul class="list-group list-group-flush">
 					<li class="list-group-item">
 						<div class="input-group">
 							<select class="form-select" id="selectbox">
 								<!-- 날짜 옵션 추가 (예시로 1월부터 12월까지) -->
-								<option value="1">게시물을 선택해주세요.</option>
-								<option value="2">일반</option>
-								<option value="3">정보</option>
-								<option value="4">후기</option>
-								<option value="5">질문</option>
+								<option value="0">게시물을 선택해주세요.</option>
+								<option value="01">일반</option>
+								<option value="02">정보</option>
+								<option value="03">후기</option>
+								<option value="04">질문</option>
 							</select>
 						</div>
 					</li>
 					<li class="list-group-item">
 						<div class="form-group d-flex">
-							<input id="password" name="password" type="password" maxlength="16" minlength="8"
-								class="form-control" placeholder="제목을 입력해주세요" autocomplete="new-password">
+							<input id="postNm" name="postNm" 
+								class="form-control" placeholder="제목을 입력해주세요" autocomplete="">
 						</div>
 					</li>
 				</ul>
 			</div>
-<!--			<div class="smarteditor form-group d-flex mt-2">-->
-<!--				<textarea name="editorTxt" id="editorTxt" rows="20" cols="10" placeholder="내용을 입력해주세요"-->
-<!--					style="width: auto; height: 500px;"></textarea>-->
-<!--			</div>-->
 			<div id="mt-4">
 			<div id="editor"></div>
 			</div>
 			<div class="d-flex justify-content-end" style="height: 200px;">
 				<button type="submit"
 					class="btn btn-primary btn-xg btn-block fw-bold border-left border-right border-top border-bottom"
-					id="goToWish"
+					id="savePost"
 					style="background-color: rgba(3, 199, 90, 0.12); font-family: 'Noto Sans KR', sans-serif; display: flex; align-items: center; justify-content: center; color: #009f47; border-radius: 0; width: 150px; height: 40px">
 					등록
 				</button>
 			</div>
 
-		</form>
 	</div>
 
 </div>

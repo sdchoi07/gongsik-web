@@ -4,7 +4,6 @@ var init = function() {
 
 	$("#count").change(function() {
 		var itemPrice = $("#itemPrice").text();
-		console.log("itemPrice : " + itemPrice)
 		calculateTotalPrice(itemPrice);
 	});
 

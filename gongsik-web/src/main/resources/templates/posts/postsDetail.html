@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
+
+<head>
+	<style>
+		.card {
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.card-body {
+			flex-grow: 1;
+		}
+	</style>
+	<script th:src="@{/assets/js/posts/postsDetail.js}"></script>
+	<script type="text/javascript" src="/vendor/third/js/ckeditor.js" charset="utf-8"></script>
+	<meta charset="EUC-KR">
+	<title th:text="${postsNm}"></title>
+</head>
+
+<div layout:fragment="content">
+	<div class="container py-5" >
+		<input type="hidden" th:value="${postsNo}" id="itemKey" name="itemKey">
+
+		<div class="d-flex flex-column align-items-left mb-4">
+			<label class="form-label fw-bold" style="font-size: 40px; font-family: 'Noto Sans KR', sans-serif;"
+				th:text="${postsNm}"></label>
+			<span style="font-size: 0.8em; margin-top: -20px;margin-left:10px">
+				<span id="postsUsrNm"></span>
+				<span id="postsDate"></span>
+				<span id="postsViewCnt"></span>
+			</span>
+		</div>
+
+
+
+		<div class="divider d-flex align-items-center my-3" style="width: 100%;">
+		</div>
+
+		<div class="postsDetail bg-gray-f6 px-4 py-3 flex-grow-1 border p-3 m-1 col-md-12" style="min-height: 500px; ">
+
+		</div>
+
+		<div class="replayList bg-gray-f6 px-4 py-3 flex-grow-1 border p-3 m-1 col-md-12" style="min-height: 200px; ">
+		</div>
+		
+		<div class="postsBtn d-flex justify-content-end" style="height: 200px;">
+				<button type="submit"
+					class="btn btn-primary btn-xg btn-block fw-bold border-left border-right border-top border-bottom"
+					id="modiBtn"
+					style="background-color: rgba(3, 199, 90, 0.12); font-family: 'Noto Sans KR', sans-serif; color: #009f47; border-radius: 0; width: 150px; height: 40px; margin-top:8.3px;margin-right: 10px;" >
+					수정
+				</button>
+				<button type="submit"
+					class="btn btn-primary btn-xg btn-block fw-bold border-left border-right border-top border-bottom"
+					id="delBtn"
+					style="background-color: rgba(3, 199, 90, 0.12); font-family: 'Noto Sans KR', sans-serif; color: #009f47; border-radius: 0; width: 150px; height: 40px">
+					삭제
+				</button>
+			</div>
+			
+	</div>
+</div>
+
+</html>

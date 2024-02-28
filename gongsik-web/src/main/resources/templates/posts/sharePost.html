@@ -3,7 +3,7 @@
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
 
 <head>
-	<script th:src="@{/assets/js/posts/sharePost.js}"></script>
+	<script th:src="@{/assets/js/posts/sharePosts.js}"></script>
 	<meta charset="EUC-KR">
 	<style>
 		.nav-link {
@@ -13,61 +13,39 @@
 		.nav-link:hover {
 			color: green;
 		}
-		
+
 		.nav-link:focus {
 			color: green;
 		}
 
-		.pagination {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			margin-top: 20px;
+		.pagination .page-item.active .page-link {
+			border-color: rgba(3, 199, 90, 0.7);
+			color: #000;
+			/* 활성화된 페이지 숫자 색상 */
 		}
 
-		.pagination button {
-			background-color: white;
-			border: 2px solid rgba(19, 195, 39, 0.25);
-			color: black;
-			;
-			padding: 10px 20px;
-			text-align: center;
-			text-decoration: none;
-			display: inline-block;
-			font-size: 16px;
-			margin: 4px 2px;
-			cursor: pointer;
-			border-radius: 5px;
-
-		}
-
-		.pagination button:hover {
-			background-color: rgba(19, 195, 39, 0.25);
-			color: white;
-
-		}
-
-		#prevBtn:hover::before {
-			color: white;
-		}
-
-		#prevBtn::before {
-			content: '\003C';
-			/* < 기호 추가 */
-			color: black;
-			margin-right: 5px;
+		.pagination .page-item:hover .page-link {
+			border-color: rgba(3, 199, 90, 0.7);
+			color: #000;
+			/* 활성화된 페이지 숫자 색상 */
 		}
 
 
-		#nextBtn::after {
-			content: '\003E';
-			/* > 기호 추가 */
-			color: black;
-			margin-left: 5px;
+		.chkPost {
+			display: none;
+			/* 기본적으로 숨겨두고, usrId가 있을 때만 보이도록 함 */
 		}
 
-		#nextBtn:hover::after {
-			color: white;
+		a {
+			color: black !important;
+			/* 검정색으로 변경 */
+			text-decoration: none !important;
+			/* 밑줄 제거 */
+			background-color: transparent !important;
+			/* 배경색 제거 */
+			outline: none !important;
+			/* 포커스 효과 제거 */
+
 		}
 	</style>
 
@@ -102,68 +80,37 @@
 			</div>
 			<ul class="nav">
 				<li class="nav-item">
-					<a class="nav-link active" aria-current="page" href="#">일반</a>
+					<a class="postsList nav-link active" aria-current="page" href="#">일반</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#">정보</a>
+					<a class="postsList nav-link" href="#">정보</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#">후기</a>
+					<a class="postsList nav-link" href="#">후기</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="#">질문</a>
+					<a class="postsList nav-link" href="#">질문</a>
 				</li>
-				<li class="nav-item ml-auto">
-					<a class="nav-link" href="/posts/createPost">게시글 작성</a>
+				<li class="nav-item ml-auto chkPost">
+					<a class="postsList nav-link" href="#" onclick="selectPosts()">내가 쓴 게시물</a>
 				</li>
+				<li class="nav-item">
+					<a class="postsList nav-link" href="/posts/createPost">게시글 작성</a>
+				</li>
+
 			</ul>
 
 
 
 			<div class="row posts-entry mt-4">
-				<div class="col-lg-8">
-					<div class="blog-entry d-flex blog-entry-search-item">
-						<a href="single.html" class="img-link me-4">
-							<img th:src="@{/vendor/third/img/con01.jpg}" alt="Image" class="img-fluid">
-						</a>
-						<div>
-							<span class="date">Apr. 14th, 2022 • <a href="#">Business</a></span>
-							<h2><a href="single.html">Thought you loved Python? Wait until you meet Rust</a></h2>
-						</div>
-					</div>
-					<div class="blog-entry d-flex blog-entry-search-item mt-4">
-						<a href="single.html" class="img-link me-4">
-							<img th:src="@{/vendor/third/img/con01.jpg}" alt="Image" class="img-fluid">
-						</a>
-						<div>
-							<span class="date">Apr. 14th, 2022 • <a href="#">Business</a></span>
-							<h2><a href="single.html">Thought you loved Python? Wait until you meet Rust</a></h2>
-						</div>
-					</div>
-					<div class="pagination mt-4" style="height: 300px;">
-						<button id="prevBtn">이전</button>
-						<button id="nextBtn">다음</button>
-					</div>
+				<div class="col-lg-8 postsTable">
 				</div>
-				
 
 				<div class="col-lg-4 sidebar">
-
-					<!-- END sidebar-box -->
 					<div class="sidebar-box">
-						<h3 class="heading">인기 있는 게시물</h3>
+						<h3 class="heading" style="margin-left: 40px;">인기 게시물</h3>
 						<div class="post-entry-sidebar">
-							<ul>
-								<li style="display: flex; align-items: center;">
-									<img th:src="@{/vendor/third/img/con01.jpg}" alt="Image placeholder"
-										class="me-2 rounded" style="width: 30%;">
-									<div class="text">
-										<h4>There’s a Cool New Way for Men to Wear Socks and Sandals</h4>
-										<div class="post-meta">
-											<span>March 15, 2018</span>
-										</div>
-									</div>
-								</li>
+							<ul class="popList">
 							</ul>
 						</div>
 					</div>
@@ -173,6 +120,9 @@
 
 				</div>
 
+				<div id="paginationContainer" class="col-lg-8 offset-lg-3 mt-4" style="height: 300px;">
+					<!-- Your pagination content here -->
+				</div>
 			</div>
 		</div>
 	</div>

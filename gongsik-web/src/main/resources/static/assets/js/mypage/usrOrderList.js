@@ -188,6 +188,7 @@ var _tableData = function(data){
       tableBody.append(row);
      
     });
+    
 }
 $(document).ready(function () {
     init();
