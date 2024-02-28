@@ -5,7 +5,6 @@ function init() {
 	//	oEditors.getById["bo_content"].exec("UPDATE_CONTENTS_FIELD",[]);
 	//에디션 
 	var postsNo = $('#itemKey').val();
-	console.log(postsNo);
 	//게시글 등록
 	$("#savePost").on("click", function() {
 		savePost();
