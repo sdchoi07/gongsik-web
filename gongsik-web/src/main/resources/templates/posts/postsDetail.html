@@ -13,6 +13,25 @@
 		.card-body {
 			flex-grow: 1;
 		}
+
+		textarea {
+			border-color: #ccc;
+			/* 원하는 연한 색상으로 변경 */
+			/* 다른 스타일 속성들도 필요하면 추가하세요 */
+		}
+
+		.list-group-item {
+			display: flex;
+			flex-direction: column;
+			/* 세로로 배치 */
+			align-items: flex-start;
+			/* 왼쪽 정렬 (수직 방향 정렬) */
+		}
+
+		.name-content {
+			display: flex;
+		}
+
 	</style>
 	<script th:src="@{/assets/js/posts/postsDetail.js}"></script>
 	<script type="text/javascript" src="/vendor/third/js/ckeditor.js" charset="utf-8"></script>
@@ -21,7 +40,7 @@
 </head>
 
 <div layout:fragment="content">
-	<div class="container py-5" >
+	<div class="container py-5">
 		<input type="hidden" th:value="${postsNo}" id="itemKey" name="itemKey">
 
 		<div class="d-flex flex-column align-items-left mb-4">
@@ -44,23 +63,113 @@
 		</div>
 
 		<div class="replayList bg-gray-f6 px-4 py-3 flex-grow-1 border p-3 m-1 col-md-12" style="min-height: 200px; ">
+			<label class="form-label fw-bold" style="font-size: 20px; font-family: 'Noto Sans KR', sans-serif;"> 댓글
+			</label>
+			<ul class="reviews list-group list-group-flush">
+				<li class="list-group-item">
+					<div class="name-content" style="font-size: 0.8rem;">
+						<span>이름</span> <span>내용</span>
+					</div>
+					<div class="date">
+						<span>날짜</span>
+					</div>
+					<div class="divider d-flex align-items-center my-3" style="width: 100%;">
+					</div>
+					<ul class="reviewAndReview list-group list-group-flush" style="width:100%;">
+						<li class="list-group-item">
+							<div class="name-content" style="font-size: 0.8rem;">
+								<span>이름</span> <span>내용</span>
+							</div>
+							<div class="date">
+								<span>날짜</span>
+							</div>
+							<div class="d-flex align-items-center ml-auto mt-2">
+								<button type="button" class="btn btn-link border-0 fw-bold ml-2"
+									style="color: #000000; font-family: 'Noto Sans KR', sans-serif;">수정</button>
+							</div>
+							<div class="divider d-flex align-items-center my-3" style="width: 100%;">
+
+							</div>
+						</li>
+						<li class="list-group-item">
+							<div class="name-content" style="font-size: 0.8rem;">
+								<span>이름</span> <span>내용</span>
+							</div>
+							<div class="date">
+								<span>날짜</span>
+							</div>
+							<div class="divider d-flex align-items-center my-3" style="width: 100%;">
+
+							</div>
+						</li>
+
+					</ul>
+				</li>
+				<li class="list-group-item">
+					<div class="name-content" style="font-size: 0.8rem;">
+						<span>이름</span> <span>내용</span>
+					</div>
+					<div class="date">
+						<span>날짜</span>
+					</div>
+					<div class="divider d-flex align-items-center my-3" style="width: 100%;">
+					</div>
+					<ul class="reviewAndReview list-group list-group-flush" style="width:100%;">
+						<li class="list-group-item" style="font-size: 0.8rem;">
+							<div class="name-content" style="font-size: 0.8rem;">
+								<span>이름</span> <span>내용</span>
+							</div>
+							<div class="date">
+								<span>날짜</span>
+							</div>
+							<div class="divider d-flex align-items-center my-3" style="width: 100%;">
+
+							</div>
+						</li>
+						<li class="list-group-item">
+							<div class="name-content" style="font-size: 0.8rem;">
+								<span>이름</span> <span>내용</span>
+							</div>
+							<div class="date">
+								<span>날짜</span>
+							</div>
+							<div class="divider d-flex align-items-center my-3" style="width: 100%;">
+							</div>
+						</li>
+
+					</ul>
+				</li>
+			</ul>
 		</div>
-		
-		<div class="postsBtn d-flex justify-content-end" style="height: 200px;">
+
+		<div class="reviewForm bg-gray-f6 px-4 py-3 flex-grow-1 border p-3 m-1 col-md-12" style="min-height: 200px; ">
+			<span> 댓글 작성</span>
+			<div class="mt-2" style="height: 100px; width: 100%;">
+				<textarea id="reviewText" style="height: 100%; width: 100%;"></textarea>
 				<button type="submit"
-					class="btn btn-primary btn-xg btn-block fw-bold border-left border-right border-top border-bottom"
-					id="modiBtn"
-					style="background-color: rgba(3, 199, 90, 0.12); font-family: 'Noto Sans KR', sans-serif; color: #009f47; border-radius: 0; width: 150px; height: 40px; margin-top:8.3px;margin-right: 10px;" >
-					수정
-				</button>
-				<button type="submit"
-					class="btn btn-primary btn-xg btn-block fw-bold border-left border-right border-top border-bottom"
-					id="delBtn"
-					style="background-color: rgba(3, 199, 90, 0.12); font-family: 'Noto Sans KR', sans-serif; color: #009f47; border-radius: 0; width: 150px; height: 40px">
-					삭제
+					class="btn btn-primary btn-sm btn-block fw-bold border-left border-right border-top border-bottom"
+					id="reviewBtn"
+					style="background-color: rgba(3, 199, 90, 0.12); font-family: 'Noto Sans KR', sans-serif; color: #009f47; border-radius: 0; width: 50px; height: 40px;margin-right: 10px;">
+					등록
 				</button>
 			</div>
-			
+		</div>
+
+		<div class="postsBtn d-flex justify-content-end" style="height: 200px;">
+			<button type="submit"
+				class="btn btn-primary btn-xg btn-block fw-bold border-left border-right border-top border-bottom"
+				id="modiBtn"
+				style="background-color: rgba(3, 199, 90, 0.12); font-family: 'Noto Sans KR', sans-serif; color: #009f47; border-radius: 0; width: 150px; height: 40px; margin-top:8.3px;margin-right: 10px;">
+				수정
+			</button>
+			<button type="submit"
+				class="btn btn-primary btn-xg btn-block fw-bold border-left border-right border-top border-bottom"
+				id="delBtn"
+				style="background-color: rgba(3, 199, 90, 0.12); font-family: 'Noto Sans KR', sans-serif; color: #009f47; border-radius: 0; width: 150px; height: 40px">
+				삭제
+			</button>
+		</div>
+
 	</div>
 </div>
 

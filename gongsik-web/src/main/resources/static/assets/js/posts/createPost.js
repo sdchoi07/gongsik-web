@@ -1,5 +1,6 @@
 var oEditors = [];
 var smartEditor;
+var editorInitialized = false;
 function init() {
 
 	//	oEditors.getById["bo_content"].exec("UPDATE_CONTENTS_FIELD",[]);
@@ -7,21 +8,22 @@ function init() {
 	var postsNo = $('#itemKey').val();
 	//게시글 등록
 	$("#savePost").on("click", function() {
-		savePost();
+		savePost(postsNo);
 	});
 	if (postsNo > 0) {
 		console.log("chk")
 		moveModiPage(postsNo);
-	} else {
+	}
 		ClassicEditor.create(document.querySelector('#editor'), {
 			language: 'ko',
 			extraPlugins: [MyCustomUploadAdapterPlugin]
 		}).then(editor => {
 			window.editor = editor;
+			editorInitialized = true;
 		}).catch(error => {
 			console.error(error);
 		});
-	}
+	
 }
 
 var moveModiPage = function(postsNo) {
@@ -33,26 +35,34 @@ var moveModiPage = function(postsNo) {
 			'Authorization': 'Bearer ' + token
 		},
 	}).done(function(data) {
-		ClassicEditor.create(document.querySelector('#editor'), {
-			language: 'ko',
-			extraPlugins: [MyCustomUploadAdapterPlugin]
-		}).then(editor => {
-			editor.setData(data.result.postsText);
-		}).catch(error => {
-			console.error(error);
-		});
+		console.log(data.postsGubun)
+		console.log(data.postsNm)
+		$('#selectbox').val(data.result.postsGubun);
+		$('#postNm').val(data.result.postsNm);
+		if (!editorInitialized) {
+            console.error("CKEditor is not initialized.");
+            return;
+        }
+
+        // 이미 초기화된 에디터를 사용하고 데이터를 설정합니다.
+        if (window.editor.setData) {
+            window.editor.setData(data.result.postsText);
+        } else {
+            console.error("setData method is not available on the CKEditor instance.");
+        }
 
 	});
 }
 
 
 //게시글 등록
-function savePost() {
+function savePost(postsNo) {
 	var gubun = $('#selectbox').val();
 	if (gubun === '0') {
 		alert("게시물을 선택해주세요");
 		return;
 	}
+	
 	var editorData = window.editor.getData();
 	var usrId = localStorage.getItem("usrId");
 	var token = localStorage.getItem("accessToken");
@@ -62,6 +72,10 @@ function savePost() {
 	resultData.editorData = editorData;
 	resultData.usrId = usrId;
 	resultData.postNm = postNm;
+	
+	if(postsNo>0){
+		resultData.postsNo = postsNo;
+	}
 	$.ajax({
 		url: '/api/posts/savePosts',
 		type: "POST",
