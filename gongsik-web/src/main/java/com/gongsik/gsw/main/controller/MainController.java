@@ -26,6 +26,11 @@ public class MainController implements ErrorController{
 	    public  String mypage() {
 	    	return "mypage/mypage";
 	    }
+	    
+	    @GetMapping("/chat")
+	    public  String chat() {
+	    	return "chat/chatting";
+	    }
 	   
 	  
 	}

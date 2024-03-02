@@ -13,13 +13,15 @@
 		    left: 0;
 		    width: 100%;
 		    z-index: 100;
-		    position: sticky;
+		    position: fixed;
 		    transition: height 0.3s; /* 헤더바 크기 변경 시 애니메이션 적용 */
+		    
 		    
 		}
 		
 		body {
 		    overflow-y: scroll; /* 항상 y 스크롤을 표시하여 레이아웃의 변화를 방지 */
+		    padding-top: 80px;/* 헤더의 높이 */;
 		}
 		
 		body.no-scroll {

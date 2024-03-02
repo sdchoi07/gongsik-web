@@ -3,7 +3,7 @@ var currentPage = 1;
 var init = function() {
 	// 주문 목록 조회
 	_likesList();
-
+	
 	// '다음' 버튼 클릭 이벤트 핸들러
 	$("#nextBtn").on("click", function() {
 		currentPage++;
@@ -37,7 +37,20 @@ var _likesList = function() {
 		},
 		contentType: 'application/json',
 	}).done(function(data) {
+		if(data.totalCnt === 0){
+			var myCart = $('.likesTable');
+			myCart.empty();
+			var row = `<div class="col-xl-12 mt-4">
+					    <div class="bg-white shadow d-flex justify-content-center" style="height: 300px;  width: 100%;">
+					        <div class="d-flex align-items-center">
+					            <span>좋아요 내역이 없습니다.</span>
+					        </div>
+					    </div>
+					</div>`
+			myCart.append(row)
+		}else{
 		_tableLikesData(data);
+		}
 	}).fail(function(xhr, textStatus, errorThrowna) {
 		if (xhr.status === 403) {
 			var msg = "로그인을 다시 해주세요.";
@@ -124,6 +137,9 @@ var _tableLikesData = function(data) {
 		currentPage--;
 		return;
 	}
+	$('.n-likes-view').show();
+	$('.pagination').show();
+	
 	var tableBody = $("#likesTableBody");
 	var likesTrList = $(".likesTrList");
 	// 기존에 있는 내용 비우기

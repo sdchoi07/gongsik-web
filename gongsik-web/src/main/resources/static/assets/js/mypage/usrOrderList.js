@@ -119,9 +119,22 @@ var _orderList = function () {
         },
         contentType: 'application/json',
     }).done(function (data) {
+		if(data.totalCnt === 0){
+			
+			var myorder = $('.orderEmpty');
+			myorder.show();
+			myorder.empty();
+			var row = `<div class="col-xl-12 mt-4">
+					    <div class="bg-white shadow d-flex justify-content-center" style="height: 300px;  width: 100%;">
+					        <div class="d-flex align-items-center">
+					            <span>주문 내역이 없습니다.</span>
+					        </div>
+					    </div>
+					</div>`
+			myorder.append(row)
+		}else{
 		_tableData(data);
-		//글씨 변경
-    	
+    	}
         // Ag-Grid의 행 데이터 설정
 //        gridApi.setGridOption('rowData', data.result.content);
 
@@ -145,6 +158,8 @@ var _tableData = function(data){
 		currentPage--;
 		return;
 	}
+	$('.n-order-view').show();
+	
     var tableBody = $("#orderTableBody");
     var orderTrList = $(".orderTrList");
     // 기존에 있는 내용 비우기

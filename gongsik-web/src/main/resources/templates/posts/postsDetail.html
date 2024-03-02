@@ -42,11 +42,12 @@
 <div layout:fragment="content">
 	<div class="container py-5">
 		<input type="hidden" th:value="${postsNo}" id="itemKey" name="itemKey">
+		<input type="hidden" th:value="${postsNm}" id="postsNm" name="postsNm">
 
 		<div class="d-flex flex-column align-items-left mb-4">
 			<label class="form-label fw-bold" style="font-size: 40px; font-family: 'Noto Sans KR', sans-serif;"
 				th:text="${postsNm}"></label>
-			<span style="font-size: 0.8em; margin-top: -20px;margin-left:10px">
+			<span class=""style="font-size: 0.8em; margin-top: -10px;margin-left:5px">
 				<span id="postsUsrNm"></span>
 				<span id="postsDate"></span>
 				<span id="postsViewCnt"></span>
@@ -66,79 +67,7 @@
 			<label class="form-label fw-bold" style="font-size: 20px; font-family: 'Noto Sans KR', sans-serif;"> 댓글
 			</label>
 			<ul class="reviews list-group list-group-flush">
-				<li class="list-group-item">
-					<div class="name-content" style="font-size: 0.8rem;">
-						<span>이름</span> <span>내용</span>
-					</div>
-					<div class="date">
-						<span>날짜</span>
-					</div>
-					<div class="divider d-flex align-items-center my-3" style="width: 100%;">
-					</div>
-					<ul class="reviewAndReview list-group list-group-flush" style="width:100%;">
-						<li class="list-group-item">
-							<div class="name-content" style="font-size: 0.8rem;">
-								<span>이름</span> <span>내용</span>
-							</div>
-							<div class="date">
-								<span>날짜</span>
-							</div>
-							<div class="d-flex align-items-center ml-auto mt-2">
-								<button type="button" class="btn btn-link border-0 fw-bold ml-2"
-									style="color: #000000; font-family: 'Noto Sans KR', sans-serif;">수정</button>
-							</div>
-							<div class="divider d-flex align-items-center my-3" style="width: 100%;">
 
-							</div>
-						</li>
-						<li class="list-group-item">
-							<div class="name-content" style="font-size: 0.8rem;">
-								<span>이름</span> <span>내용</span>
-							</div>
-							<div class="date">
-								<span>날짜</span>
-							</div>
-							<div class="divider d-flex align-items-center my-3" style="width: 100%;">
-
-							</div>
-						</li>
-
-					</ul>
-				</li>
-				<li class="list-group-item">
-					<div class="name-content" style="font-size: 0.8rem;">
-						<span>이름</span> <span>내용</span>
-					</div>
-					<div class="date">
-						<span>날짜</span>
-					</div>
-					<div class="divider d-flex align-items-center my-3" style="width: 100%;">
-					</div>
-					<ul class="reviewAndReview list-group list-group-flush" style="width:100%;">
-						<li class="list-group-item" style="font-size: 0.8rem;">
-							<div class="name-content" style="font-size: 0.8rem;">
-								<span>이름</span> <span>내용</span>
-							</div>
-							<div class="date">
-								<span>날짜</span>
-							</div>
-							<div class="divider d-flex align-items-center my-3" style="width: 100%;">
-
-							</div>
-						</li>
-						<li class="list-group-item">
-							<div class="name-content" style="font-size: 0.8rem;">
-								<span>이름</span> <span>내용</span>
-							</div>
-							<div class="date">
-								<span>날짜</span>
-							</div>
-							<div class="divider d-flex align-items-center my-3" style="width: 100%;">
-							</div>
-						</li>
-
-					</ul>
-				</li>
 			</ul>
 		</div>
 

@@ -38,12 +38,13 @@ var reviewBtn = function(replyNo) {
 	var token = localStorage.getItem("accessToken");
 	var reviewText = $('#reviewText').val();
 	var replyText = $('#replyText').val();
+	var postsNm = $('#postsNm').val();
 	resultData.postsNo = itemKey;
 	resultData.usrId = usrId;
 	resultData.reviewText = reviewText;
 	resultData.replyNo = replyNo;
 	resultData.replyText = replyText;
-
+	resultData.postsNm = postsNm;
 	$.ajax({
 		url: '/api/posts/reviewSave',
 		type: 'POST',
@@ -55,7 +56,7 @@ var reviewBtn = function(replyNo) {
 	}).done(function(data) {
 		if (data.code === 'success') {
 			alert(data.msg);
-			window.location.href = '/posts/sharePost'
+			window.location.href = `/posts/postsDetail?postsNo=${data.replyNo}&postsNm=${data.replyTitle}`
 		}
 	}).fail(function(xhr, textStatus, errorThrowna) {
 	});
@@ -92,11 +93,9 @@ var _selectDetail = function() {
 			if (usrId === postsId) {
 				$('#modiBtn').css('display', 'on');
 				$('#delBtn').css('display', 'on');
-				$('.reviewForm').css('display', 'on');
 			} else {
 				$('#modiBtn').css('display', 'none');
 				$('#delBtn').css('display', 'none');
-				$('.reviewForm').css('display', 'none');
 			}
 		} else {
 			$('#modiBtn').css('display', 'none');
@@ -138,37 +137,32 @@ var _tableReview = function(data) {
 	var keyNo = 0;
 	var keyMiniNo = 0;
 	reviewList.forEach(list => {
-		var reviewDate = new Date(list.reviewYMD);
-		reviewDate = reviewDate.toDateString();
-		if (keyNo !== list.reviewNo) {
-//			if (keyMiniNo > 0) {
-//				var reply = $(`#divider-${list.keyNo}`);
-//				var row = `</ul>`
-//				reply.append(row);
-//			}
+		var replyDate = new Date(list.replyYMD);
+		replyDate = replyDate.toDateString();
+		if (keyNo !== list.replyNo) {
 			keyMiniNo = 0;
-			keyNo = list.reviewNo
-			// jQuery 객체로 초기화
-			var row = $("<li>").addClass("list-group-item").css({
+			keyNo = list.replyNo
+			var row = $("<li>").addClass("reviewlists list-group-item mt-2").css({
 				'display': 'flex',
 				'justify-content': 'space-between',
+				'border': `1px solid #ccc`
 			});
 
 			row.append(`
 							    <div class="name-content" style="font-size: 0.8rem;">
-							        <span style="margin-right: 5px;">${list.reviewNm}</span><span>${cur === reviewDate ? `${list.reviewTime}` : `${list.reviewYMD}`}</span>
+							        <span style="margin-right: 5px;">${list.replyNm}</span><span>${cur === replyDate ? `${list.replyTime}` : `${list.replyYMD}`}</span>
 							    </div>
 							    <div class="date" style="font-size: 1.5rem; display: flex; justify-content: space-between; align-items: center; width: 100%;">
-							        <span>${list.reviewText}</span>
+							        <span>${list.replyText}</span>
 							    </div>
 						`);
 
 			if (usrId !== null) {
 				var buttonsHTML = '<div class="d-flex align-items-center ml-auto mt-2">' +
-					'<button type="button" class="btn btn-link border-0 fw-bold ml-2" onclick="openReply((' + list.reviewNo + '))" style="color: #000000; font-family: \'Noto Sans KR\', sans-serif; text-decoration: none; font-size: 0.8rem;">답글</button>';
+					'<button type="button" class="btn btn-link border-0 fw-bold ml-2" onclick="openReply((' + list.replyNo + '))" style="color: #000000; font-family: \'Noto Sans KR\', sans-serif; text-decoration: none; font-size: 0.8rem;">답글</button>';
 
-				if (usrId === list.reviewId) {
-					buttonsHTML += '<button type="button" class="btn btn-link border-0 fw-bold ml-2" style="color: #000000; font-family: \'Noto Sans KR\', sans-serif; text-decoration: none; font-size: 0.8rem;">삭제</button>';
+				if (usrId === list.replyId) {
+					buttonsHTML += '<button type="button" class="btn btn-link border-0 fw-bold ml-2" onclick="delReview((' + list.replyNo + '))" style="color: #000000; font-family: \'Noto Sans KR\', sans-serif; text-decoration: none; font-size: 0.8rem;">삭제</button>';
 				}
 
 				buttonsHTML += '</div>';
@@ -176,76 +170,143 @@ var _tableReview = function(data) {
 				row.find('.date').append(buttonsHTML);
 			}
 
-			row.append(`<hr style="width:100%"/><div class="d-flex align-items-center" id="divider-${list.reviewNo}" style="width: 100%;"></div>`);
+			row.append(`<hr style="width:100%; margin-top:0px"/><div class="d-flex align-items-center" id="divider-${list.replyNo}" style="width: 100%;"></div>`);
 
-			// jQuery 객체를 postsTable에 추가
 			reviewsTableList.append(row);
 		} else {
-			var reply = $(`#divider-${list.reviewNo}`);
+
 			if (keyMiniNo !== 0) {
-				console.log("??" + reply.html())
+				var buttonsHTML = ""; // 버튼 HTML 초기화
+				// 사용자 ID가 리뷰 작성자와 일치하는 경우에만 삭제 버튼 추가
+				if (usrId === list.replyId) {
+					buttonsHTML = `<button type="button" class="btn btn-link border-0 fw-bold ml-2" onclick="delReviewMini(${list.replyNo}, ${list.replyMiniNo})" style="color: #000000; font-family: 'Noto Sans KR', sans-serif; text-decoration: none; font-size: 0.8rem;">삭제</button>`;
+				}
+				var ulReply = $(`.reviewAndReview-${list.replyNo}`);
 				var row = $("<li>").addClass("list-group-item");
 
 
 				// 셀 생성 및 추가
 				row.append(`
 		      				 <div class="name-content"  style="font-size: 0.8rem;">
-								<span>${list.reviewNm}</span><span>${cur === reviewDate ? `${list.reviewTime}` : `${list.reviewYMD}`}</span>
+								<span style="margin-right: 5px;">${list.replyNm}</span><span>${cur === replyDate ? `${list.replyTime}` : `${list.replyYMD}`}</span>
 							</div>
-							<div class="date" style="font-size: 0.8rem;">
-								 <span>${list.reviewText}</span>
-							</div>
+							 <div class="date" style="font-size: 1.2rem; display: flex; justify-content: space-between; align-items: center; width: 100%;">
+							        <span>${list.replyText}</span>
+							        ${buttonsHTML}
+							    </div>
 							<div class="divider d-flex align-items-center" style="width: 100%;">
 						</div>
   					  `);
 
-				// jQuery 객체를 postsTable에 추가
-				reply.append(row);
-			} else if (list.reviewMiniNo !== keyMiniNo) {
-				console.log("plz :" + row)
-				keyMiniNo = list.revieMiniNo;
-				var row = '<ul class="reviewAndReview list-group list-group-flush">' +
-					'<li class="list-group-item">' +
+				ulReply.append(row);
+			} else if (list.replyMiniNo !== keyMiniNo) {
+				var reply = $(`#divider-${list.replyNo}`);
+				keyMiniNo = list.replyMiniNo;
+				var buttonsHTML = ""; // 버튼 HTML 초기화
+				// 사용자 ID가 리뷰 작성자와 일치하는 경우에만 삭제 버튼 추가
+				if (usrId === list.replyId) {
+					buttonsHTML = `<button type="button" class="btn btn-link border-0 fw-bold ml-2" onclick="delReviewMini(${list.replyNo}, ${list.replyMiniNo})" style="color: #000000; font-family: 'Noto Sans KR', sans-serif; text-decoration: none; font-size: 0.8rem;">삭제</button>`;
+				}
+
+				var row = "";
+				row = `<ul class="reviewAndReview-${list.replyNo} list-group list-group-flush">` +
+					'<li class="list-group-item" style="width:1200px">' +
 					'<div class="name-content" style="font-size: 0.8rem;">' +
-					'<span>' + list.reviewNm + '</span><span>' + (cur === reviewDate ? list.reviewTime : list.reviewYMD) + '</span>' +
+					'<span style="margin-right: 5px;">' + list.replyNm + '</span><span>' + (cur === replyDate ? list.replyTime : list.replyYMD) + '</span>' +
 					'</div>' +
-					'<div class="date" style="font-size: 0.8rem;">' +
-					'<span>' + list.reviewText + '</span>' +
+					'<div class="date" style="font-size: 1.2rem; display: flex; justify-content: space-between; align-items: center; width: 100%;">' +
+					'<span>' + list.replyText + '</span>' +
+					`${buttonsHTML}` +
 					'</div>' +
 					'<div class="divider d-flex align-items-center" style="width: 100%;"></div>' +
 					'</li>';
 
-				// jQuery 객체를 postsTable에 추가
-				reply.html(row);
-				console.log(reply.html())
+				reply.append(row);
 			}
 		}
 	});
 }
-var openReply = function(reviewNo) {
+var openReply = function(replyNo) {
 
-	var replyForm = $(`#divider-${reviewNo}`)
-	if (replyForm.is(':empty')) {
+	var replyForm = $(`#divider-${replyNo}`)
+	var reviewForm = $(`.replyForm-${replyNo}`);
+	console.log(reviewForm.length);
+	if (reviewForm.length === 0) {
 		var row = `
-            <div class="replyForm bg-gray-f6 px-4 py-3 flex-grow-1 border p-3 m-1 col-md-12"style="min-height: 150px; ">
+            <div class="replyForm-${replyNo} bg-gray-f6 px-4 py-3 flex-grow-1 border p-3 m-1 col-md-12"style="min-height: 150px; ">
                 <span>댓글 작성</span>
                 <div class="mt-2" style="height: 50px; width: 100%;">
                     <textarea id="replyText" style="height: 100%; width: 100%;"></textarea>
                     <button type="submit"
                         class="btn btn-primary btn-sm btn-block fw-bold border-left border-right border-top border-bottom"
-                        onclick="replySave(${reviewNo})"
+                        onclick="replySave(${replyNo})"
                         style="background-color: rgba(3, 199, 90, 0.12); font-family: 'Noto Sans KR', sans-serif; color: #009f47; border-radius: 0; width: 50px; height: 40px; margin-right: 10px;">
                         등록
                     </button>
                 </div>
             </div>
         `;
-		replyForm.append(row);
+		replyForm.after(row);
 	} else {
-		replyForm.empty()
+		reviewForm.remove()
 	}
 }
 
+var delReview = function(replyNo) {
+
+	var itemKey = $('#itemKey').val();
+	var resultData = {};
+	var usrId = localStorage.getItem("usrId");
+	var token = localStorage.getItem("accessToken");
+	var postsNm = $('#postsNm').val();
+	resultData.replyNo = replyNo;
+	resultData.postsNo = itemKey;
+	resultData.usrId = usrId;
+	resultData.postsNm = postsNm;
+	$.ajax({
+		url: '/api/posts/replyDel',
+		type: 'POST',
+		data: JSON.stringify(resultData),
+		contentType: 'application/json',
+		headers: {
+			'Authorization': 'Bearer ' + token
+		},
+	}).done(function(data) {
+		if (data.code === 'success') {
+			alert(data.msg);
+			window.location.href = `/posts/postsDetail?postsNo=${data.replyNo}&postsNm=${data.replyTitle}`
+		}
+	}).fail(function(xhr, textStatus, errorThrowna) {
+	});
+}
+
+var delReviewMini = function(replyNo, replyMiniNo){
+	var itemKey = $('#itemKey').val();
+	var resultData = {};
+	var usrId = localStorage.getItem("usrId");
+	var token = localStorage.getItem("accessToken");
+	var postsNm = $('#postsNm').val();
+	resultData.replyNo = replyNo;
+	resultData.postsNo = itemKey;
+	resultData.replyMiniNo = replyMiniNo;
+	resultData.usrId = usrId;
+	resultData.postsNm = postsNm;
+	$.ajax({
+		url: '/api/posts/replyDel',
+		type: 'POST',
+		data: JSON.stringify(resultData),
+		contentType: 'application/json',
+		headers: {
+			'Authorization': 'Bearer ' + token
+		},
+	}).done(function(data) {
+		if (data.code === 'success') {
+			alert(data.msg);
+			window.location.href = `/posts/postsDetail?postsNo=${data.replyNo}&postsNm=${data.replyTitle}`
+		}
+	}).fail(function(xhr, textStatus, errorThrowna) {
+	});
+}
 var replySave = function(replyNo) {
 	reviewBtn(replyNo);
 }

@@ -37,7 +37,20 @@ var _wishList = function() {
 		},
 		contentType: 'application/json',
 	}).done(function(data) {
+		if(data.totalCnt === 0){
+			var myCart = $('.wishTable');
+			myCart.empty();
+			var row = `<div class="col-xl-12 mt-4 cartEmpty">
+					    <div class="bg-white shadow d-flex justify-content-center" style="height: 300px;  width: 100%;">
+					        <div class="d-flex align-items-center">
+					            <span>장바구니 내역이 없습니다.</span>
+					        </div>
+					    </div>
+					</div>`
+			myCart.append(row)
+		}else{
 		_tableData(data);
+		}
 	}).fail(function(xhr, textStatus, errorThrowna) {
 		if (xhr.status === 403) {
 			var msg = "로그인을 다시 해주세요.";
@@ -94,6 +107,8 @@ var _tableData = function(data) {
 		currentPage--;
 		return;
 	}
+	$('.n-wish-view').show();
+	$('.pagination').show();
 	var tableBody = $("#wishTableBody");
 	var wishTrList = $(".wishTrList");
 	// 기존에 있는 내용 비우기

@@ -91,8 +91,8 @@
 	</style>
 <th:block th:fragment="usrwish">
 	<input type="hidden" name="cartSt" id="cartSt" value ="W,A">
-	<div class="row gx-1 mt-2">
-			<table class="table table-col n-wish-view mt-3">
+	<div class="row gx-1 mt-2 wishTable">
+			<table class="table table-col n-wish-view mt-3 "style="display: none;">
 			<colgroup>
 				<col style="width:auto">
 				<col style="width:15%">
@@ -111,7 +111,7 @@
 
 			</tbody>
 		</table>
-		<div class="pagination">
+		<div class="pagination"style="display: none;">
 			<button id="prevBtn">이전</button>
 			<button id="nextBtn">다음</button>
 		</div>

@@ -128,9 +128,6 @@ function _renderUsrPoints(usrPoints) {
 
  // 스크롤 이벤트 감지
   $(window).scroll(function () {
-	  console.log("scroll 0 " + $(window).scrollTop())
-	  console.log("scroll 1 " + $(window).height())
-	  console.log("scroll 2 " + $('html').prop('scrollHeight'))
     // 스크롤이 페이지 하단에 도달하면 추가 항목 로드
     if ($(window).scrollTop() + $(window).height() >= $('html').prop('scrollHeight')-1) {
 		currentPage++;

@@ -1,8 +1,15 @@
+
 var _main = function() {
+	
 
 	$('#usrBtn').on('click',function(event){
 		event.preventDefault();
 		_usrBtn();
+	});
+	
+	$('#chatting').on('click',function(event){
+		event.preventDefault();
+		_chatting();
 	});
 	
 	
@@ -95,6 +102,42 @@ var _usrBtn = function(){
     });
 }
 
+//채팅
+var _chatting = function(){
+	const token = localStorage.getItem('accessToken')
+	const test= localStorage.getItem('data')
+	$.ajax({
+		url : "/api/main/chk",
+	    type: 'GET',
+	    headers: {
+            'Authorization': 'Bearer ' + token
+        },
+	}).done(function(data,textStatus,xhr){
+		if(xhr.status === 200){
+				window.location.href = '/chat';
+		}else{
+			window.location.href = '/account/login';
+			localStorage.removeItem('usrId')
+		}
+	}).fail(function(xhr, textStatus, errorThrowna) {
+		var jsonResponse = JSON.parse(xhr.responseText);
+        if (xhr.status === 401) {
+        	// HTTP 상태 코드가 401(Unauthorized)인 경우
+	        if(jsonResponse.code === '2' ){
+		        alert(jsonResponse.msg);
+		        localStorage.removeItem('usrId')
+		        localStorage.removeItem('accessToken')
+	    	    window.location.href = '/account/login'; // 추가적인 처리
+			}
+	    	    window.location.href = '/account/login'; // 추가적인 처리
+	    	    localStorage.removeItem('usrId')
+        } else {
+            // 다른 HTTP 상태 코드에 대한 처리
+        }
+    });
+}
+
+
 //로그인 상태
 var _loginInOut = function() {
 	const usrId = localStorage.getItem("usrId");
@@ -124,7 +167,7 @@ function _logOut(){
 		localStorage.removeItem('usrId');
 		localStorage.removeItem('accessToken');
 		localStorage.removeItem('logTp');
-		window.location.reload();
+		window.location.href='/';
 	}).fail(function(xhr, textStatus, errorThrowna) {
 		
     });
