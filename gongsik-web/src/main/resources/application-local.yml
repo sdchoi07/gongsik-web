@@ -1,6 +1,17 @@
 #server: #서버포트설정
 #     port: 8080
 spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer	
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: adopt
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      auto-offset-reset: latest
 #  datasource:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: jdbc:mysql://localhost:3306/gsw?serverTimezone=Asia/Seoul
@@ -29,4 +40,5 @@ coolsms:
  api:
   key : ENC(r9lTtdcM3yBke2cxM6NbQHJFKlxxOx8HDHZ86OHPlHOIkyMqNx+P4w==)
   secret : ENC(ERpQ8ZYgscsUJnAtvsGJpcnisdSg4g3b7lT/cCbSqBY95ryLoglA4G+Hx2wx57nNmDbWyT/BLfU=)
-  sender : ENC(ARsSFNmLSjsYdLisd16y6uUAnvEm1z9do/1j+jl6iGI=)		
+  sender : ENC(ARsSFNmLSjsYdLisd16y6uUAnvEm1z9do/1j+jl6iGI=)	
+  

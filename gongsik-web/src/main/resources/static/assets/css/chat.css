@@ -5,8 +5,8 @@
 }
 
 .chat-log {
-	height: auto;
 	overflow-y: scroll;
+	min-height: 305px;
 }
 .chat-log__item {
 	background: #fafafa;

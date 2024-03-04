@@ -8,7 +8,7 @@
 	<script src="https://kit.fontawesome.com/d8788f784e.js" crossorigin="anonymous"></script>
 	<script th:src="@{/assets/js/chat/chatting.js}"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 	<meta charset="EUC-KR">
 	<style>
 		.chat-container {
@@ -30,7 +30,12 @@
 			height: 100%;
 			/* 100% 높이로 설정 */
 		}
-
+		textarea::-webkit-scrollbar {
+			width: 0;
+			/* 스크롤바 너비를 0으로 설정 */
+			display: none !important;
+			/* 스크롤바 숨기기 */
+		}
 		.chat-list::-webkit-scrollbar {
 			width: 0;
 			/* 스크롤바 너비를 0으로 설정 */
@@ -157,184 +162,28 @@
 			display: block;
 			/* 드롭다운이 보이도록 설정 */
 		}
+
+		#message-input {
+			width: 300px;
+			height: 20px;
+		}
 	</style>
 
 
 	<title>채팅</title>
 
 </head>
-<script>
-	var currentChatRoom = 1; // 현재 활성화된 채팅방
-
-	function joinChatRoom(roomId) {
-		// 선택한 채팅방으로 변경
-		currentChatRoom = roomId;
-
-		// 채팅 내용 초기화 (새로운 채팅방으로 이동할 때)
-		document.getElementById('chat-room').innerHTML = '';
-	}
-
-	function sendMessage() {
-		var messageInput = document.getElementById('message-input');
-		var chatRoom = document.getElementById('chat-room');
-
-		// 메시지를 생성하여 추가합니다.
-		var message = document.createElement('p');
-		message.textContent = '채팅방 ' + currentChatRoom + ': ' + messageInput.value;
-		chatRoom.appendChild(message);
-
-		// 입력 필드를 비웁니다.
-		messageInput.value = '';
-	}
-
-</script>
 <div layout:fragment="content">
 	<div class="container mt-5">
 		<div class="row">
-			<div class="col-md-12 chat-container">
+			<div class="col-md-12 chat-container" style="min-height: 402px;">
 				<div class="card chat-list">
 					<div class="card-header">
 						채팅방 목록
 						<i class="fa fa-comments fa-2x  pull-right " aria-hidden="true"></i>
 					</div>
-					<ul class="list-group">
+					<ul class="list-group" id="chat-list-group">
 						<!-- 여기에 채팅방 목록 항목들을 추가하세요 -->
-						<li class="list-group-item d-flex justify-content-between align-items-center list-item">
-							<a onclick="joinChatRoom(1)">
-								<div>
-									<div>
-										<span>이름</span>
-										<span>시간</span>
-									</div>
-									<span class="text-left">내용내용내용내용</span>
-								</div>
-							</a>
-							<div class="ellipsis-container">
-								<i class="fas fa-ellipsis-v ellipsis-icon dropdown-toggle" role="button"
-									data-bs-toggle="dropdown" aria-expanded="false"></i>
-								<div class="dropdown-menu dropdown-menu-end" id="delChatRoom"
-									aria-labelledby="navbarDropdown">
-									<a href="#">채팅방 나가기</a>
-								</div>
-							</div>
-
-						</li>
-
-						<li class="list-group-item d-flex justify-content-between align-items-center list-item"
-							onclick="joinChatRoom(1)">
-							<div>
-								<div>
-									<span>이름</span>
-									<span>시간</span>
-								</div>
-								<span class="text-left">내용내용내용내용</span>
-							</div>
-							<div class="ellipsis-container">
-								<i class="fas fa-ellipsis-v ellipsis-icon dropdown-toggle" role="button"
-									data-bs-toggle="dropdown" aria-expanded="false"></i>
-								<div class="dropdown-menu dropdown-menu-end" id="delChatRoom"
-									aria-labelledby="navbarDropdown">
-									<a href="#">채팅방 나가기</a>
-								</div>
-							</div>
-
-						</li>
-						<li class="list-group-item d-flex justify-content-between align-items-center list-item"
-							onclick="joinChatRoom(1)">
-							<div>
-								<div>
-									<span>이름</span>
-									<span>시간</span>
-								</div>
-								<span class="text-left">내용내용내용내용</span>
-							</div>
-							<div class="ellipsis-container">
-								<i class="fas fa-ellipsis-v ellipsis-icon dropdown-toggle" role="button"
-									data-bs-toggle="dropdown" aria-expanded="false"></i>
-								<div class="dropdown-menu dropdown-menu-end" id="delChatRoom"
-									aria-labelledby="navbarDropdown">
-									<a href="#">채팅방 나가기</a>
-								</div>
-							</div>
-
-						</li>
-						<li class="list-group-item d-flex justify-content-between align-items-center list-item"
-							onclick="joinChatRoom(1)">
-							<div>
-								<div>
-									<span>이름</span>
-									<span>시간</span>
-								</div>
-								<span class="text-left">내용내용내용내용</span>
-							</div>
-							<div class="ellipsis-container">
-								<i class="fas fa-ellipsis-v ellipsis-icon dropdown-toggle" role="button"
-									data-bs-toggle="dropdown" aria-expanded="false"></i>
-								<div class="dropdown-menu dropdown-menu-end" id="delChatRoom"
-									aria-labelledby="navbarDropdown">
-									<a href="#">채팅방 나가기</a>
-								</div>
-							</div>
-
-						</li>
-						<li class="list-group-item d-flex justify-content-between align-items-center list-item"
-							onclick="joinChatRoom(1)">
-							<div>
-								<div>
-									<span>이름</span>
-									<span>시간</span>
-								</div>
-								<span class="text-left">내용내용내용내용</span>
-							</div>
-							<div class="ellipsis-container">
-								<i class="fas fa-ellipsis-v ellipsis-icon dropdown-toggle" role="button"
-									data-bs-toggle="dropdown" aria-expanded="false"></i>
-								<div class="dropdown-menu dropdown-menu-end" id="delChatRoom"
-									aria-labelledby="navbarDropdown">
-									<a href="#">채팅방 나가기</a>
-								</div>
-							</div>
-
-						</li>
-						<li class="list-group-item d-flex justify-content-between align-items-center list-item"
-							onclick="joinChatRoom(1)">
-							<div>
-								<div>
-									<span>이름</span>
-									<span>시간</span>
-								</div>
-								<span class="text-left">내용내용내용내용</span>
-							</div>
-							<div class="ellipsis-container">
-								<i class="fas fa-ellipsis-v ellipsis-icon dropdown-toggle" role="button"
-									data-bs-toggle="dropdown" aria-expanded="false"></i>
-								<div class="dropdown-menu dropdown-menu-end" id="delChatRoom"
-									aria-labelledby="navbarDropdown">
-									<a href="#">채팅방 나가기</a>
-								</div>
-							</div>
-
-						</li>
-						<li class="list-group-item d-flex justify-content-between align-items-center list-item"
-							onclick="joinChatRoom(1)">
-							<div>
-								<div>
-									<span>이름</span>
-									<span>시간</span>
-								</div>
-								<span class="text-left">내용내용내용내용</span>
-							</div>
-							<div class="ellipsis-container">
-								<i class="fas fa-ellipsis-v ellipsis-icon dropdown-toggle" role="button"
-									data-bs-toggle="dropdown" aria-expanded="false"></i>
-								<div class="dropdown-menu dropdown-menu-end" id="delChatRoom"
-									aria-labelledby="navbarDropdown">
-									<a href="#">채팅방 나가기</a>
-								</div>
-							</div>
-
-						</li>
-						<!-- 다른 채팅방 항목들을 추가할 수 있습니다. -->
 					</ul>
 				</div>
 				<div class="card chat-room" id="chat-room">
@@ -379,12 +228,11 @@
 					</div>
 					<!-- /.box-body -->
 					<div class="card-footer">
-						<form action="#" method="post">
-							<div class="input-group">
-								<input type="text" class="form-control" placeholder="메시지를 입력하세요..." id="message-input">
-								<button class="btn btn-primary" onclick="sendMessage()">보내기</button>
-							</div>
-						</form>
+						<div class="input-group">
+							<textarea type="text" class="form-control" placeholder="메시지를 입력하세요..."
+								id="message-input"></textarea>
+							<button class="btn btn-primary" onclick="sendMessage()">보내기</button>
+						</div>
 					</div>
 					<!-- /.box-footer-->
 				</div>
