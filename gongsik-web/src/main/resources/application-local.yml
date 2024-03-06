@@ -5,13 +5,19 @@ spring:
     bootstrap-servers: localhost:9092
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer	
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     consumer:
-      bootstrap-servers: localhost:9092
-      group-id: adopt
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      auto-offset-reset: latest
+       group-id: chatting
+       key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+       value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+       auto-offset-reset: latest
+       properties:
+        spring.json.trusted.packages: com.gongsik.gsw.util.message.dto
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+    listener:
+      missing-topics-fatal: false
+        
 #  datasource:
 #    driver-class-name: com.mysql.cj.jdbc.Driver
 #    url: jdbc:mysql://localhost:3306/gsw?serverTimezone=Asia/Seoul

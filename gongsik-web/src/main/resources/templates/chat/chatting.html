@@ -30,12 +30,14 @@
 			height: 100%;
 			/* 100% 높이로 설정 */
 		}
+
 		textarea::-webkit-scrollbar {
 			width: 0;
 			/* 스크롤바 너비를 0으로 설정 */
 			display: none !important;
 			/* 스크롤바 숨기기 */
 		}
+
 		.chat-list::-webkit-scrollbar {
 			width: 0;
 			/* 스크롤바 너비를 0으로 설정 */
@@ -99,9 +101,6 @@
 			/* 스크롤바 숨기기 */
 		}
 
-		.modal-body .list-group {
-			max-width: 100%;
-		}
 
 		.chat-bubble {
 			max-width: 70%;
@@ -167,6 +166,10 @@
 			width: 300px;
 			height: 20px;
 		}
+
+		.modal {
+			top:10%;
+		}
 	</style>
 
 
@@ -176,6 +179,7 @@
 <div layout:fragment="content">
 	<div class="container mt-5">
 		<div class="row">
+			<input type="hidden" value="${usrNm}" id="accountUsrNm">
 			<div class="col-md-12 chat-container" style="min-height: 402px;">
 				<div class="card chat-list">
 					<div class="card-header">
@@ -186,54 +190,13 @@
 						<!-- 여기에 채팅방 목록 항목들을 추가하세요 -->
 					</ul>
 				</div>
-				<div class="card chat-room" id="chat-room">
-					<div class="card-header">
-						<i class="fas fa-arrow-left mr-1" id="exitChat"></i> 공식
+				<div class="card chat-room d-flex justify-content-center align-items-center" id="chat-room">
+					<div class="chat-log__item text-center">
+						<p class="chat-log__message font-weight-bold">안녕하세요 <span th:text="${usrNm}"
+								id="usrNm"></span>님, 채팅을 시작해보세요.</p>
 					</div>
-
-					<!-- /.box-header -->
-					<div class="chat-log">
-						<div class="chat-log-date text-center mt-4">
-							<h5 class="chat-log-date">2024월 01월 01일 </h5>
-						</div>
-						<div class="chat-log__item mt-4">
-							<h3 class="chat-log__author">Felipe <small>14:30</small></h3>
-							<div class="chat-log__message">Yo man</div>
-						</div>
-						<div class="chat-log__item chat-log__item--own">
-							<h3 class="chat-log__author">Fabrício <small>14:30</small></h3>
-							<div class="chat-log__message">BRB</div>
-						</div>
-						<div class="chat-log__item chat-log__item--own">
-							<h3 class="chat-log__author">Fabrício <small>14:30</small></h3>
-							<div class="chat-log__message">sdfsdgvasdbvjnasdlbnsalkdbn</div>
-						</div>
-						<div class="chat-log__item chat-log__item--own">
-							<h3 class="chat-log__author">Fabrício <small>14:30</small></h3>
-							<div class="chat-log__message">sdfsdgvasdbvjnasdlbnsalkdbn</div>
-						</div>
-						<div class="chat-log__item chat-log__item--own">
-							<h3 class="chat-log__author">Fabrício <small>14:30</small></h3>
-							<div class="chat-log__message">sdfsdgvasdbvjnasdlbnsalkdbn</div>
-						</div>
-						<div class="chat-log__item chat-log__item--own">
-							<h3 class="chat-log__author">Fabrício <small>14:30</small></h3>
-							<div class="chat-log__message">sdfsdgvasdbvjnasdlbnsalkdbn</div>
-						</div>
-						<div class="chat-log__item chat-log__item--own">
-							<h3 class="chat-log__author">Fabrício <small>14:30</small></h3>
-							<div class="chat-log__message">sdfsdgvasdbvjnasdlbnsalkdbn</div>
-						</div>
-
-					</div>
-					<!-- /.box-body -->
-					<div class="card-footer">
-						<div class="input-group">
-							<textarea type="text" class="form-control" placeholder="메시지를 입력하세요..."
-								id="message-input"></textarea>
-							<button class="btn btn-primary" onclick="sendMessage()">보내기</button>
-						</div>
-					</div>
+					<div class="chat-log__item text-center"><button class="btn btn-dark" onclick="openModal()">채팅
+							시작하기</button></div>
 					<!-- /.box-footer-->
 				</div>
 				<!--/.direct-chat -->
@@ -244,25 +207,14 @@
 	<!-- 모달 -->
 	<div class="modal fade" id="chatListModal" tabindex="-1" aria-labelledby="chatListModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
-			<div class="modal-content">
+			<div class="modal-content" style="width:500px; height: 500px;">
 				<div class="modal-header">
 					<h5 class="modal-title" id="chatListModalLabel">회원 목록</h5>
 					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 				</div>
 				<div class="modal-body">
-					<ul class="list-group">
+					<ul class="list-group usr-lists">
 						<!-- 여기에 채팅방 목록 항목들을 추가하세요 -->
-						<li class="list-group-item" onclick="joinChatRoom(1)">채팅방 1</li>
-						<li class="list-group-item" onclick="joinChatRoom(2)">채팅방 2</li>
-						<li class="list-group-item" onclick="joinChatRoom(3)">채팅방 2</li>
-						<li class="list-group-item" onclick="joinChatRoom(4)">채팅방 2</li>
-						<li class="list-group-item" onclick="joinChatRoom(5)">채팅방 2</li>
-						<li class="list-group-item" onclick="joinChatRoom(6)">채팅방 2</li>
-						<li class="list-group-item" onclick="joinChatRoom(7)">채팅방 2</li>
-						<li class="list-group-item" onclick="joinChatRoom(8)">채팅방 2</li>
-						<li class="list-group-item" onclick="joinChatRoom(9)">채팅방 2</li>
-						<li class="list-group-item" onclick="joinChatRoom(10)">채팅방 2</li>
-						<li class="list-group-item" onclick="joinChatRoom(11)">채팅방 2</li>
 
 						<!-- 다른 채팅방 항목들을 추가할 수 있습니다. -->
 					</ul>

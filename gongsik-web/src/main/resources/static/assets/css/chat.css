@@ -19,6 +19,13 @@
 	clear: both;
 }
 
+.chat-log-date {
+	padding: 10px;
+	margin: 0 auto 20px;
+	border-radius: 4px;
+	clear: both;
+}
+
 .chat-log__item.chat-log__item--own {
 	float: right;
 	background: #DCF8C6;

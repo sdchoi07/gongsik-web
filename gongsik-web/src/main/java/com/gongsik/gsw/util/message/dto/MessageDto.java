@@ -16,6 +16,10 @@ public class MessageDto {
 	private int chatRoomNo;
 	private String curYMD;
 	private String curTime;
+	private String reciver;
+	private String sendDt;
+	private String usrNm;
+	private String usrId;
 	
 	public enum MessageType {
         JOIN, TALK, QUIT
