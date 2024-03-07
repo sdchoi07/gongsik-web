@@ -168,7 +168,7 @@
 		}
 
 		.modal {
-			top:10%;
+			top: 10%;
 		}
 	</style>
 
@@ -184,20 +184,35 @@
 				<div class="card chat-list">
 					<div class="card-header">
 						채팅방 목록
-						<i class="fa fa-comments fa-2x  pull-right " aria-hidden="true"></i>
+						<i class="fa fa-comments fa-2x  pull-right " aria-hidden="true" onclick="openModal()"></i>
 					</div>
 					<ul class="list-group" id="chat-list-group">
 						<!-- 여기에 채팅방 목록 항목들을 추가하세요 -->
 					</ul>
 				</div>
 				<div class="card chat-room d-flex justify-content-center align-items-center" id="chat-room">
-					<div class="chat-log__item text-center">
+					<div class="chat-log__item text-center chat-init">
 						<p class="chat-log__message font-weight-bold">안녕하세요 <span th:text="${usrNm}"
 								id="usrNm"></span>님, 채팅을 시작해보세요.</p>
 					</div>
-					<div class="chat-log__item text-center"><button class="btn btn-dark" onclick="openModal()">채팅
+					<div class="chat-log__item text-center chat-init"><button class="btn btn-dark"
+							onclick="openModal()">채팅
 							시작하기</button></div>
+					<div class="card-header exitchatroom" style="display : none">
+						<i class="fas fa-arrow-left mr-1" id="exitChat"></i> <span th:text="${withUsrNm}" id="withUsrNm"></span>
+					</div>
+					<div class="chat-log" style="display : none">
+
+					</div>
+
 					<!-- /.box-footer-->
+					<div class="card-footer" style="display : none">
+						<div class="input-group">
+							<textarea type="text" class="form-control" placeholder="메시지를 입력하세요..."
+								id="message-input"></textarea>
+							<button class="btn btn-primary" onclick="sendMessage()">보내기</button>
+						</div>
+					</div>
 				</div>
 				<!--/.direct-chat -->
 			</div>

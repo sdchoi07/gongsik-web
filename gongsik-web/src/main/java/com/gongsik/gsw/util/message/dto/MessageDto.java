@@ -18,8 +18,11 @@ public class MessageDto {
 	private String curTime;
 	private String reciver;
 	private String sendDt;
-	private String usrNm;
-	private String usrId;
+	private String chatInvUsrId;
+	private String chatInvUsrNm;
+	private String chatCrtUsrId;
+	private String chatCrtUsrNm;
+	private String mType;
 	
 	public enum MessageType {
         JOIN, TALK, QUIT
