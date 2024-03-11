@@ -7,8 +7,14 @@ var scrollTimeout;
 var chkScroll = true;
 var currentChatRoomNo = null;
 var globalChatRoomNo = 0;
+var socket;
+var type;
+var readCnt = 0;
 
 var init = function() {
+	// 소켓 연동;
+	//	connect();
+
 	chatConGlo = $('.chat-container').prop('scrollHeight');
 	textAreaHeight = $('#message-input').prop('scrollHeight');
 	$('.fa-comments').click(function(event) {
@@ -42,9 +48,6 @@ var init = function() {
 	//채팅 위치
 	scrollToBottom();
 
-	//채팅목록 조회
-	_chatList();
-
 	//사이즈 복원
 	_textAreaSize();
 
@@ -53,9 +56,6 @@ var init = function() {
 
 	//해당 유저 정보 조회
 	_accountList();
-
-	// 소켓 연동;
-	connect(globalChatRoomNo);
 
 	//기본 스크롤
 	_scroll();
@@ -67,6 +67,39 @@ var init = function() {
 		// 서버에서 보낸 푸시 알림 메시지 처리
 		console.log('푸시 알림 받음:', event.data);
 	};
+
+	listConnect();
+
+
+}
+
+function listConnect() {
+	socket = new SockJS('/ws');
+	stompClient = Stomp.over(socket);
+	console.log('웹소켓 확인 : ' + stompClient.connected);
+	//	if (stompClient.connected) {
+	//		stompClient.disconnect(function() {
+	//			console.log('웹소켓 연결이 닫혔습니다.');
+	//		});
+	//	}
+	console.log("connectting...")
+	// 연결
+	stompClient.connect({}, function(frame) {
+		console.log('Connected: ' + frame);
+		//		let chatCrtUsrNm = $('#accountUsrNm').val();
+		//		stompClient.send('/app/send-message', {}, JSON.stringify({
+		//			'chatCrtUsrNm': chatCrtUsrNm,
+		//			'chatInvUsrNm': chatCrtUsrNm,
+		//			'chatCrtUsrId': chatCrtUsrNm,
+		//			'chatInvUsrId': chatCrtUsrNm,
+		//			'chatRoomNo': 0,
+		//			'type': 'ENTER'
+		//
+		//		}));
+		_chatList();
+
+	});
+
 
 }
 function _scroll() {
@@ -172,52 +205,117 @@ function _textAreaSize() {
 	$('#message-input').val(''); // 텍스트 에어리어의 내용을 비움
 }
 
-function connect(chatRoomNo) {
-	const socket = new SockJS('/ws');
-	stompClient = Stomp.over(socket);
+//function connect(chatRoomNo) {
+//	socket = new SockJS('/ws');
+//	stompClient = Stomp.over(socket);
+//	console.log("connectting...")
+//	// 연결
+//	stompClient.connect({}, function(frame) {
+//		console.log('Connected: ' + frame);
+//
+//		console.log("chatrROmNo : " + chatRoomNo)
+//		stompClient.subscribe('/topic/chat/' + chatRoomNo, function(messageOutput) {
+//			showMessage(JSON.parse(messageOutput.body));
+//		});
+//	});
+//
+//}
 
-	// 연결
-	stompClient.connect({}, function(frame) {
-		console.log('Connected: ' + frame);
+function _chatReadYnUpdate(chatRoomNo) {
+	var token = localStorage.getItem("accessToken");
+	var resultData = {};
+	resultData.chatRoomNo = chatRoomNo;
+	resultData.readYn = "Y";
+	$.ajax({
+		url: "/api/chat/chatReadUpdate",
+		type: 'POST',
+		data: JSON.stringify(resultData), // form 데이터를 JSON 문자열로 변환하여 전송
+		headers: {
+			'Authorization': 'Bearer ' + token
+		},
+		contentType: 'application/json',
+	}).done(function(data) {
 
-		console.log("chatrROmNo : " + chatRoomNo)
-		stompClient.subscribe('/topic/chat/' + chatRoomNo, function(messageOutput) {
-			showMessage(JSON.parse(messageOutput.body));
-		});
+	}).fail(function(xhr, textStatus, errorThrowna) {
+		if (xhr.status === 400) {
+			// HTTP 상태 코드가 400인 경우 처리
+			var errorMessage = xhr.responseJSON.msg; // 혹은 다른 방식으로 오류 메시지 추출
+			alert(errorMessage);
+		} else {
+		}
 	});
 }
+function chatTextSave(message, readYn) {
+	var token = localStorage.getItem("accessToken");
+	var resultData = {};
+	resultData.chatRoomNo = message.chatRoomNo;
+	resultData.readYn = readYn;
+	resultData.sender = message.sender;
+	resultData.reciver = message.reciver;
+	resultData.message = message.message;
+	resultData.sendDt = message.sendDt;
+	$.ajax({
+		url: "/api/chat/chatTextSave",
+		type: 'POST',
+		data: JSON.stringify(resultData), // form 데이터를 JSON 문자열로 변환하여 전송
+		headers: {
+			'Authorization': 'Bearer ' + token
+		},
+		contentType: 'application/json',
+	}).done(function(data) {
 
-
+	}).fail(function(xhr, textStatus, errorThrowna) {
+		if (xhr.status === 400) {
+			// HTTP 상태 코드가 400인 경우 처리
+			var errorMessage = xhr.responseJSON.msg; // 혹은 다른 방식으로 오류 메시지 추출
+			alert(errorMessage);
+		} else {
+		}
+	});
+}
 function showMessage(message) {
 	_textAreaSize();
-	console.log("부ㅡㄴ명 첫방잉ㄴ데")
+	console.log("부ㅡㄴ명 첫방잉ㄴ데" + " " + globalChatRoomNo)
+	console.log("globlano : " + globalChatRoomNo)
 	let chatLog = $(".chat-log");
 	let row = "";
 	let usrNm = $('#accountUsrNm').val();
+	if (usrNm === message.sender) {
 
-	$(`#chatDate${globalChatRoomNo}`).text(message.curTime);
-	if (message.message.length > 19) {
-		$(`#chatContent${globalChatRoomNo}`).text(message.message.substring(0, 20) + '...');
-	} else {
-		$(`#chatContent${globalChatRoomNo}`).text(message.message);
 	}
-	if (message.sender == usrNm) {
-		$(`#chatWithper${globalChatRoomNo}`).text(message.sender)
-		row +=
-			`<div class="chat-log__item chat-log__item--own">
+	if (globalChatRoomNo === message.chatRoomNo) { //채팅방 들어왔을때 서로 채팅 실시간 채팅 됨
+		//		_chatReadYnUpdate(message.chatRoomNo);
+
+		$(`#chatDate${globalChatRoomNo}`).text(message.curTime);
+		if (message.message.length > 19) {
+			$(`#chatContent${globalChatRoomNo}`).text(message.message.substring(0, 20) + '...');
+		} else {
+			$(`#chatContent${globalChatRoomNo}`).text(message.message);
+		}
+		if (message.sender == usrNm) {
+			$(`#chatWithper${globalChatRoomNo}`).text(message.sender)
+			row +=
+				`<div class="chat-log__item chat-log__item--own">
                             <h3 class="chat-log__author">${message.sender} <small>${message.curTime}</small></h3>
                             <div class="chat-log__message">${message.message}</div>
                          </div>`;
-	} else {
-		$(`#chatWithper${globalChatRoomNo}`).text(message.sender)
-		row +=
-			`<div class="chat-log__item mt-4">
+		} else {
+			$(`#chatWithper${globalChatRoomNo}`).text(message.sender)
+			row +=
+				`<div class="chat-log__item mt-4">
                            <h3 class="chat-log__author">${message.sender} <small>${message.curTime}</small></h3>
                             <div class="chat-log__message">${message.message}</div>
                          </div>`;
+		}
+		chatLog.append(row)
+		if (message.sender !== usrNm) {
+			console.log("여기는 상대방 유무 체크 " + " " + message.sender + " " + usrNm)
+			chatTextSave(message, "Y")
+			//_chatReadYnUpdate(message.chatRoomNo);
+		}
+	} else {
+		//		chatTextSave(message,"N");
 	}
-	chatLog.append(row)
-
 	$('.chat-log').scrollTop($('.chat-log').prop('scrollHeight'));
 
 }
@@ -242,6 +340,7 @@ function _chatList() {
 
 //채팅 목록 조회
 function _createChatList(data) {
+
 	if (data.cnt === 0) {
 		return;
 	}
@@ -279,7 +378,7 @@ function _createChatList(data) {
 		// `currentDate`와 `chatDate` 비교 로직 수정
 		const dateToShow = (cur === chatDate) ? chatList.chatTime : chatList.chatYMD;
 		const chatWithPer = (chatList.usrNm === chatList.chatCrtUsrNm) ? chatList.chatInvUsrNm : chatList.chatCrtUsrNm;
-		const row = $("<li>").addClass("list-group-item d-flex justify-content-between align-items-center list-item");
+		const row = $("<li>").addClass("list-group-item d-flex justify-content-between align-items-center list-item").attr("id", `listChatRoom${chatList.chatRoomNo}`);
 		let readChkCnt = chatList.chatRoomReadChkNo;
 
 		// `dateToShow` 변수를 사용하여 날짜/시간 표시
@@ -296,10 +395,16 @@ function _createChatList(data) {
         		 ${readChkCnt > 0 ? `
 			    <div id="readChk${chatList.chatRoomNo}" style="margin-top:28px;">
 			      <span id="chatRoomReadChkNo" style="margin-right: 50px; position: relative;">
-			        <i class="fa fa-circle" style="color: rgba(245, 39, 39, 1); font-size: 25px;"></i>
-			        <span style="position: absolute; top: 18%;  transform: translate(95%, -50%); color: white; font-size: 15px;">${chatList.chatRoomReadChkNo}</span>
+  <i class="fa fa-circle" style="color: rgba(245, 39, 39, 1); font-size: 25px;"></i>
+  <span id="readCnt${chatList.chatRoomNo}" style="position: absolute; top: 18%; left: 50%; transform: translate(30%, -50%); color: white; font-size: 15px;">${chatList.chatRoomReadChkNo}</span>
+</span>
+
+			    </div>` : ` <div id="readChk${chatList.chatRoomNo}" style="margin-top:28px;">
+			      <span id="chatRoomReadChkNo" style="margin-right: 50px; position: relative;">
+			        <i class="fa fa-circle" style="color: rgba(245, 39, 39, 1); font-size: 25px; display:none"></i>
+			        <span id="readCnt${chatList.chatRoomNo}" style="position: absolute; top: 18%;  transform: translate(95%, -50%); color: white; font-size: 15px;"></span>
 			      </span>
-			    </div>` : ''}
+			    </div>`}
                 <div class="ellipsis-container">
                     <i class="fas fa-ellipsis-v ellipsis-icon dropdown-toggle" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false"></i>
@@ -311,24 +416,59 @@ function _createChatList(data) {
 
 		// 가정: chatListGroup이 미리 정의된 jQuery 객체
 		row.append(`<input type="hidden" value="${chatWithPer}" id="reciverUsrNm${chatList.chatRoomNo}">`)
+		row.append(`<input type="hidden" value="${chatList.chatRoomNo}" id="chatRoomNo">`);
+		
 		chatListGroup.append(row);
-			stompClient.subscribe(`/topic/chat/`+chatList.chatRoomNo, function(messageOutput) {
-		showListMessage(JSON.parse(messageOutput.body));
-		// 채팅 메시지 처리 로직...
 
-		// TODO: 채팅 목록 업데이트 등의 로직 추가
+		stompClient.subscribe(`/topic/chat/` + chatList.chatRoomNo, function(messageOutput) {
+			console.log("sub된거ㅣ  ");
+			showMessage(JSON.parse(messageOutput.body));
+			showListMessage(JSON.parse(messageOutput.body));
+		});
+
+
 	});
 
-
+	if (type === 'ENTER') {
+		joinChatRoom(globalChatRoomNo)
+	}
+	stompClient.subscribe(`/topic/user/` + $('#accountUsrNm').val(), function(messageOutput) {
+		console.log("sub된거ㅣ  ");
 	});
-
 
 
 }
 
-function showListMessage(message){
+function showListMessage(message) {
 	_textAreaSize();
-	console.log("부ㅡㄴ명 첫방잉ㄴ데")
+	console.log("부ㅡㄴ명 첫방잉 ㄴ데")
+	let usrNm = $('#accountUsrNm').val();
+	const listChatRoom = $(`#listChatRoom${globalChatRoomNo}`).val();
+
+	let row = "";
+		console.log("readCnt : " + readCnt)
+			console.log("globalChatRoomNo1 : " + globalChatRoomNo + " " + message.sender + " " + usrNm) 
+		if (message.sender !== usrNm && globalChatRoomNo !== message.chatRoomNo) {
+			console.log("globalChatRoomNo2 : " + globalChatRoomNo + " " + message.sender + " " + usrNm) 
+			$(`#readChk${message.chatRoomNo}`).find('.fa-circle').show();
+//			row = (`
+//			    <div id="readChk${globalChatRoomNo}" style="margin-top:28px;">
+//			      <span id="chatRoomReadChkNo" style="margin-right: 50px; position: relative;">
+//			        <i class="fa fa-circle" style="color: rgba(245, 39, 39, 1); font-size: 25px;"></i>
+//			        <span style="position: absolute; top: 18%;  transform: translate(95%, -50%); color: white; font-size: 15px;">${readCnt}</span>
+//			      </span>
+//			    </div>`)
+			let readCntPlus = $(`#readCnt${message.chatRoomNo}`).text();
+			console.log("왜ㅑ ㅝㅕㅣㅣ : " + parseInt(readCntPlus));
+			if(!isNaN(parseInt(readCntPlus))){
+				console.log("dfsdfsdfㅑ ㅝㅕㅣㅣ : " + isNaN(readCntPlus));
+			$(`#readCnt${message.chatRoomNo}`).text(parseInt(1) + parseInt(readCntPlus));
+			}else{
+				console.log("nan : ");
+				$(`#readCnt${message.chatRoomNo}`).text(1);
+			}
+		}
+
 
 	$(`#chatDate${message.chatRoomNo}`).text(message.curTime);
 	if (message.message.length > 19) {
@@ -339,6 +479,7 @@ function showListMessage(message){
 }
 function delChatRoom(chatRoomNo) {
 	resultData = {};
+	$(`#listChatRoom${chatRoomNo}`).remove();
 	var token = localStorage.getItem("accessToken");
 	$.ajax({
 		url: '/api/chat/delCahtRoom/' + chatRoomNo,
@@ -353,8 +494,6 @@ function delChatRoom(chatRoomNo) {
 		if (data.code === 'success') {
 			alert(data.msg);
 			_exitChat();
-			_chatList();
-
 		} else {
 
 		}
@@ -392,30 +531,39 @@ function joinChatRoom(chatRoomNo, num, type) {
 		console.log(data)
 		console.log(data.code)
 		console.log(data.msg)
-		if (data.code === 'stop') {
-
-		} else {
-			stompClient.disconnect(function() {
-				console.log('웹소켓 연결이 닫혔습니다.');
-			});
-			_createChatTextList(data);
-			if (data.withCnt === 1 && data.usrNm === data.result[0].chatRoomSender) {
-				console.log("상대방")
-				stompClient.send('/app/send-message', {}, JSON.stringify({
-					'chatCrtUsrNm': data.result[0].chatRoomReciver,
-					'chatInvUsrNm': data.result[0].chatRoomSender,
-					'chatRoomNo': data.result[0].chatRoomNo,
-					'type': "ENTER"
-				}));
-			}
+		//		if (data.code === 'stop') {
+		//
+		//		} else {
+		//			stompClient.disconnect(function() {
+		//				console.log('웹소켓 연결이 닫혔습니다.');
+		//			});
+		_createChatTextList(data);
+		if (data.withCnt === 1 && data.usrNm === data.result[0].chatRoomSender) {
+			console.log("상대방")
+			stompClient.send('/app/send-message', {}, JSON.stringify({
+				'chatCrtUsrNm': data.result[0].chatRoomReciver,
+				'chatInvUsrNm': data.result[0].chatRoomSender,
+				'chatRoomNo': data.result[0].chatRoomNo,
+				'type': "ENTER"
+			}));
 		}
+		//		}
 	}).fail(function(xhr, textStatus, errorThrowna) {
 	});
 }
 
 function _createChatTextList(data) {
+
 	var usrNm = data.usrNm;
 	console.log(data.withUsrNm)
+	stompClient.subscribe('/topic/user/' + usrNm, function(usrNm) {
+		const userStatusMap = JSON.parse(usrNm);
+		console.log('User Status:', userStatusMap);
+	});
+
+
+
+
 	$('.chat-room').removeClass('d-flex justify-content-center align-items-center');
 	$('.chat-init').remove();
 	$('.chat-log').empty();
@@ -474,6 +622,7 @@ function _createChatTextList(data) {
 
 		});
 	} else {
+		console.log("ymd : " + data.chatYMD);
 		var recordDt = data.chatYMD.replace(/\./g, ""); // 모든 '.' 문자를 제거
 		var yyyy = recordDt.substring(0, 4);
 		var mm = recordDt.substring(4, 6);
@@ -485,15 +634,19 @@ function _createChatTextList(data) {
 		chatRoomNo = data.chatRoomNo;
 	}
 	var row = $(`<input type="hidden" value="${chatRoomNo}" id="chatRoomNo">`)
-	$(`#readChk${chatRoomNo}`).empty();
+	$(`#readChk${chatRoomNo}`).find('.fa-circle').css('display','none');
+	$(`#readCnt${chatRoomNo}`).text('');
+		
 	chatLog.append(row);
 	if (chkScroll) {
 		scrollToBottom();
 	}
+	console.log("채팅 내용 보내기저 ㄴ")
 	//소켓 연결
 	if (data.type !== 'ENTER') {
-		connect(chatRoomNo);
+		//		connect(chatRoomNo);
 	} else {
+		console.log("채팅 내용 보내는곳")
 		stompClient.subscribe('/topic/chat/' + chatRoomNo, function(messageOutput) {
 			showMessage(JSON.parse(messageOutput.body));
 		});
@@ -504,6 +657,7 @@ function _createChatTextList(data) {
 
 function sendMessage() {
 	let messageInput = $('#message-input').val();
+	console.log("메세지 보냄")
 	if (messageInput.replaceAll(' ', '') === '') {
 		alert("메세지를 입력해 주세요");
 		return;
@@ -511,6 +665,13 @@ function sendMessage() {
 	let sender = $('#accountUsrNm').val();
 	let reciver = $('#reciverUsrNm' + globalChatRoomNo).val();
 	let type = "TALK";
+	let resultData = {};
+	resultData.sender = sender;
+	resultData.reciver = reciver;
+	resultData.chatRoomNo = globalChatRoomNo;
+	resultData.message = messageInput;
+	chatTextSave(resultData, "N");
+
 	messageInput = messageInput.replaceAll(/(\n|\r\n)/g, "<br>");
 	// 서버로 메시지 전송 (서버에서 /app/send-message로 메시지를 수신할 때)
 	stompClient.send('/app/send-message', {}, JSON.stringify({
@@ -519,6 +680,7 @@ function sendMessage() {
 		'message': messageInput,
 		'chatRoomNo': globalChatRoomNo,
 		'type': type
+
 	}));
 
 	// 메시지 전송 후 입력 필드 비우기
@@ -529,12 +691,12 @@ function sendMessage() {
 
 
 function openModal() {
-	stompClient.disconnect(function() {
-		console.log('웹소켓 연결이 닫혔습니다.');
-	});
+	//	stompClient.disconnect(function() {
+	//		console.log('웹소켓 연결이 닫혔습니다.');
+	//	});
 	$('#chatListModal').modal("show");
 	accountLists();
-	connect();
+	//	connect();
 
 }
 
@@ -578,6 +740,9 @@ function _usrLists(data) {
 
 }
 function createChatRoom(chatInvUsrNm, chatInvUsrId) {
+	stompClient.disconnect(function() {
+		console.log('웹소켓 연결이 닫혔습니다.');
+	});
 	let chatCrtUsrNm = $('#accountUsrNm').val();
 	let chatCrtUsrId = localStorage.getItem("usrId");
 	let resultData = {};
@@ -598,7 +763,7 @@ function createChatRoom(chatInvUsrNm, chatInvUsrId) {
 	}).done(function(data) {
 		if (data.code === 'success') {
 
-			let type = "ENTER";
+			type = "ENTER";
 			$('#chatListModal').modal("hide");
 
 			stompClient.send('/app/send-message', {}, JSON.stringify({
@@ -609,9 +774,20 @@ function createChatRoom(chatInvUsrNm, chatInvUsrId) {
 				'chatRoomNo': data.object.chatRoomNo,
 				'type': 'ENTER'
 			}));
-			stompClient.subscribe('/topic/chat/' + data.object.chatRoomNo, function(messageOutput) {
-				showChatRoom(JSON.parse(messageOutput.body));
-			});
+			listConnect();
+			globalChatRoomNo = data.object.chatRoomNo;
+//				showChatRoom(data.object);
+			//			console.log("send는 되는거같은데  " + type);
+			//			stompClient.subscribe('/topic/chat/' + data.object.chatRoomNo, function(messageOutput) {
+			//				console.log("sub된거ㅣ  ");
+			//				if(type==='ENTER'){
+			//					console.log("왜 안돼?  ");
+			//					type = '';
+			//				}else{
+			//					showMessage(JSON.parse(messageOutput.body));
+			//					showListMessage(JSON.parse(messageOutput.body));
+			//				}
+			//			});
 			//			_chatList();
 			//			joinChatRoom(data.object.chatRoomNo, 1, "ENTER");
 		} else {
@@ -631,34 +807,34 @@ function createChatRoom(chatInvUsrNm, chatInvUsrId) {
 
 function showChatRoom(message) {
 	_textAreaSize();
-	let chatlist = $("#chat-list-group");
-	const row = $("<li>").addClass("list-group-item d-flex justify-content-between align-items-center list-item");
-
-	// `dateToShow` 변수를 사용하여 날짜/시간 표시
-	// 템플릿 리터럴 내 변수 참조 수정
-	row.append(`<a id="joinChat${message.chatRoomNo}" data-chat-room-no="${message.chatRoomNo}" style="width:100%">
-                    <div>
-                        <div>
-                            <span id="chatWithPer${message.chatRoomNo}">${message.reciver}</span>
-                            <span id="chatDate${message.chatRoomNo}">${message.curTime}</span>
-                        </div>
-
-                        <span class="text-left" id="chatContent${message.chatRoomNo}"></span>
-                    </div>
-                </a>
-                <div class="ellipsis-container">
-                    <i class="fas fa-ellipsis-v ellipsis-icon dropdown-toggle" role="button"
-                        data-bs-toggle="dropdown" aria-expanded="false"></i>
-                    <div class="dropdown-menu dropdown-menu-end" id="delChatRoom"
-                        aria-labelledby="navbarDropdown">
-                        <a href="#" onclick="delChatRoom('${message.chatRoomNo}')">채팅방 나가기</a>
-                    </div>
-                </div>`);
-
-	// 가정: chatListGroup이 미리 정의된 jQuery 객체
-	row.append(`<input type="hidden" value="${message.reciver}" id="reciverUsrNm${message.chatRoomNo}">`)
+	console.log("지우기 ");
+	//	let chatlist = $("#chat-list-group");
+	//	const row = $("<li>").addClass("list-group-item d-flex justify-content-between align-items-center list-item").attr("id", `listChatRoom${message.chatRoomNo}`);
+	//	// `dateToShow` 변수를 사용하여 날짜/시간 표시
+	//	// 템플릿 리터럴 내 변수 참조 수정
+	//	row.append(`<a id="joinChat${message.chatRoomNo}" data-chat-room-no="${message.chatRoomNo}" style="width:100%">
+	//                    <div>
+	//                        <div>
+	//                            <span id="chatWithPer${message.chatRoomNo}">${message.reciver}</span>
+	//                            <span id="chatDate${message.chatRoomNo}">${message.curTime}</span>
+	//                        </div>
+	//
+	//                        <span class="text-left" id="chatContent${message.chatRoomNo}"></span>
+	//                    </div>
+	//                </a>
+	//                <div class="ellipsis-container">
+	//                    <i class="fas fa-ellipsis-v ellipsis-icon dropdown-toggle" role="button"
+	//                        data-bs-toggle="dropdown" aria-expanded="false"></i>
+	//                    <div class="dropdown-menu dropdown-menu-end" id="delChatRoom"
+	//                        aria-labelledby="navbarDropdown">
+	//                        <a href="#" onclick="delChatRoom('${message.chatRoomNo}')">채팅방 나가기</a>
+	//                    </div>
+	//                </div>`);
+	//
+	//	// 가정: chatListGroup이 미리 정의된 jQuery 객체
+	//	row.append(`<input type="hidden" value="${message.reciver}" id="reciverUsrNm${message.chatRoomNo}">`)
 	globalChatRoomNo = message.chatRoomNo;
-	chatlist.prepend(row);
+	//	chatlist.prepend(row);
 
 	$('.chat-room').removeClass('d-flex justify-content-center align-items-center');
 	$('.chat-init').remove();
@@ -677,10 +853,10 @@ function showChatRoom(message) {
                         </div>`);
 	$('.chat-log').append(chatRecordDt);
 	$('.chat-log').append(`<input type="hidden" value="${message.chatRoomNo}" id="chatRoomNo">`);
-	stompClient.disconnect(function() {
-		console.log('웹소켓 연결이 닫혔습니다. 여기가 마지막인데');
-	});
-	connect(globalChatRoomNo);
+	//	stompClient.disconnect(function() {
+	//		console.log('웹소켓 연결이 닫혔습니다. 여기가 마지막인데');
+	//	});
+	//	connect(globalChatRoomNo);
 
 }
 
@@ -692,6 +868,7 @@ function scrollToBottom() {
 }
 
 function _exitChat() {
+	globalChatRoomNo = 0;
 	currentPage = 1;
 	let usrNm = $('#accountUsrNm').val();
 	$('.chat-init').remove();
@@ -705,7 +882,22 @@ function _exitChat() {
 
 
 
+function getUserIdByWebSocket(ws) {
+	for (const [userId, user] of users) {
+		if (user.ws === ws) {
+			return userId;
+		}
+	}
+	return null;
+}
 
+function broadcastToChatRoom(chatRoomId, message) {
+	for (const [userId, user] of users) {
+		if (user.chatRoomId === chatRoomId) {
+			user.ws.send(message);
+		}
+	}
+}
 $(document).ready(function() {
 	init();
 });
