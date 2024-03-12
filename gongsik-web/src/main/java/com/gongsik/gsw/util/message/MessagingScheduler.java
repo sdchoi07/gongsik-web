@@ -1,12 +1,13 @@
 package com.gongsik.gsw.util.message;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.messaging.converter.StringMessageConverter;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -16,6 +17,7 @@ import com.gongsik.gsw.config.WebClients;
 import com.gongsik.gsw.util.hadler.EmailSend;
 import com.gongsik.gsw.util.message.dto.MessageDto;
 
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
@@ -28,17 +30,71 @@ public class MessagingScheduler {
 
 	private SimpMessagingTemplate messagingTemplate;
 
+	private Map<Integer, Set<String>> map;
+
 	public MessagingScheduler(SimpMessagingTemplate messagingTemplate) {
 		this.messagingTemplate = messagingTemplate;
+	}
+
+	@PostConstruct
+	public void InitMap() {
+		this.map = new HashMap<>();
 	}
 
 	@KafkaListener(topics = "gongsik", groupId = "chatting", containerFactory = "kafkaListenerContainerFactory")
 	public void sendMessage(MessageDto message) {
 		try {
-			messagingTemplate.convertAndSend("/topic/chat/" + message.getChatRoomNo(), message);
-			log.info("Received message from Kafka: {}", message);
-			
-			if (!"ENTER".equals(message.getMType())) {
+			if ("ENTER".equals(message.getType())) {
+				Set<String> userNames = map.computeIfAbsent(message.getChatRoomNo(), k -> new HashSet<>());
+				userNames.add(message.getSender());
+				// map.put(message.getChatRoomNo(), userNames); // 이 줄은 불필요합니다. computeIfAbsent가
+				// 이미 map을 업데이트합니다.
+				System.out.println("ENTER : " + message.getChatRoomNo());
+				System.out.println("ENTER : " + map);
+				log.info("Received message from Kafka ENTER: {}", message);
+
+				if (map.get(message.getChatRoomNo()).size() == 2) {
+					message.setReadYn("Y");
+				} else {
+					message.setReadYn("N");
+				}
+				messagingTemplate.convertAndSend("/topic/chat/" + message.getChatRoomNo(), message);
+
+			} else if ("EXIT".equals(message.getType())) {
+				if (message.getChatRoomNo() == 0) {
+					for (int key : map.keySet()) {
+						Set<String> usrNm = map.get(key);
+						if (usrNm != null) {
+							usrNm.remove(message.getSender());
+							if (usrNm.isEmpty()) {
+								map.remove(key);
+							}
+						}
+					}
+				} else {
+
+					Set<String> userNames = map.get(message.getChatRoomNo());
+					System.out.println("exit : " + userNames);
+					if (userNames != null) {
+						userNames.remove(message.getSender());
+						// 여기서 userNames가 비어있으면 map에서 해당 키를 제거할 수도 있습니다.
+						if (userNames.isEmpty()) {
+							map.remove(message.getChatRoomNo());
+						}
+					}
+				}
+				log.info("Received message from Kafka EXIT: {}", message);
+			} else {
+				if (map.get(message.getChatRoomNo()).size() == 2) {
+					message.setReadYn("Y");
+				} else {
+					message.setReadYn("N");
+				}
+				log.info("Received message from Kafka ELSE: {}", message);
+				messagingTemplate.convertAndSend("/topic/chat/" + message.getChatRoomNo(), message);
+			}
+			System.out.println(map);
+			if ("TALK".equals(message.getType())) {
 				// restAPI 서버 호출
 				WebClients webClients = new WebClients();
 				Mono<Object> postResponse = webClients.callApi(message, Object.class, "/api/chat/chatTextSave");

@@ -35,7 +35,6 @@ public class WebSocketController {
 	public void sendMessage(Map<String, Object> request) throws InterruptedException, ExecutionException {
 		MessageDto messageDto = new MessageDto();
 		String type = request.get("type").toString();
-		
 		String curDt = "";
 		LocalDateTime currentDateTime = LocalDateTime.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -43,7 +42,7 @@ public class WebSocketController {
 
 		String chatYMD = curDt.substring(0, 10).replaceAll("-", ".");
 		String chatTime = curDt.substring(11, 16);
-		
+//		chatMessageDto.getMessageType().equals(ChatMessageDto.MessageType.ENTEcR)
 		if ("ENTER".equals(type)) {
 			String ChatInvUsrNm = request.get("chatInvUsrNm").toString();
 			String ChatCrtUsrNm = request.get("chatCrtUsrNm").toString();
@@ -56,10 +55,21 @@ public class WebSocketController {
 			messageDto.setCurTime(chatTime);
 			messageDto.setSendDt(curDt);
 			messageDto.setChatRoomNo(chatRoomNo);
-			messageDto.setMType(type);
-//			createChatRoom(messageDto);
+			messageDto.setType(type);
 			kafkaTemplate.send("gongsik", messageDto);
-		} else {
+		} else if("EXIT".equals(type)){
+			String sender = request.get("sender").toString();
+			int chatRoomNo = Integer.parseInt(request.get("chatRoomNo").toString());
+			String roomEnterMessage = String.format("%s님이 퇴장하였씁니다..", sender);
+			messageDto.setMessage(roomEnterMessage);
+			messageDto.setSender(sender);
+			messageDto.setCurYMD(chatYMD);
+			messageDto.setCurTime(chatTime);
+			messageDto.setSendDt(curDt);
+			messageDto.setChatRoomNo(chatRoomNo);
+			messageDto.setType(type);
+			kafkaTemplate.send("gongsik", messageDto);
+		}else {
 			messageDto.setCurYMD(chatYMD);
 			messageDto.setCurTime(chatTime);
 			messageDto.setMessage(request.get("message").toString());
@@ -68,39 +78,39 @@ public class WebSocketController {
 			messageDto.setSender(request.get("sender").toString());
 			messageDto.setReciver(request.get("reciver").toString());
 			messageDto.setSendDt(curDt);
-
+			messageDto.setType(type);
 			kafkaTemplate.send("gongsik", messageDto);
 		}
 	}
 
-//	public void createChatRoom(MessageDto messageDto) {
-//		// restAPI 서버 호출
-//		WebClients webClients = new WebClients();
-//		Mono<Object> postResponse = webClients.callApi(messageDto, Object.class, "/api/chat/chatCreatRoom");
-//
-//		// 결과 값 가져오기
-//		Map<String, Object> resultMap = new HashMap<String, Object>();
-//		postResponse.subscribe(response -> {
-//			ObjectMapper objectMapper = new ObjectMapper();
-//			try {
-//				String jsonResponse = objectMapper.writeValueAsString(response);
-//				Map<String, Object> jsonMap = objectMapper.readValue(jsonResponse, new TypeReference<>() {
-//				});
-//				// restAPI에 반환값 가져와 저장
-//				for (Map.Entry<String, Object> restResponse : jsonMap.entrySet()) {
-//					String jsonKey = restResponse.getKey();
-//					Object value = restResponse.getValue();
-//					resultMap.put(jsonKey, value);
-//					resultMap.put("subject", "오류알림");
-//				}
-//				// code 값이 fail일 경우 업무자에게 메일 전송
-//				if (resultMap.get("code").equals("fail")) {
-//
-//					emailsend.sendFailAuthSave(resultMap);
-//				}
-//			} catch (JsonProcessingException e) {
-//				e.printStackTrace();
-//			}
-//		});
-//	}
+	public void createChatRoom(MessageDto messageDto) {
+		// restAPI 서버 호출
+		WebClients webClients = new WebClients();
+		Mono<Object> postResponse = webClients.callApi(messageDto, Object.class, "/api/chat/chatCreatRoom");
+
+		// 결과 값 가져오기
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		postResponse.subscribe(response -> {
+			ObjectMapper objectMapper = new ObjectMapper();
+			try {
+				String jsonResponse = objectMapper.writeValueAsString(response);
+				Map<String, Object> jsonMap = objectMapper.readValue(jsonResponse, new TypeReference<>() {
+				});
+				// restAPI에 반환값 가져와 저장
+				for (Map.Entry<String, Object> restResponse : jsonMap.entrySet()) {
+					String jsonKey = restResponse.getKey();
+					Object value = restResponse.getValue();
+					resultMap.put(jsonKey, value);
+					resultMap.put("subject", "오류알림");
+				}
+				// code 값이 fail일 경우 업무자에게 메일 전송
+				if (resultMap.get("code").equals("fail")) {
+
+					emailsend.sendFailAuthSave(resultMap);
+				}
+			} catch (JsonProcessingException e) {
+				e.printStackTrace();
+			}
+		});
+	}
 }
