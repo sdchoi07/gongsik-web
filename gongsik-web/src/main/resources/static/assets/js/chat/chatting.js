@@ -15,7 +15,7 @@ var globalChatRoomTextNo = 0;
 var init = function() {
 	// 소켓 연동;
 	//	connect();
-
+	$('#chattingAlram').css("display","none");
 	chatConGlo = $('.chat-container').prop('scrollHeight');
 	textAreaHeight = $('#message-input').prop('scrollHeight');
 	$('.fa-comments').click(function(event) {
@@ -63,7 +63,7 @@ var init = function() {
 
 	listConnect();
 	
-	var eventSource = new EventSource("/stop-sse");
+	var eventSource = new EventSource("/");
 
 	// SSE 종료
 	eventSource.close();
@@ -478,6 +478,15 @@ function joinChatRoom(chatRoomNo, num, type) {
 			'Authorization': 'Bearer ' + token
 		},
 	}).done(function(data) {
+		
+		let readYnCnt = data.chatReadYnCnt;
+		
+		if (readYnCnt > 0) {
+			$('.chattingAlram').show();
+		} else {
+			$('.chattingAlram').css('display','none');
+		}
+		
 		if (data.code === 'stop') {
 		} else {
 			_createChatTextList(data);

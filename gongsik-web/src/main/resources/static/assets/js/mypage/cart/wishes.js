@@ -13,6 +13,68 @@ var initWish = function() {
 		currentPage--;
 		_wishList();
 	});
+
+	// 검색 버튼 클릭 이벤트 핸들러 등록
+	$('#paymentBtn').on('click', function(event) {
+		event.preventDefault();
+		_movePayment();
+	});
+}
+
+function _movePayment() {
+
+	// 현재 URL 가져오기
+	const currentUrl = window.location.href;
+	var wishlist = [];
+	$(".wishTrList").each(function(index) {
+        // 현재 행에서 필요한 값을 추출
+        var itemNm = $(this).find(".itemNm a").text();
+        var itemKey = $(this).find("input[name='cartNo']").val();
+        var count = $(this).find(".text-center:eq(0)").text();
+        var totalPrice = $(this).find(".text-center:eq(1)").text();
+
+        // 추출한 값을 콘솔에 출력 (나중에 실제로 사용할 때는 데이터를 어떻게 활용할지 결정)
+        console.log("Item Name: " + itemNm);
+        console.log("Cart No: " + itemKey);
+        console.log("Count: " + count);
+        console.log("Total Price: " + totalPrice);
+
+        // 추출한 값을 자유롭게 활용하여 필요한 작업 수행
+        // ...
+
+        // 예제에서는 배열에 저장하는 방식으로 구현
+        var wishlistItem = {
+            itemNm: itemNm,
+            itemKey: itemKey,
+            count: count,
+            totalPrice: totalPrice
+        };
+        wishlist.push(wishlistItem);
+    });
+   	 console.log(wishlist);
+
+    // 완성된 Wishlist 배열을 콘솔에 출력
+
+	// 현재 URL에 추가할 파라미터 객체 생성
+//	const queryParams = {
+//		itemKey: itemKey,
+//		itemNm: itemNm,
+//		count: count,
+//		totalPrice: totalPrice,
+//		url: url
+//	};
+
+	// 쿼리스트링으로 변환
+	const queryString = objectToQueryString(wishlist);
+	console.log(encodeURIComponent(JSON.stringify(queryString)))
+	// 현재 URL에 쿼리스트링 추가하고 새로운 URL로 이동
+ window.location.href = "/payment/paymentDetail?itemLists=" + encodeURIComponent(JSON.stringify(wishlist));
+}
+
+function objectToQueryString(obj) {
+  return Object.keys(obj)
+    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`)
+    .join('&');
 }
 
 
@@ -37,7 +99,7 @@ var _wishList = function() {
 		},
 		contentType: 'application/json',
 	}).done(function(data) {
-		if(data.totalCnt === 0){
+		if (data.totalCnt === 0) {
 			var myCart = $('.wishTable');
 			myCart.empty();
 			var row = `<div class="col-xl-12 mt-4 cartEmpty">
@@ -48,8 +110,8 @@ var _wishList = function() {
 					    </div>
 					</div>`
 			myCart.append(row)
-		}else{
-		_tableData(data);
+		} else {
+			_tableData(data);
 		}
 	}).fail(function(xhr, textStatus, errorThrowna) {
 		if (xhr.status === 403) {

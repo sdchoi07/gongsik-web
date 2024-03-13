@@ -22,7 +22,7 @@ var _main = function() {
 	}
 
 
-	
+
 	_loginInOut();
 
 	var url = window.location.href;
@@ -35,26 +35,43 @@ var _main = function() {
 	const eventSource = new EventSource("/notification" + "?usrId=" + usrId);
 
 	eventSource.addEventListener("connect", function(event) {
-		console.log("여기 오냐? ")
 		const commentData = event.data;
-		console.log("data 확인 : " + commentData)
 
 		// 받은 댓글 데이터를 이용하여 UI 업데이트
 	});
 
 	eventSource.addEventListener("addMessage", function(event) {
-		console.log("여기 오냐? ")
-		const commentData = event.data;
-		console.log("data 확인 : " + commentData)
+		showNotification();
 
 		// 받은 댓글 데이터를 이용하여 UI 업데이트
 	});
 
-	 eventSource.onmessage = event => {
-		 console.log("cpzmaks 합니다")
+	chatReadYnLists()
+}
 
-      }
+function chatReadYnLists() {
+	const token = localStorage.getItem('accessToken')
+	const usrId = localStorage.getItem('usrId')
+	$.ajax({
+		url: "/api/chat/chatReadYnLists/" + usrId,
+		type: 'GET',
+		headers: {
+			'Authorization': 'Bearer ' + token
+		},
+	}).done(function(data) {
+		let cnt = data.chatReadYnCnt;
+		if (cnt > 0) {
+			$('.chattingAlram').show();
+		} else {
+			$('.chattingAlram').css('display','none');
+		}
+	}).fail(function(xhr, textStatus, errorThrowna) {
 
+	})
+}
+function showNotification() {
+	console.log("될텐데");
+	$('.chattingAlram').show();
 }
 
 var checkTokenExpiry = function() {

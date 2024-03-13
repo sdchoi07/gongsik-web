@@ -21,6 +21,8 @@ var initItem = function() {
 
 		_categoriesList();
 	});
+	
+	
 }
 
 var _categoriesList = function() {
@@ -94,7 +96,7 @@ var _tableItemData = function(data) {
             </a>
             <div class="card-footer d-flex justify-content-end bg-light border">
                  <a href="javascript:void(0);" onclick="intoCart(${i})" class="btn btn-sm text-dark p-0">
-                    <i class="fas fa-shopping-cart text-primary mr-1"></i>찜하기
+                  		찜하기
                     ${list[i].useYn === 'Y' ? '<img src="/vendor/third/img/plot.png" style="top:52px;" />' : '<img src="/vendor/third/img/plot-empty.png" style="top:52px;" />'}
                 </a>
             </div>

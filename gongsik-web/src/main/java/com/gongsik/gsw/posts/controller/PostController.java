@@ -22,7 +22,6 @@ public class PostController {
 	@GetMapping("/createPost")
 	public String createPost(@RequestParam(name = "postsNo", required = false) String postsNo, Model model) {
 		model.addAttribute("postsNo", postsNo);
-		System.out.print(postsNo);
 		return "posts/createPost";
 	}
 	

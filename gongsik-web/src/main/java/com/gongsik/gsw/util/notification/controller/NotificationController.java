@@ -20,7 +20,6 @@ public class NotificationController {
 	
     public static Map<String, SseEmitter> sseEmitters = new ConcurrentHashMap<>();
     
-	// 메시지 알림
     @GetMapping(value="/notification", produces = "text/event-stream")
     public SseEmitter subscribe(@RequestParam("usrId") String usrId) {
         SseEmitter sseEmitter = notificationService.subscribe(usrId);
@@ -29,8 +28,8 @@ public class NotificationController {
         return sseEmitter;
     }
     
- // 메시지 알림
-    @GetMapping(value="/alramMsg")
+     // 메시지 알림
+    @GetMapping(value="/alramChat")
     public ResponseEntity<Void> alramMsg(@RequestParam("usrId") String usrId) {
          notificationService.notifyMessage(usrId);
         System.out.println(sseEmitters);
