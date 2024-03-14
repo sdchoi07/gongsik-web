@@ -49,8 +49,6 @@ public class MessagingScheduler {
 				userNames.add(message.getSender());
 				// map.put(message.getChatRoomNo(), userNames); // 이 줄은 불필요합니다. computeIfAbsent가
 				// 이미 map을 업데이트합니다.
-				System.out.println("ENTER : " + message.getChatRoomNo());
-				System.out.println("ENTER : " + map);
 				log.info("Received message from Kafka ENTER: {}", message);
 
 				if (map.get(message.getChatRoomNo()).size() == 2) {
@@ -74,7 +72,6 @@ public class MessagingScheduler {
 				} else {
 
 					Set<String> userNames = map.get(message.getChatRoomNo());
-					System.out.println("exit : " + userNames);
 					if (userNames != null) {
 						userNames.remove(message.getSender());
 						// 여기서 userNames가 비어있으면 map에서 해당 키를 제거할 수도 있습니다.
@@ -93,7 +90,6 @@ public class MessagingScheduler {
 				log.info("Received message from Kafka ELSE: {}", message);
 				messagingTemplate.convertAndSend("/topic/chat/" + message.getChatRoomNo(), message);
 			}
-			System.out.println(map);
 			if ("TALK".equals(message.getType())) {
 				// restAPI 서버 호출
 				WebClients webClients = new WebClients();

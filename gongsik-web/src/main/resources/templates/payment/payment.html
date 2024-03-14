@@ -58,6 +58,9 @@
 </head>
 <div layout:fragment="content">
 	<input type="hidden" th:value="${itemLists}" id="itemLists"></input>
+	<input type="hidden"  id="delvAreaNo"></input>
+	<input type="hidden" th:value="${totalPrice}" id="originalTotlaPrice"></input>
+	<input type="hidden" th:value="${itemKey}" id="itemKey"></input>
 	<div class="container py-5">
 
 		<div class="d-flex flex-column align-items-left mb-4">
@@ -154,11 +157,11 @@
 							<th scope="col" colspan="2"></th>
 						</tr>
 					</thead>
-					<tbody id="wishTableBody" name="wishTableBody">
+					<tbody id="itemLiestsBody" name="itemLiestsBody">
 						<td class="align-middle text-center"> <img th:src="${url}"></td>
-						<td class="align-middle text-center" th:text="${itemNm}"></td>
-						<td class="align-middle text-center" th:text="${count}"></td>
-						<td class="align-middle text-center" th:text="${itemPrice}"></td>
+						<td class="align-middle text-center" id="itemNm" th:text="${itemNm}"></td>
+						<td class="align-middle text-center" id="count" th:text="${count}"></td>
+						<td class="align-middle text-center" id="itemPrice" th:text="${itemPrice}"></td>
 					</tbody>
 				</table>
 			</div>
@@ -183,7 +186,7 @@
 						</td>
 						<td class="customer__col customer__col--2"
 							style="display: flex; justify-content: space-between;">
-							<input type="tel" class="customer-input-l" id="usePoint">
+							<input type="" class="customer-input-l" id="usePoint">
 							<span id="totalPoint"></span>
 						</td>
 
@@ -193,7 +196,7 @@
 						<td class="customer__col customer__col--1">
 							최종 결제 금액
 						</td>
-						<td class="customer__col customer__col--2" th:text="${totalPrice}">
+						<td class="customer__col customer__col--2" id="totalPrice" th:text="${totalPrice}">
 						</td>
 					</tr>
 				</tbody>
@@ -215,6 +218,12 @@
 				id="paykakaoBtn"
 				style="background-color: rgba(3, 199, 90, 0.12); font-family: 'Noto Sans KR', sans-serif; color: #009f47; border-radius: 0; width: 150px; height: 40px">
 				카카오
+			</button>
+			<button type="submit"
+				class="btn btn-primary btn-xg btn-block fw-bold border-left border-right border-top border-bottom"
+				id="bankBtn"
+				style="background-color: rgba(3, 199, 90, 0.12); font-family: 'Noto Sans KR', sans-serif; color: #009f47; border-radius: 0; width: 150px; height: 40px">
+				계좌
 			</button>
 		</div>
 

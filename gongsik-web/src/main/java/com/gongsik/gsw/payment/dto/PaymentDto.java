@@ -7,8 +7,8 @@ import lombok.ToString;
 @ToString
 public class PaymentDto {
 	private String itemNm;
-	private String itemKey;
-	private String count;
-	private String totalPrice;
+	private String itemNo;
+	private int invenCnt;
+	private int itemPrice;
 	
 }
