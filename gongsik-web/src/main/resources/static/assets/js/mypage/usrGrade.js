@@ -21,10 +21,8 @@ var _usrGradeSelect = function() {
 		},
 		contentType: 'application/json',
 	}).done(function(data) {
-		console.log("???" + data.result.code)
 		if (data.result.code === 'success') {
 			var gradeUsrLevel = data.usrGradeDto.gradeLevel;
-			console.log("???" + gradeUsrLevel);
 			var usrData = data.usrGradeDto.gradeUsrNm;
 			$('#gradeUsrNm').text(usrData);
 			$('#gradeUsrLevel').text(gradeUsrLevel);

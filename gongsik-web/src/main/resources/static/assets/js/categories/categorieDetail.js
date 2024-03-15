@@ -24,15 +24,21 @@ var init = function() {
 }
 
 function _movePayment() {
-
+	var itemLists = [];
 	var itemKey = $('#itemKey').val();
 	var itemNm = $('#itemNm').text();
 	var count = $("#count").val();
-	var totalPrice = $('#totalPrice').text();
 	var itemPrice = $('#itemPrice').text();
 	var url = $('#itemDetail').attr('src');
-	var totalBenePrice = $('#totalBenePrice').text();
-	location.href = '/payment/paymentDetail?itemKey=' + itemKey + '&itemNm=' + itemNm + '&count=' + count + '&totalPrice=' + totalPrice + '&url=' + url + '&itemPrice=' + itemPrice + '&totalBenePrice=' + totalBenePrice;
+	var itemList = {
+		itemNm: itemNm,
+		itemKey: itemKey,
+		count: count,
+		totalPrice: itemPrice,
+		url: url
+	};
+	itemLists.push(itemList);
+	window.location.href = "/payment/paymentDetailFromWish?itemLists=" + encodeURIComponent(JSON.stringify(itemLists));
 }
 
 function _gotoWish() {
@@ -100,7 +106,6 @@ function calculateTotalPrice(itemPrice, benePrice) {
 	var formattedPrice = totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	$("#totalPrice").html(formattedPrice + '원');
 
-	console.log("뭐지 이 몁앗 : " + benePrice + " " + count + " " +itemPrice)
 
 	benePrice = benePrice.substring(0, benePrice.indexOf('p'));
 	var totalBenePrice = benePrice * count;

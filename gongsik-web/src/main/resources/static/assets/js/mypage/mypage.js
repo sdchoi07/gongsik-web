@@ -65,7 +65,7 @@ var _accountList = function(){
 	}).done(function(data){
 			
 		if(data.code === 'success'){
-			 var usrGrade = data.result.usrGrade;
+			 var usrGrade = data.usrGrdLevel;
 	  		$('#levelNumber').text(usrGrade);
 	  	
 		}else{

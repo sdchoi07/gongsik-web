@@ -3,34 +3,14 @@ var init = function() {
 	//사용자 정보 가져오기
 
 	_accountInfo();
-	//	let result = $('#itemLists').val();
-	//result =  result.substring(1, result.length - 1);
-	//	var itemArray = JSON.parse(result);
 
-	// 파싱된 객체를 콘솔에 출력
+	_itemListsTable();
 
-	// 원하는 작업 수행
-	// 예를 들어, 각 항목을 순회하며 출력
-	//	itemArray.forEach(function(item) {
-	//		console.log(item.itemKey + ' - ' + item.itemNm + ' - ' + item.count + ' - ' + item.totalPrice);
-	//	});
 	$("#usePoint").on("input", function() {
 		limitInput();
 	});
 
 	IMP.init("imp14751858");
-
-
-	// 입력 필드에서 포커스가 빠져나갈 때 이벤트 처리
-	$("#usePoint").on("blur", function() {
-		const inputValue = parseInt($(this).val().replace(/,/g, ''), 10);
-		if (!isNaN(inputValue)) {
-			const formattedValue = inputValue.toLocaleString();
-			$(this).val(formattedValue);
-		} else {
-			$(this).val('');
-		}
-	});
 
 	// 입력 필드에서 포커스가 빠져나갈 때 이벤트 처리
 	$("#payBtn").on("click", function() {
@@ -50,82 +30,64 @@ var init = function() {
 		result.delvUsrPhone = delvUsrPhone;
 		result.addr = addr;
 		result.delvAreaNo = delvAreaNo;
+		let payMethod = $('input[type="radio"]:checked').val();
+		result.payMethod = payMethod;
+		let pgType = '';
+		if(payMethod === 'kakao'){
+			pgType = 'kakaopay'
+			payMethod = 'card';
+		}else {
+			pgType = 'AO09C'
+		}
+		result.pgType = pgType
+		console.log(payMethod + " " + pgType)
 		requestPay(result);
 	});
 
-	$("#paykakaoBtn").on("click", function() {
-		paykakaoBtn();
-	});
+	// 라디오 버튼 클릭 이벤트 처리
+    $('input[type="radio"]').click(function() {
+        // 클릭된 라디오 버튼을 제외한 나머지 버튼을 비활성화하고 회색으로 표시
+         var isChecked = $(this).prop('checked');
+
+        // 다른 라디오 버튼의 상태를 초기화합니다.
+        $('input[type="radio"]').not(this).prop('checked', false);
 
 
-
-
+        // 선택된 라디오 버튼의 상태에 따라 텍스트 색상을 변경합니다.
+        if (isChecked) {
+            $(this).next('label').css('color', '#000'); // 선택된 경우
+        } else {
+            $(this).next('label').css('color', '#ccc'); // 선택이 해제된 경우
+        }
+    });
 }
-function paykakaoBtn() {
-	console.log("버튼 클릭함")
-	IMP.request_pay({
-		pg: "kakaopay",
-		pay_method: "card",
-		merchant_uid: "ORD_" + new Date().getTime(),   // 주문번호
-		name: "노르웨이 회전 의자",
-		amount: 64900,                         // 숫자 타입
-		buyer_email: "gildong@gmail.com",
-		buyer_name: "홍길동",
-		buyer_tel: "010-4242-4242",
-		buyer_addr: "서울특별시 강남구 신사동",
-		buyer_postcode: "01181"
-	}, function(rsp) { // callback
 
-		if (rsp.success) {//결제 성공시
-			var msg = '결제가 완료되었습니다';
-			var result = {
-				"imp_uid": rsp.imp_uid,
-				"merchant_uid": rsp.merchant_uid,
-				"biz_email": '<%=email%>',
-				"pay_date": new Date().getTime(),
-				"amount": rsp.paid_amount,
-				"card_no": rsp.apply_num,
-				"refund": 'payed'
-			}
-			console.log("결제성공 " + msg);
-		}
-		//		$.ajax({
-		//			type: 'POST',
-		//			url: '/verify/' + rsp.imp_uid
-		//		}).done(function(data) {
-		//			if (rsp.paid_amount === data.response.amount) {
-		//				alert("결제 성공");
-		//			} else {
-		//				alert("결제 실패");
-		//			}
-		//		});
-	});
-}
 
 function requestPay(result) {
 	var items = [];
 	// 각 아이템 행을 순회하면서 정보를 추출하여 배열에 추가
 	$("#itemLiestsBody tr").each(function() {
-		var itemName = $(this).find("td:nth-child(1)").text();  // 아이템 이름 추출
-		var itemQuantity = parseInt($(this).find("td:nth-child(3)").text());  // 아이템 갯수 추출
-		var itemPrice = parseInt($(this).find("td:nth-child(4)").text().replace(',', ''));  // 아이템 가격 추출
-
+		var itemName = $(this).find("td:nth-child(3)").text(); // 아이템 이름 추출
+		var itemQuantity = parseInt($(this).find("td:nth-child(4)").text());  // 아이템 갯수 추출
+		var itemPrice = parseInt($(this).find("td:nth-child(5)").text().replaceAll(',', '').replace('원', ''));  // 아이템 가격 추출
+		var itemKey = $(this).find("input[name='itemKey']").val();
 		// 각 아이템의 정보를 객체로 생성하여 배열에 추가
 		var item = {
-			name: itemName,
-			amount: itemPrice,
-			quantity: itemQuantity
+			itemNo: itemKey,
+			itemName: itemName,
+			itemAmount: itemPrice,
+			itemQuantity: itemQuantity
 		};
 
 		items.push(item);  // 배열에 아이템 추가
 	});
-	console.log("버튼 클릭함" + JSON.stringify(result))
+	console.log("버튼 클릭함" + JSON.stringify(result) + " " + JSON.stringify(items))
 	IMP.request_pay({
-		pg: "AO09C",
-		pay_method: "vbank",
+		pg: result.pgType,
+		pay_method: result.payMethod,
 		merchant_uid: "ORD_" + new Date().getTime(),   // 주문번호
 		name: result.itemNm,
-		amount: 500,                         // 숫자 타입
+		amount: $('#totalPrice').text(),                         // 숫자 타입
 		buyer_email: result.usrEmail,
 		buyer_name: result.usrNm,
 		buyer_tel: result.delvUsrPhone,
@@ -133,7 +95,8 @@ function requestPay(result) {
 		buyer_postcode: result.delvAddrNo
 	}, function(rsp) { // callback
 		if (rsp.success) {//결제 성공시
-			var msg = '결제가 완료되었습니다';
+	  		let usePoint = ($('#usePoint').val() === undefined || $('#usePoint').val() === '') ? 0 : $('#usePoint').val();
+   			var msg = '결제가 완료되었습니다';
 			var result = {
 				"imp_uid": rsp.imp_uid,
 				"merchant_uid": rsp.merchant_uid,
@@ -141,26 +104,32 @@ function requestPay(result) {
 				"amount": rsp.paid_amount,
 				"card_no": rsp.apply_num,
 				"refund": 'payed',
-				"itemPrice" : $('#itemPrice').text(),
-				"count" : $('#count').text(),
-				"itemKey" : $('#itemKey').val(),
-				"point" : $('#usePoint').val()
-				
-				
+				"itemPrice": $('#itemPrice').text(),
+				"count": $('#count').text(),
+				"itemKey": $('#itemKey').val(),
+				"point": usePoint,
+				"items": items,
+				"totalBenePrice": $('#totalBenePrice').text(),
+				"usrId": localStorage.getItem('usrId')
+
 			}
 			console.log("결제성공 " + msg + " " + JSON.stringify(result));
 
 			$.ajax({
-				type: 'GET',
+				type: 'POST',
 				url: '/api/payment/verify',
 				data: JSON.stringify(result), // form 데이터를 JSON 문자열로 변환하여 전송
 				contentType: 'application/json',
 			}).done(function(data) {
 				console.log(rsp.amount + " " + data.iamResponse)
-				if (rsp.amount === data.paidAmount) {
-					alert("결제 성공");
-				} else {
-					alert("결제 실패");
+				if (data.code === 'success') {
+					if (confirm(data.msg)) {
+						window.location.href = '/';
+					}
+				} else if(data.code === 'outOfStock'){
+					alert(data.msg);
+				}else if(data.code === 'diffAmountPrice'){
+					alert(data.msg);
 				}
 			});
 		} else {
@@ -178,8 +147,7 @@ function limitInput() {
 	const inputValue = parseInt($("#usePoint").val());
 	// 최종 값 설정
 	// 사용 가능한 포인트보다 큰 값이 입력되면 최대값으로 설정
-	const originalTotlaPrice = parseInt($("#originalTotlaPrice").val().replace(',', '').substring(0, $('#originalTotlaPrice').val().indexOf('원')));
-
+	const originalTotlaPrice = parseInt($("#originalTotlaPrice").val());
 	if (inputValue > availablePoint) {
 		$("#usePoint").val('');
 		$('#totalPrice').text(originalTotlaPrice.toLocaleString() + '원');
@@ -266,7 +234,46 @@ function _totalPoint() {
 	});
 }
 
+function _itemListsTable() {
+	let itemLists = $('#itemLists').val().replace('{itemLists=', '').replace(']}', ']');
+	const parsedData = JSON.parse(itemLists);
+	console.log("왜 not " + parsedData)
+	$('.n-item-view').show();
+	var tableBody = $("#itemLiestsBody");
+	var itemTrList = $(".itemTrList");
+	// 기존에 있는 내용 비우기
+	itemTrList.empty();
 
+	let totalPrice = 0;
+	// 데이터를 기반으로 동적으로 테이블 생성
+	for (let i = 0; i < parsedData.length; i++) {
+		const itemList = parsedData[i];
+		const row = $("<tr>").addClass("itemTrList");
+
+		// 셀 생성 및 추가
+		row.append(`<td class="align-middle">
+    <div class="img-container">
+        <a href="/categories/itemDetaiList?menuItemNo=${itemList.itemKey}&menuNm=${itemList.itemNm}" class="img-block">
+            <img src="${itemList.url}" alt="${itemList.itemNm}" class="img-fluid product-image" style="width: 100px; display: block; margin: 0 auto;">
+        </a>
+    </div>
+</td>`);
+		row.append(`<input type="hidden" name="itemKey" id="itemKey${i}" value ="${itemList.itemKey}">`);
+		row.append(`<td class="align-middle text-center" id="itemNm" >${itemList.itemNm}</td>`);
+		row.append(`<td class="align-middle text-center" id="count">${itemList.count}</td>`);
+		row.append(`<td class="align-middle text-center" id="itemPrice">${itemList.totalPrice}
+            </td></tr>`);
+
+
+		tableBody.append(row);
+		let parseTotalPrice = parseInt(itemList.totalPrice.replaceAll(',', '').replace('원', ''));
+		totalPrice += itemList.count * parseTotalPrice
+	}
+	$('#totalPrice').text(totalPrice.toLocaleString() + '원');
+	$('#originalTotlaPrice').val(totalPrice);
+	let benePrice = totalPrice / 100;
+	$('#totalBenePrice').text(benePrice.toLocaleString() + '적립');
+}
 
 
 

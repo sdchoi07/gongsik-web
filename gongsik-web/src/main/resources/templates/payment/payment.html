@@ -4,8 +4,8 @@
 
 <head>
 	<script th:src="@{/assets/js/payment/payment.js}"></script>
-<!--	<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>-->
-		<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+	<!--	<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>-->
+	<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
 	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 	<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.2.0.js"></script>
 	<meta charset="EUC-KR">
@@ -53,13 +53,33 @@
 		th {
 			text-align: center;
 		}
+
+		/* 선택된 라디오 버튼의 색상 변경 */
+		input[type="radio"]:checked {
+			background-color: #000 !important;
+		}
+
+		/* 라디오 버튼 스타일 수정 */
+		input[type="radio"] {
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+			width: 16px;
+			height: 16px;
+			border-radius: 50%;
+			border: 1px solid #000;
+			/* 외곽선 색상을 검정색으로 변경 */
+			outline: none;
+			margin-right: 5px;
+			/* 라디오 버튼 간의 간격 조절 */
+		}
 	</style>
 	<title>결제</title>
 </head>
 <div layout:fragment="content">
 	<input type="hidden" th:value="${itemLists}" id="itemLists"></input>
-	<input type="hidden"  id="delvAreaNo"></input>
-	<input type="hidden" th:value="${totalPrice}" id="originalTotlaPrice"></input>
+	<input type="hidden" id="delvAreaNo"></input>
+	<input type="hidden" id="originalTotlaPrice"></input>
 	<input type="hidden" th:value="${itemKey}" id="itemKey"></input>
 	<div class="container py-5">
 
@@ -141,7 +161,7 @@
 				결제 목록 아이템
 			</label>
 			<div class="row">
-				<table class="table table-col n-wish-view mt-3">
+				<table class="table table-col n-item-view mt-3">
 					<colgroup>
 						<col style="width:auto">
 						<col style="width:15%">
@@ -158,10 +178,6 @@
 						</tr>
 					</thead>
 					<tbody id="itemLiestsBody" name="itemLiestsBody">
-						<td class="align-middle text-center"> <img th:src="${url}"></td>
-						<td class="align-middle text-center" id="itemNm" th:text="${itemNm}"></td>
-						<td class="align-middle text-center" id="count" th:text="${count}"></td>
-						<td class="align-middle text-center" id="itemPrice" th:text="${itemPrice}"></td>
 					</tbody>
 				</table>
 			</div>
@@ -176,7 +192,7 @@
 						<td class="customer__col customer__col--1">
 							적립 혜택
 						</td>
-						<td class="customer__col customer__col--2" th:text="${totalBenePrice}">
+						<td class="customer__col customer__col--2" id="totalBenePrice" th:text="${totalBenePrice}">
 
 						</td>
 					</tr>
@@ -204,26 +220,26 @@
 		</div>
 
 
+		<div class="postsDetail bg-gray-f6 px-4 py-3 flex-grow-1 border p-3 m-1 col-md-12" style="min-height: 100px; ">
+			<label class="form-label fw-bold" style="font-size: 20px; font-family: 'Noto Sans KR', sans-serif;"> 결제 방법
+			</label>
+			<div class="">
+				<input type="radio" value="card" id="cardPayment">
+				<label for="cardPayment" style="margin-right: 30px">카드 결제</label>
 
+				<input type="radio" value="kakao" id="kakaopay">
+				<label for="kakaopay" style="margin-right: 30px">카카오페이</label>
+
+				<input type="radio" value="vbank" id="transfer">
+				<label for="transfer" style="margin-right: 30px">계좌이체</label>
+			</div>
+		</div>
 		<div class="postsBtn d-flex justify-content-end mt-3" style="height: 200px;">
-			</button>
 			<button type="submit"
 				class="btn btn-primary btn-xg btn-block fw-bold border-left border-right border-top border-bottom"
 				id="payBtn"
 				style="background-color: rgba(3, 199, 90, 0.12); font-family: 'Noto Sans KR', sans-serif; color: #009f47; border-radius: 0; width: 150px; height: 40px">
 				결제
-			</button>
-			<button type="submit"
-				class="btn btn-primary btn-xg btn-block fw-bold border-left border-right border-top border-bottom"
-				id="paykakaoBtn"
-				style="background-color: rgba(3, 199, 90, 0.12); font-family: 'Noto Sans KR', sans-serif; color: #009f47; border-radius: 0; width: 150px; height: 40px">
-				카카오
-			</button>
-			<button type="submit"
-				class="btn btn-primary btn-xg btn-block fw-bold border-left border-right border-top border-bottom"
-				id="bankBtn"
-				style="background-color: rgba(3, 199, 90, 0.12); font-family: 'Noto Sans KR', sans-serif; color: #009f47; border-radius: 0; width: 150px; height: 40px">
-				계좌
 			</button>
 		</div>
 

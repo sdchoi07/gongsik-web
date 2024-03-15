@@ -24,15 +24,14 @@ var initWish = function() {
 function _movePayment() {
 
 	// 현재 URL 가져오기
-	const currentUrl = window.location.href;
 	var wishlist = [];
 	$(".wishTrList").each(function(index) {
         // 현재 행에서 필요한 값을 추출
         var itemNm = $(this).find(".itemNm a").text();
-        var itemKey = $(this).find("input[name='cartNo']").val();
+        var itemKey = $(this).find("input[name='cartItemNo']").val();
         var count = $(this).find(".text-center:eq(0)").text();
         var totalPrice = $(this).find(".text-center:eq(1)").text();
-
+		var url = $(this).find("img").attr('src'); // 수정된 부분: "img"로 변경
         // 추출한 값을 콘솔에 출력 (나중에 실제로 사용할 때는 데이터를 어떻게 활용할지 결정)
         console.log("Item Name: " + itemNm);
         console.log("Cart No: " + itemKey);
@@ -47,7 +46,8 @@ function _movePayment() {
             itemNm: itemNm,
             itemKey: itemKey,
             count: count,
-            totalPrice: totalPrice
+            totalPrice: totalPrice,
+            url : url
         };
         wishlist.push(wishlistItem);
     });
@@ -65,17 +65,10 @@ function _movePayment() {
 //	};
 
 	// 쿼리스트링으로 변환
-	const queryString = objectToQueryString(wishlist);
-	console.log(encodeURIComponent(JSON.stringify(queryString)))
 	// 현재 URL에 쿼리스트링 추가하고 새로운 URL로 이동
- window.location.href = "/payment/paymentDetail?itemLists=" + encodeURIComponent(JSON.stringify(wishlist));
+ window.location.href = "/payment/paymentDetailFromWish?itemLists=" + encodeURIComponent(JSON.stringify(wishlist));
 }
 
-function objectToQueryString(obj) {
-  return Object.keys(obj)
-    .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(obj[key])}`)
-    .join('&');
-}
 
 
 var _wishList = function() {
@@ -193,6 +186,7 @@ var _tableData = function(data) {
                     </div>
                   </td>`);
 		row.append(`<input type="hidden" name="cartNo" id="cartNo${i}" value ="${wishes.cartNo}">`);
+		row.append(`<input type="hidden" name="cartItemNo" id="cartItemNo${i}" value ="${wishes.cartItemNo}">`);
 		row.append(`<td class="align-middle text-center">${wishes.cartItemCnt}</td>`);
 		row.append(`<td class="align-middle text-center">${wishes.cartPrice}</td>`);
 		row.append(`<td class="align-middle">
