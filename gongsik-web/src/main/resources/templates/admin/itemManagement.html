@@ -1,0 +1,106 @@
+<head>
+	<script th:src="@{/assets/js/admin/itemManagement.js}"></script>
+	<style>
+		.product-image {
+			width: 100px;
+			height: 100px;
+			vertical-align: middle;
+			/* 이미지를 수직으로 중앙 정렬 */
+		}
+
+		th {
+			text-align: center;
+		}
+
+		a {
+			text-decoration: none;
+			/* 밑줄 제거 */
+			color: inherit;
+			/* 부모 요소의 색상 상속 */
+		}
+
+		a:hover {
+			text-decoration: none;
+			/* 마우스 hover 시에도 밑줄 제거 */
+			color: inherit;
+			/* 부모 요소의 색상 상속 */
+		}
+		
+		.itemNm {
+			margin-left: 20px;
+			display: inline-block;
+			vertical-align: middle;
+			/* 브랜드 이름을 수직으로 중앙 정렬 */
+		}
+
+		.n-prd-row {
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			/* 이미지와 브랜드 이름을 왼쪽 정렬 */
+		}
+
+		.pagination {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-top: 20px;
+		}
+
+		.pagination button {
+			background-color: white;
+			border: 2px solid rgba(19, 195, 39, 0.25);
+			color: black;
+			;
+			padding: 10px 20px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			cursor: pointer;
+			border-radius: 5px;
+
+		}
+
+		.pagination button:hover {
+			background-color: rgba(19, 195, 39, 0.25);
+			color: white;
+
+		}
+
+		#prevBtn:hover::before {
+			color: white;
+		}
+
+		#prevBtn::before {
+			content: '\003C';
+			/* < 기호 추가 */
+			color: black;
+			margin-right: 5px;
+		}
+
+
+		#nextBtn::after {
+			content: '\003E';
+			/* > 기호 추가 */
+			color: black;
+			margin-left: 5px;
+		}
+
+		#nextBtn:hover::after {
+			color: white;
+		}
+	</style>
+
+</head>
+
+<th:block th:fragment="adminPage">
+	<label class="form-label" style="font-size: 30px; font-family: 'Noto Sans KR', sans-serif;">아이템 관리 </label>
+	<div class="container py-6 " style="padding-top: 30px;">
+
+		        <div id="itemGrid" style="height: 500px;" class="ag-theme-alpine mt-3"></div>
+
+	
+	</div>
+</th:block>

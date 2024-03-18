@@ -31,29 +31,54 @@ var init = function() {
 
 		_orderList();
 	});
-
-	$("#cancleBtn").on("click", function() {
-		currentPage--;
-
-		getCancelData();
-	});
+//
+//	$("#cancleBtn").on("click", function() {
+//		currentPage--;
+//
+//		getCancelToken();
+//	});
 
 
 }
-const getCancelData = await axios({
-	url: "https://api.iamport.kr/payments/cancel",
-	method: "post",
-	headers: {
-		"Content-Type": "application/json",
-		"Authorization": access_token // 포트원 서버로부터 발급받은 엑세스 토큰
-	},
-	data: {
-		reason, // 가맹점 클라이언트로부터 받은 환불사유
-		imp_uid, // imp_uid를 환불 `unique key`로 입력
-		amount: cancel_request_amount, // 가맹점 클라이언트로부터 받은 환불금액
-		checksum: cancelableAmount // [권장] 환불 가능 금액 입력
-	}
-});
+function getCancelToken(orderNo,orderDt,itemCnt,itemPrice,itemNo) {
+	var resultData = {};
+	var usrId = localStorage.getItem("usrId");
+	var token = localStorage.getItem("accessToken");
+	resultData.usrId = usrId;
+	resultData.orderNo = orderNo;
+	orderDt = orderDt.replaceAll('.','');
+	resultData.orderDt = orderDt;
+	itemPrice = itemPrice.replaceAll(',','').replace('원','');
+	resultData.itemPrice = itemPrice;
+	resultData.itemNo = itemNo;
+	resultData.itemCnt = itemCnt;
+	
+	console.log('dddd : ' + JSON.stringify(resultData))
+	$.ajax({
+		url: '/api/payment/cancel',
+		type: 'POST',
+		data: JSON.stringify(resultData),
+		headers: {
+			'Authorization': 'Bearer ' + token
+		},
+		contentType: 'application/json',
+	}).done(function(data) {
+			if(data.code === 'success'){
+				alert(data.msg)
+				window.location.reload();	
+				
+			}
+	}).fail(function(xhr, textStatus, errorThrowna) {
+		if (xhr.status === 403) {
+			var msg = "로그인을 다시 해주세요.";
+			if (confirm(msg)) {
+				window.location.href = '/account/login';
+			}
+		} else {
+			// 그 외의 경우 처리
+		}
+	});
+}
 var _selectDate = function() {
 	var selectedValue = $('#selectDate').val();
 	console.log("value : " + selectedValue)
@@ -179,6 +204,7 @@ var _tableData = function(data) {
 		currentPage--;
 		return;
 	}
+	$('.pagination').show();
 	$('.n-order-view').show();
 
 	var tableBody = $("#orderTableBody");
@@ -215,12 +241,12 @@ var _tableData = function(data) {
               <div class="d-flex flex-column justify-content-center text-center align-items-center">
                 <span class="mb-3">${product.orderStNm}</span>
                 ${product.orderSt !== '03' && product.orderSt !== '02' || oneMonthAgo <= product.orderDt ?
-				`<button type="submit" class="btn btn-primary btn-sm btn-block border-0 fw-bold" 
+				`<button type="submit" class="btn btn-primary btn-sm btn-block border-0 fw-bold" onclick="getCancelToken('${product.orderNo}','${product.orderDt}','${product.itemCnt}','${product.itemPrice}','${product.itemNo}')"
                     style="background-color: #000000; font-family: 'Noto Sans KR', sans-serif; width: 80px;" 
                     id="modifyBtn">주문 취소</button>` : ''}
               </div>
             </td></tr>`);
-
+		row.append(`<input type="hidden" value=${product.orderNo}>`)
 		tableBody.append(row);
 
 	});

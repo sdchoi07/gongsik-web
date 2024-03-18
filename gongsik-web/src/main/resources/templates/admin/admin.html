@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/layout}">
+<head>
+	<script th:src="@{/assets/js/admin/admin.js}"></script>
+	<meta charset="EUC-KR">
+	<style>
+		
+        /* 추가된 CSS 스타일 */
+        #tabs-wrapper {
+          display: flex;
+          
+        }
+
+        #sidebar-wrapper {
+          width: 200px;
+          display: flex;
+	      flex-direction: column;
+	      min-height: 110vh;
+        }
+
+/* 	border: 1px solid rgba(19, 195, 39, 0.25); */
+	    .tab-content {
+	        border-radius: 10px;
+	        flex: 1;
+	        width: 100%;
+	        padding-left: 3%; /* 오른쪽 내부 여백 지정 * */
+		}
+
+        .list-group-item {
+			font-family: 'Noto Sans KR', sans-serif;
+			width: 200px;
+            cursor: pointer;
+            border-width: 0 !important; /* 테두리 폭을 0으로 설정하여 제거 */
+			border-left: none !important; /* 밑줄 제거 */
+		    border-top: none !important;    /* 위에 밑줄 제거 */
+		    border-right: none !important;    /* 위에 밑줄 제거 */
+			border-bottom: 1px solid  #cccccc !important; /* 연한 회색 */
+            border-radius: 0 !important; /* 라운드 테두리 제거, !important를 사용하여 우선시함 */
+        }
+        .list-group-item:first-child {
+		    border-bottom-width: 0px !important; /* 맨 마지막 아이템에 대한 테두리만 하단에 적용 */
+		}
+        
+	    .list-group-item:last-child {
+		    border-bottom-width: 0px !important; /* 맨 마지막 아이템에 대한 테두리만 하단에 적용 */
+		}
+        
+        /* 마우스 호버 시 밑줄 표시 */
+	    .list-group-item:hover {
+	        background-color: #ffe6e2 !important;
+	    }
+	    .list-group-item.active {
+	        background-color: #ffbaaf !important;
+	    }
+	</style>
+	
+	
+	<title>마이페이지</title>
+	
+</head>
+    <div layout:fragment="content">
+
+        <!-- 첫 번째 섹션 -->
+        <section class="container py-1 mt-4" >
+                    <div id="tabs-wrapper">
+                        <!-- Sidebar -->
+                        <div id="sidebar-wrapper">
+                            <div class="list-group">
+								<div class="d-flex justify-content-between align-items-center mb-1">
+			                        <label class="form-label fw-bold" for="form1Example3" style="font-size: 30px; font-family: 'Noto Sans KR', sans-serif;">관리 </label>
+			                    </div>
+                                <a class="list-group-item list-group-item-action p-3" id="profile" data-toggle="pill" href="/profile">프로필</a>
+                                <a class="list-group-item list-group-item-action p-3" id="orderList" data-toggle="pill" href="/orderList">주문내역</a>
+                                <a class="list-group-item list-group-item-action p-3" id="delvList" data-toggle="pill" href="/itemManagement">상품 관리</a>
+                            </div>
+                        </div>
+                        <!-- 탭 내용 -->
+                        <div class="tab-content" layout:fragment="adminPage"></div>
+                    </div>
+        </section>
+    </div>

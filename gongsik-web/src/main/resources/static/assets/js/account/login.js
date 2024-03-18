@@ -101,7 +101,16 @@ var usrData = function(response, jwtToken, refreshToken) {
 	}).done(function(data) {
 		localStorage.setItem("usrId", data.usrId);
 		localStorage.setItem("logTp", data.logTp);
-		window.location.href = '/';
+		localStorage.setItem("usrRole", data.usrRole);
+		console.log("usrRol12e : : " + localStorage.getItem('usrRole'));
+		console.log("usrRole : : " + data.usrRole)
+		sessionStorage.removeItem('cachedData');
+		_menuList(data.usrRole)
+		if (data.usrRole === 'USER') {
+			window.location.href = '/';
+		}else{
+			window.location.href = '/admin';
+		}
 
 	}).fail(function(xhr, textStatus, errorThrowna) {
 		var errorMessage = xhr.responseJSON.msg; // 혹은 다른 방식으로 오류 메시지 추출

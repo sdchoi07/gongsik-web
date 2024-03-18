@@ -95,6 +95,18 @@
 								<label class="form-check-label" for="invalidCheck">여</label>
 							</div>
 						</div>
+						<!-- 채팅 유무 -->
+						<div class="d-flex align-items-center mb-4">
+							<span style="margin-right: 10px;">채팅</span>
+							<div class="form-check" style="margin-right: 10px;">
+								<input class="form-check-input" id="chatChk1" name ="chatChk" type="checkbox" th:value="Y"   />
+								<label class="form-check-label" for="invalidCheck">예 </label>
+							</div>
+							<div class="form-check">
+								<input class="form-check-input" id="chatChk2" name="chatChk" type="checkbox" th:value="N"   />
+								<label class="form-check-label" for="invalidCheck">아니요</label>
+							</div>
+						</div>
 						<!-- 생년월일 -->
 						<div class="form-group">
 							<label class="control-label" for="signupName">생년월일(8자리)</label>

@@ -1,4 +1,4 @@
-
+var url;
 var _main = function() {
 
 
@@ -63,7 +63,7 @@ function chatReadYnLists() {
 		if (cnt > 0) {
 			$('.chattingAlram').show();
 		} else {
-			$('.chattingAlram').css('display','none');
+			$('.chattingAlram').css('display', 'none');
 		}
 	}).fail(function(xhr, textStatus, errorThrowna) {
 
@@ -206,6 +206,9 @@ function _logOut() {
 		localStorage.removeItem('usrId');
 		localStorage.removeItem('accessToken');
 		localStorage.removeItem('logTp');
+		localStorage.removeItem('usrRole');
+		sessionStorage.removeItem('cachedData');
+		_menuList();
 		window.location.href = '/';
 	}).fail(function(xhr, textStatus, errorThrowna) {
 
@@ -214,9 +217,9 @@ function _logOut() {
 
 //탭이동
 var _tabList = function(currentUrl) {
-	var url = currentUrl.split('/').pop();
-
-	if (url === 'mypage') {
+	url =  currentUrl.split('/').pop();
+	console.log("url : " + url)
+	if (url === 'mypage' || url === 'admin') {
 		var firstTabHref = $('.list-group-item:first').attr('href');
 
 		// 처음 로딩될 때 activeTabId가 없을 경우에는 첫 번째 탭을 보여줌
@@ -243,12 +246,14 @@ var _tabList = function(currentUrl) {
 			$(this).addClass('active');
 		});
 	}
+
 }
 
 //탭 이동
 var _tabMove = function(targetUrl) {
+	console.log("tabmove : " + url + " targe : " + targetUrl)
 	$.ajax({
-		url: '/mypage' + targetUrl, // 실제로는 해당 URL을 탭에 맞게 수정해야 합니다.
+		url: '/' + url + targetUrl, // 실제로는 해당 URL을 탭에 맞게 수정해야 합니다.
 		type: 'GET',
 		success: function(data) {
 			// 서버로부터 받아온 데이터로 탭 내용 업데이트

@@ -177,7 +177,7 @@ function _renderAddresses(addresses) {
 				`<span class="text-footer10 font-weight-bold mr-2" style="color:rgba(245, 178, 39, 0.82)">기본배송지</span>
 								    <input id="delvYn${i}" name="delvYn" type="hidden" value=${address.delvUseYn}>
 								    <img src="/vendor/third/img/box.png"  width="20" height="20">
-								    <button type="button" class="btn btn-link border-0 fw-bold ml-2" onclick='openModModal(${i})' style="color: #000000; font-family: 'Noto Sans KR', sans-serif;">수정</button>`
+								    <button type="button" class="btn btn-link border-0 fw-bold ml-2" onclick="openModModal(${i})" style="color: #000000; font-family: 'Noto Sans KR', sans-serif;">수정</button>`
 				: `<button type="button" class="btn btn-link border-0 fw-bold" onclick='openModModal(${i})' style="color: #000000; font-family: 'Noto Sans KR', sans-serif;">수정</button>
 								    <button type="button" class="btn btn-link border-0 fw-bold"  onclick='deleteAddress(${i})' style="color: #000000; font-family: 'Noto Sans KR', sans-serif;">삭제</button>`
 			}
@@ -199,12 +199,15 @@ function _renderAddresses(addresses) {
 	container.append(`
         		<div class="d-flex justify-content-end mt-2">
 		    <!-- 조회 버튼 추가 -->
-		    <button onclick='openModal()' class="btn btn-primary border-0 fw-bold" id="addBtn" style="background-color: #000000; font-family: 'Noto Sans KR', sans-serif;">배송지 추가</button>
+		    <button onclick="openModal('S')" class="btn btn-primary border-0 fw-bold" id="addBtn" style="background-color: #000000; font-family: 'Noto Sans KR', sans-serif;">배송지 추가</button>
 		</div>
     `);
 }
 
 function openModModal(index) {
+	
+		$('#modalTitle').text('배송지 수정');
+	
 	var addressNm = $(`#delvAreaNm${index}`).text();
 	var delvPhNo = $(`#delvPhNo${index}`).text();
 	var delvArea = $(`#delvArea${index}`).text();

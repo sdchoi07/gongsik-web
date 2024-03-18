@@ -18,6 +18,9 @@ var _join = function() {
 		}
 	});
 	
+	//채팅 유무
+	_chatChk();
+	
 	//아이디 확인
 	_emailChk();
 	
@@ -159,9 +162,24 @@ var _beforeChk = function(chkObj){
 	        maleCheckbox.removeClass('onError');
 	        femaleCheckbox.removeClass('onError');
 	    }
+	    
+	    // 채팅 체크박스 검증
+	    var chatYCheckbox = $("#chatChk1");
+	    var chatNCheckbox = $("#chatChk2");
+	
+	    var isChatYChecked = chatYCheckbox.is(':checked');
+	    var isChatNChecked = chatNCheckbox.is(':checked');
+	
+	    if (!isChatYChecked && !isChatNChecked) {
+	        chatYCheckbox.addClass('onError');
+	        chatNCheckbox.addClass('onError');
+	    } else {
+	        chatYCheckbox.removeClass('onError');
+	        chatNCheckbox.removeClass('onError');
+	    }
 	
 	    // 나머지 필드들 검증
-	    var inputs = $("#changePwdForm").find('input[type="text"], input[type="password"]');
+	    var inputs = $("#joinForm").find('input[type="text"], input[type="password"]');
 	    inputs.each(function(index, element) {
 	        var inputValue = $(element).val().trim();
 	        if (inputValue === '') {
@@ -211,6 +229,8 @@ var _etcChk = function(){
 		}
 		});
 }
+
+
 
 $(document).ready(function() {
 	_join();

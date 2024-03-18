@@ -1,61 +1,79 @@
 <!DOCTYPE html>
-<html lang="ko"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <title>layout</title>
-    <th:block th:replace="~{common/config::config}"></th:block> <!-- js 및 css 파일에서 채워질 부분 -->
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<title>layout</title>
+	<th:block th:replace="~{common/config::config}"></th:block> <!-- js 및 css 파일에서 채워질 부분 -->
 	<style>
 		header {
-		    top: 0;
-		    left: 0;
-		    width: 100%;
-		    z-index: 100;
-		    position: fixed;
-		    transition: height 0.3s; /* 헤더바 크기 변경 시 애니메이션 적용 */
-		    
-		    
+			top: 0;
+			left: 0;
+			width: 100%;
+			z-index: 100;
+			position: fixed;
+			transition: height 0.3s;
+			/* 헤더바 크기 변경 시 애니메이션 적용 */
+
+
 		}
-		
+
 		body {
-		    overflow-y: scroll; /* 항상 y 스크롤을 표시하여 레이아웃의 변화를 방지 */
-		    padding-top: 80px;/* 헤더의 높이 */;
+			overflow-y: scroll;
+			/* 항상 y 스크롤을 표시하여 레이아웃의 변화를 방지 */
+			padding-top: 80px;
+			/* 헤더의 높이 */
+			;
 		}
-		
+
 		body.no-scroll {
-		    overflow-y: hidden; /* y 스크롤을 숨김 */
+			overflow-y: hidden;
+			/* y 스크롤을 숨김 */
 		}
-		
+
 		header.shrink {
-		    height: 50px; /* 스크롤이 발생했을 때의 헤더바 높이 */
+			height: 50px;
+			/* 스크롤이 발생했을 때의 헤더바 높이 */
 		}
-		
-	    .navbar {
-	        height: 80px; /* 헤더바의 높이를 조절하는 부분 */
-	    }
-	    #menuNm{
+
+		.navbar {
+			height: 80px;
+			/* 헤더바의 높이를 조절하는 부분 */
+		}
+
+		#menuNm {
 			font-size: 30px;
 		}
-       
 	</style>
 
 </head>
-<body class="d-flex flex-column h-200">
-	  <script>
-        // 페이지 로드 후 실행될 함수
-        var username = localStorage.getItem('username');
-        $(document).ready(function () {
-            $('#username-display').text(username + '님');
-            
-        });
-    </script>
-<!--	<main class="flex-shrink-0">-->
-	    <header class="header-bar" th:replace="~{common/headerbar::headerbar}"></header> <!-- 헤더 네비게이션바 파일에서 채워질 부분 -->
-		    <div layout:fragment="content"></div> <!-- 메인 파일에서 채워질 부분 -->
-<!--    </main>-->
-    <footer th:replace="~{common/footer::footer}"></footer> <!-- 풋터 파일에서 채워질 부분 -->
 
+<body class="d-flex flex-column h-200">
+	<script>
+		// 페이지 로드 후 실행될 함수
+		var username = localStorage.getItem('username');
+		$(document).ready(function () {
+			$('#usrRole').text(username + '님');
+
+		var usrRole = localStorage.getItem('usrRole');
+		console.log("usrorle :: " + usrRole)
+		$('#usrRole').val(usrRole + '님');
+		
+		});
+
+	</script>
+	<!--	<main class="flex-shrink-0">-->
+		
+<!--	<th:block th:unless="${usrRole != 'ADMIN'}">-->
+<!--		<input th:value="${usrRole}" id="usrRole">-->
+		<header class="header-bar" th:replace="~{common/headerbar::headerbar}"></header> <!-- 헤더 네비게이션바 파일에서 채워질 부분 -->
+<!--	</th:block>-->
+	<div layout:fragment="content"></div> <!-- 메인 파일에서 채워질 부분 -->
+	<!--    </main>-->
+	<th:block th:unless="${usrRole != 'ADMIN'}">
+		<footer th:replace="~{common/footer::footer}"></footer> <!-- 풋터 파일에서 채워질 부분 -->
+	</th:block>
 </body>
+
 </html>

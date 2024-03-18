@@ -42,9 +42,9 @@ public class SecurityConfig {
 		.authorizeHttpRequests((authorizeRequests) ->
 				authorizeRequests
 						.requestMatchers("/user/**").authenticated()
-						.requestMatchers("/admin/**", "/api/admins/**").hasRole("ADMIN")
+//						.requestMatchers("/admin/**").hasAuthority("ADMIN")
 						.anyRequest().permitAll()
-		)
+				)
 		.formLogin((formLogin) ->
 				formLogin
 						.loginPage("/account/join") 

@@ -15,7 +15,7 @@ var globalChatRoomTextNo = 0;
 var init = function() {
 	// 소켓 연동;
 	//	connect();
-	$('#chattingAlram').css("display","none");
+	$('#chattingAlram').css("display", "none");
 	chatConGlo = $('.chat-container').prop('scrollHeight');
 	textAreaHeight = $('#message-input').prop('scrollHeight');
 	$('.fa-comments').click(function(event) {
@@ -62,7 +62,7 @@ var init = function() {
 
 
 	listConnect();
-	
+
 	var eventSource = new EventSource("/");
 
 	// SSE 종료
@@ -79,7 +79,7 @@ function listConnect() {
 		_chatList();
 
 	});
-	stompClient.debug=false;
+	stompClient.debug = false;
 
 }
 function _scroll() {
@@ -149,18 +149,18 @@ function messageSize() {
 
 				let chatCon = $('.chat-container');
 				let chatConHei = chatCon.prop('scrollHeight');
-				
-				let limit = $('.container').prop('scrollHeight')+200;
 
-				if(limit > textAreaHei && limit > chatConHei){
-				console.log("높이 확인 : " + limit + " " + textAreaHei + " " + chatConHei);
-				chatCon.css('height', (chatConHei) + 'px'); // 스c크롤 높이로 조절
-				textArea.css('height', (textAreaHei + 20) + 'px');
-					
-				}else{
+				let limit = $('.container').prop('scrollHeight') + 200;
+
+				if (limit > textAreaHei && limit > chatConHei) {
+					console.log("높이 확인 : " + limit + " " + textAreaHei + " " + chatConHei);
+					chatCon.css('height', (chatConHei) + 'px'); // 스c크롤 높이로 조절
+					textArea.css('height', (textAreaHei + 20) + 'px');
+
+				} else {
 					return;
 				}
-				
+
 			}
 
 		} else if (e.key === 'Enter') {
@@ -189,7 +189,7 @@ function messageSize() {
 function _textAreaSize() {
 	// 여기에 텍스트 에어리어의 높이를 초기 높이로 설정하는 로직 추가
 	$('.chat-container').css('height', chatConGlo + 'px');
-	
+
 	// 상위 컨테이너의 높이도 조절
 	$('#message-input').css('height', textAreaHeight + 'px');
 	$('#message-input').val(''); // 텍스트 에어리어의 내용을 비움
@@ -197,31 +197,31 @@ function _textAreaSize() {
 
 //}
 
-function _chatReadYnUpdate(chatRoomNo, sender, usrNm) {
-	var token = localStorage.getItem("accessToken");
-	var resultData = {};
-	resultData.chatRoomNo = chatRoomNo;
-	resultData.readYn = "Y";
-	resultData.sender = sender;
-	resultData.usrNm = usrNm;
-	$.ajax({
-		url: "/api/chat/chatReadUpdate",
-		type: 'POST',
-		data: JSON.stringify(resultData), // form 데이터를 JSON 문자열로 변환하여 전송
-		headers: {
-			'Authorization': 'Bearer ' + token
-		},
-		contentType: 'application/json',
-	}).done(function(data) {
-	}).fail(function(xhr, textStatus, errorThrowna) {
-		if (xhr.status === 400) {
-			// HTTP 상태 코드가 400인 경우 처리
-			var errorMessage = xhr.responseJSON.msg; // 혹은 다른 방식으로 오류 메시지 추출
-			alert(errorMessage);
-		} else {
-		}
-	});
-}
+//function _chatReadYnUpdate(chatRoomNo, sender, usrNm) {
+//	var token = localStorage.getItem("accessToken");
+//	var resultData = {};
+//	resultData.chatRoomNo = chatRoomNo;
+//	resultData.readYn = "Y";
+//	resultData.sender = sender;
+//	resultData.usrNm = usrNm;
+//	$.ajax({
+//		url: "/api/chat/chatReadUpdate",
+//		type: 'POST',
+//		data: JSON.stringify(resultData), // form 데이터를 JSON 문자열로 변환하여 전송
+//		headers: {
+//			'Authorization': 'Bearer ' + token
+//		},
+//		contentType: 'application/json',
+//	}).done(function(data) {
+//	}).fail(function(xhr, textStatus, errorThrowna) {
+//		if (xhr.status === 400) {
+//			// HTTP 상태 코드가 400인 경우 처리
+//			var errorMessage = xhr.responseJSON.msg; // 혹은 다른 방식으로 오류 메시지 추출
+//			alert(errorMessage);
+//		} else {
+//		}
+//	});
+//}
 
 function showMessage(message) {
 	_textAreaSize();
@@ -265,8 +265,8 @@ function showMessage(message) {
 		chatLog.append(row)
 	}
 	$('.chat-log').scrollTop($('.chat-log').prop('scrollHeight'));
-	
-	
+
+
 }
 function _chatList() {
 
@@ -478,15 +478,15 @@ function joinChatRoom(chatRoomNo, num, type) {
 			'Authorization': 'Bearer ' + token
 		},
 	}).done(function(data) {
-		
+
 		let readYnCnt = data.chatReadYnCnt;
-		
+
 		if (readYnCnt > 0) {
 			$('.chattingAlram').show();
 		} else {
-			$('.chattingAlram').css('display','none');
+			$('.chattingAlram').css('display', 'none');
 		}
-		
+
 		if (data.code === 'stop') {
 		} else {
 			_createChatTextList(data);
@@ -640,7 +640,7 @@ function accountLists() {
 	var token = localStorage.getItem("accessToken");
 	var usrId = localStorage.getItem("usrId");
 	$.ajax({
-		url: "/api/chat/accountLists/"+usrId,
+		url: "/api/chat/accountLists/" + usrId,
 		type: 'GET',
 		headers: {
 			'Authorization': 'Bearer ' + token
@@ -676,10 +676,6 @@ function _usrLists(data) {
 
 }
 function createChatRoom(chatInvUsrNm, chatInvUsrId) {
-	stompClient.disconnect(function() {
-		console.log('웹소켓 연결이 닫혔습니다.');
-		
-	});
 	let chatCrtUsrNm = $('#accountUsrNm').val();
 	let chatCrtUsrId = localStorage.getItem("usrId");
 	let resultData = {};
@@ -699,7 +695,10 @@ function createChatRoom(chatInvUsrNm, chatInvUsrId) {
 		},
 	}).done(function(data) {
 		if (data.code === 'success') {
+			stompClient.disconnect(function() {
+				console.log('웹소켓 연결이 닫혔습니다.');
 
+			});
 			globalType = 'CREATE';
 			$('#chatListModal').modal("hide");
 

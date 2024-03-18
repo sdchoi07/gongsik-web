@@ -31,6 +31,10 @@ public class MainController implements ErrorController{
 	    public  String chat() {
 	    	return "chat/chatting";
 	    }
+	    @GetMapping("/admin")
+	    public String admin() {
+	        return "admin/admin";
+	    }
 	   
 	  
 	}
