@@ -73,11 +73,12 @@ var _signUp = function() {
 	}).done(function(response, status, xhr) {
 		console.log(response);
 		var jwtToken = xhr.getResponseHeader('Authorization');
-		var refreshToken = xhr.getResponseHeader('refreshToken');
+//		var refreshToken = xhr.getResponseHeader('refreshToken');
 		localStorage.setItem('accessToken', jwtToken)
+		console.log("accessToken : "+ jwtToken )
 		$('#username-display').text('Welcome, ' + response + '!');
 
-		usrData(response, jwtToken, refreshToken);
+		usrData(response, jwtToken);
 	}).fail(function(xhr, textStatus, errorThrowna) {
 		if (xhr.status === 401) {
 			// 비밀번호가 일치하지 않는 경우
@@ -89,14 +90,14 @@ var _signUp = function() {
 
 	})
 }
-var usrData = function(response, jwtToken, refreshToken) {
+var usrData = function(response, jwtToken) {
 	$.ajax({
 		url: "/api/account/data",
 		type: 'POST',
-		data: JSON.stringify({ usrId: response, jwtToken: jwtToken, refreshToken: refreshToken }), // form 데이터를 JSON 문자열로 변환하여 전송
+		data: JSON.stringify({ usrId: response, jwtToken: jwtToken }), // form 데이터를 JSON 문자열로 변환하여 전송
 		contentType: 'application/json',
 		headers: {
-			'Authorization': 'Bearer ' + jwtToken,
+			'Authorization': jwtToken,
 		},
 	}).done(function(data) {
 		localStorage.setItem("usrId", data.usrId);

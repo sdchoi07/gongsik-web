@@ -71,9 +71,9 @@
 <!--	</th:block>-->
 	<div layout:fragment="content"></div> <!-- 메인 파일에서 채워질 부분 -->
 	<!--    </main>-->
-	<th:block th:unless="${usrRole != 'ADMIN'}">
+<!--	<th:block th:unless="${usrRole != 'ADMIN'}">-->
 		<footer th:replace="~{common/footer::footer}"></footer> <!-- 풋터 파일에서 채워질 부분 -->
-	</th:block>
+<!--	</th:block>-->
 </body>
 
 </html>

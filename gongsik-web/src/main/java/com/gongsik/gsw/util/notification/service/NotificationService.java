@@ -51,13 +51,11 @@ public class NotificationService {
 		// 6. 수신자 정보로부터 id 값 추출
 //        Long userId = user.getId();
     		
-    	System.out.println("여기에 오냐뇨 : 23 : " + receiver);
 		// 7. Map 에서 userId 로 사용자 검색
         if (NotificationController.sseEmitters.containsKey(receiver)) {		
             SseEmitter sseEmitterReceiver = NotificationController.sseEmitters.get(receiver);
             // 8. 알림 메시지 전송 및 해체
             try {
-            	System.out.println("여기 올텐ㄷ ㅔ : reciver " + receiver);
                 sseEmitterReceiver.send(SseEmitter.event().name("addMessage").data("메시지가 왔습니다."));
             } catch (Exception e) {
                 NotificationController.sseEmitters.remove(receiver);

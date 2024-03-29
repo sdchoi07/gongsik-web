@@ -23,8 +23,6 @@ public class NotificationController {
     @GetMapping(value="/notification", produces = "text/event-stream")
     public SseEmitter subscribe(@RequestParam("usrId") String usrId) {
         SseEmitter sseEmitter = notificationService.subscribe(usrId);
-        System.out.println(sseEmitters);
-        System.out.println(sseEmitters.get(usrId));
         return sseEmitter;
     }
     
@@ -32,8 +30,6 @@ public class NotificationController {
     @GetMapping(value="/alramChat")
     public ResponseEntity<Void> alramMsg(@RequestParam("usrId") String usrId) {
          notificationService.notifyMessage(usrId);
-        System.out.println(sseEmitters);
-        System.out.println(sseEmitters.get(usrId));
         return ResponseEntity.ok().build(); 
     }
 
