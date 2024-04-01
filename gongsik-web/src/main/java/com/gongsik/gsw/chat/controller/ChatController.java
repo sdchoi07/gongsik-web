@@ -22,13 +22,5 @@ public class ChatController {
         this.notificationController = notificationController;
         this.messagingTemplate = messagingTemplate;
     }
-
-    @MessageMapping("/message")
-    public void sendMessage(@Payload ChatDto chatDto) {
-        // 채팅 메시지 처리 로직...
-
-        // 푸시 알림 전송
-    	notificationController.sendPushNotification("새로운 채팅 메시지가 도착했습니다.");
-    }
 	
 }

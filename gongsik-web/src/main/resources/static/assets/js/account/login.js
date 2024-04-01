@@ -66,19 +66,31 @@ var _signUp = function() {
 	format[usrPwd] = usrPwd;
 	console.log(username);
 	$.ajax({
-		url: "/api/login",
+		url: "/api/account/login",
 		type: 'POST',
 		data: JSON.stringify({ usrId: usrId, usrPwd: usrPwd }), // form 데이터를 JSON 문자열로 변환하여 전송
 		contentType: 'application/json'
 	}).done(function(response, status, xhr) {
 		console.log(response);
 		var jwtToken = xhr.getResponseHeader('Authorization');
-//		var refreshToken = xhr.getResponseHeader('refreshToken');
+        var accessToken = response.accessToken;
+		//		var refreshToken = xhr.getResponseHeader('refreshToken');
 		localStorage.setItem('accessToken', jwtToken)
-		console.log("accessToken : "+ jwtToken )
 		$('#username-display').text('Welcome, ' + response + '!');
 
-		usrData(response, jwtToken);
+		//		usrData(response, jwtToken);
+		localStorage.setItem("usrId", response.usrId);
+		localStorage.setItem("logTp", response.logTp);
+		localStorage.setItem("usrRole", response.usrRole);
+		console.log("usrRol12e : : " + localStorage.getItem('usrRole'));
+		console.log("usrRole : : " + response.usrRole)
+		sessionStorage.removeItem('cachedData');
+		_menuList(response.usrRole)
+		if (response.usrRole === 'USER') {
+			window.location.href = '/';
+		} else {
+			window.location.href = '/admin';
+		}
 	}).fail(function(xhr, textStatus, errorThrowna) {
 		if (xhr.status === 401) {
 			// 비밀번호가 일치하지 않는 경우
@@ -109,7 +121,7 @@ var usrData = function(response, jwtToken) {
 		_menuList(data.usrRole)
 		if (data.usrRole === 'USER') {
 			window.location.href = '/';
-		}else{
+		} else {
 			window.location.href = '/admin';
 		}
 

@@ -31,12 +31,6 @@ public class NotificationController {
     public ResponseEntity<Void> alramMsg(@RequestParam("usrId") String usrId) {
          notificationService.notifyMessage(usrId);
         return ResponseEntity.ok().build(); 
+
     }
-
-	public void sendPushNotification(String string) {
-		// TODO Auto-generated method stub
-		
-	}
-
-
 }

@@ -16,7 +16,10 @@ function _menuList(usrRole) {
 	if (usrRole !== '' || usrRole !== 'undefined') {
 		console.log("usrRole : " + usrRole)
 		usrRole = localStorage.getItem('usrRole');
+	}else{
+		usrRole = "";
 	}
+	
 	$.ajax({
 		url: "/api/main/menuList/" + usrRole,
 		type: "GET",

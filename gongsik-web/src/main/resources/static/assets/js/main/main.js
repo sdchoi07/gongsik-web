@@ -83,15 +83,16 @@ var checkTokenExpiry = function() {
 
 		if (decodedToken.exp && decodedToken.exp < currentTime) {
 			// 토큰이 만료되었으면 로컬 스토리지에서 제거
-			localStorage.removeItem("accessToken");
-			localStorage.removeItem("usrId");
-			console.log("토큰이 만료되었습니다. 로그아웃 처리 등을 수행할 수 있습니다.");
-			var msg = "로그인 다시 해주시길 바랍니다.";
-			if (confirm(msg)) {
-				window.location.href = "/account/login";
-			} else {
-				window.location.href = "/";
-			}
+//			localStorage.removeItem("accessToken");
+//			localStorage.removeItem("usrId");
+			_usrBtn("expire")
+			//			console.log("토큰이 만료되었습니다. 로그아웃 처리 등을 수행할 수 있습니다.");
+			//			var msg = "로그인 다시 해주시길 바랍니다.";
+			//			if (confirm(msg)) {
+			//				window.location.href = "/account/login";
+			//			} else {
+			//				window.location.href = "/";
+			//			}
 		}
 	}
 }
@@ -107,7 +108,7 @@ function parseJwt(token) {
 }
 
 //인증
-var _usrBtn = function() {
+var _usrBtn = function(type) {
 	const token = localStorage.getItem('accessToken')
 	const test = localStorage.getItem('data')
 	$.ajax({
@@ -115,13 +116,21 @@ var _usrBtn = function() {
 		type: 'GET',
 		headers: {
 			'Authorization': 'Bearer ' + token
+			, 'type': type
 		},
 	}).done(function(data, textStatus, xhr) {
-		if (xhr.status === 200) {
-			window.location.href = '/mypage';
+		console.log("???" + xhr.status)
+		var type = xhr.getResponseHeader('type');
+		console.log("type : " + type)
+		if (type === "expire") {
+
 		} else {
-			window.location.href = '/account/login';
-			localStorage.removeItem('usrId')
+			if (xhr.status === 200) {
+				window.location.href = '/mypage';
+			} else {
+				window.location.href = '/account/login';
+				localStorage.removeItem('usrId')
+			}
 		}
 	}).fail(function(xhr, textStatus, errorThrowna) {
 		var jsonResponse = JSON.parse(xhr.responseText);
@@ -217,7 +226,7 @@ function _logOut() {
 
 //탭이동
 var _tabList = function(currentUrl) {
-	url =  currentUrl.split('/').pop();
+	url = currentUrl.split('/').pop();
 	console.log("url : " + url)
 	if (url === 'mypage' || url === 'admin') {
 		var firstTabHref = $('.list-group-item:first').attr('href');
