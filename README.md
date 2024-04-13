@@ -1,1 +1,1 @@
-# gongsik-web
+# gongsik-web.
